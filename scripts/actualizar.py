@@ -1,9 +1,9 @@
 """
-MECOPOL · Tablero de inflación — actualización de datos
-=======================================================
+MECOPOL · Tablero de precios — actualización de datos
+=====================================================
 
 Baja las series del IPC del INDEC desde la API de Series de Tiempo
-(apis.datos.gob.ar), calcula todos los indicadores del tablero y los
+(apis.datos.gob.ar), calcula los indicadores del gobierno actual y los
 guarda en docs/data/dashboard.json, que es lo que lee la página.
 
 Lo corre la GitHub Action todos los días. También se puede correr a mano:
@@ -32,7 +32,6 @@ CONFIG = json.loads((RAIZ / "config.json").read_text(encoding="utf-8"))
 API = "https://apis.datos.gob.ar/series/api/series/"
 SEARCH = "https://apis.datos.gob.ar/series/api/search/"
 IPC_NAC = "148.3_INIVELNAL_DICI_M_26"   # IPC Nacional, nivel general (dic-2016 = 100)
-FIN_MANDATO = 48                        # mes 48 = último mes completo de un mandato
 
 DIVISIONES = {
     "Alimentos y bebidas no alcohólicas": "alimen",
@@ -107,6 +106,10 @@ def buscar_division(nombre, clave):
 # ------------------------------------------------------------------
 # Utilidades
 # ------------------------------------------------------------------
+def ym(fecha):
+    return fecha.strftime("%Y-%m")
+
+
 def etiqueta(fecha):
     return f"{MESES_ES[fecha.month - 1]}-{str(fecha.year)[2:]}"
 
@@ -120,79 +123,52 @@ def r(x, n=2):
     return None if x is None or pd.isna(x) else round(float(x), n)
 
 
+def var(s, a, b):
+    """Variación porcentual de la serie s entre las fechas a (base) y b."""
+    return (s[b] / s[a] - 1) * 100
+
+
 # ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
 def main():
     hoy = pd.Timestamp.today().normalize()
-    gobiernos = {g: pd.Timestamp(v["base"]) for g, v in CONFIG["gobiernos"].items()}
+    inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
+    fin = pd.Timestamp(CONFIG["fin_mandato"])
+    un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
 
     # 1. Nivel general --------------------------------------------------
     print("📥 IPC nacional, nivel general")
-    nac = traer([IPC_NAC], "2016-12-01", hoy.strftime("%Y-%m-%d"))[IPC_NAC].dropna()
+    desde = ym(inicio - pd.DateOffset(months=14)) + "-01"
+    nac = traer([IPC_NAC], desde, hoy.strftime("%Y-%m-%d"))[IPC_NAC].dropna()
     mes = nac.index.max()
-    print(f"   último dato: {etiqueta(mes)} = {nac[mes]:,.2f}")
+    previo = mes - un_mes
+    K = meses_entre(inicio, mes)
+    print(f"   último dato: {etiqueta(mes)} = {nac[mes]:,.2f} · mes {K} de gobierno")
 
-    var = nac.pct_change().dropna()
-    empalme = CONFIG.get("empalme_macri") or []
-    if len(empalme) == 13:
-        previas = pd.Series(np.array(empalme, dtype=float) / 100,
-                            index=pd.date_range("2015-12-01", "2016-12-01", freq="MS"))
-        var = pd.concat([previas, var])
-        print("   ✅ empalme 2016 cargado: Macri entra en la comparación")
-    else:
-        gobiernos.pop("Macri", None)
-        print("   ℹ️ sin empalme 2016: Macri queda afuera")
-
-    indice = (1 + var).cumprod()
-    indice.loc[var.index[0] - pd.DateOffset(months=1)] = 1.0
-    indice = indice.sort_index()
-
-    def interanual(f):
-        a = f - pd.DateOffset(months=12)
-        if f in indice.index and a in indice.index:
-            return (indice[f] / indice[a] - 1) * 100
-        return np.nan
-
-    K = meses_entre(gobiernos["Milei"], mes)
-
-    # 2. KPIs del último mes -------------------------------------------
-    previo = mes - pd.DateOffset(months=1)
-    dic_ant = pd.Timestamp(year=mes.year - 1, month=12, day=1)
+    acum_gob = var(nac, inicio, mes)
     kpis = {
-        "mensual": r((nac[mes] / nac[previo] - 1) * 100),
-        "mensual_previo": r((nac[previo] / nac[previo - pd.DateOffset(months=1)] - 1) * 100),
-        "interanual": r(interanual(mes), 1),
-        "interanual_previo": r(interanual(previo), 1),
-        "acum_anio": r((nac[mes] / nac[dic_ant] - 1) * 100, 1),
-        "acum_gobierno": r((indice[mes] / indice[gobiernos["Milei"]] - 1) * 100, 1),
-        "nivel": r(nac[mes]),
+        "mensual": r(var(nac, previo, mes)),
+        "mensual_previo": r(var(nac, previo - un_mes, previo)),
+        "interanual": r(var(nac, mes - un_anio, mes), 1),
+        "interanual_previo": r(var(nac, previo - un_anio, previo), 1),
+        "acum_anio": r(var(nac, pd.Timestamp(year=mes.year - 1, month=12, day=1), mes), 1),
+        "acum_gobierno": r(acum_gob, 1),
+        "promedio_mensual": r(((1 + acum_gob / 100) ** (1 / K) - 1) * 100),
     }
 
-    serie = [{"fecha": f.strftime("%Y-%m"),
-              "mensual": r((nac[f] / nac[f - pd.DateOffset(months=1)] - 1) * 100),
-              "interanual": r(interanual(f), 1)}
-             for f in nac.index[1:]]
+    serie = [{
+        "fecha": ym(f),
+        "mensual": r(var(nac, f - un_mes, f)),
+        "interanual": r(var(nac, f - un_anio, f), 1),
+        "acumulada": r(var(nac, inicio, f), 1),
+    } for f in nac.index if f > inicio]
 
-    # 3. Trayectorias por mes de gobierno ------------------------------
-    tray = {}
-    for g, b in gobiernos.items():
-        fechas = pd.date_range(b, b + pd.DateOffset(months=FIN_MANDATO), freq="MS")
-        acum = (indice.reindex(fechas) / indice[b] - 1) * 100
-        tray[g] = [r(v, 1) for v in acum.values]
+    pico = max(serie, key=lambda x: x["mensual"])
+    primeros5 = var(nac, inicio, inicio + pd.DateOffset(months=5))
+    resto = ((1 + acum_gob / 100) / (1 + primeros5 / 100) - 1) * 100
 
-    misma_altura = []
-    for g, b in gobiernos.items():
-        t = b + pd.DateOffset(months=K)
-        acum = tray[g][K]
-        misma_altura.append({
-            "gobierno": g, "mes": etiqueta(t), "acumulada": acum,
-            "promedio_mensual": r(((1 + acum / 100) ** (1 / K) - 1) * 100),
-            "interanual_al_asumir": r(interanual(b), 1),
-            "interanual_misma_altura": r(interanual(t), 1),
-        })
-
-    # 4. Rubros: precios relativos y mes actual ------------------------
+    # 2. Rubros ---------------------------------------------------------
     ids_div = {}
     for nombre, clave in DIVISIONES.items():
         fid = CONFIG.get("ids_divisiones", {}).get(nombre) or buscar_division(nombre, clave)
@@ -203,93 +179,92 @@ def main():
         faltan = sorted(set(DIVISIONES) - set(ids_div))
         raise RuntimeError(f"Faltan rubros: {faltan}. Cargar sus ids en config.json → ids_divisiones")
 
-    div = traer(list(ids_div.values()), "2019-10-01", mes.strftime("%Y-%m-%d"))
+    div = traer(list(ids_div.values()), desde, ym(mes) + "-01")
     div.columns = list(ids_div)
 
-    relativos = {"rubros": list(div.columns)}
-    for g in ["Fernández", "Milei"]:
-        b = gobiernos[g]
-        t = b + pd.DateOffset(months=K)
-        rel = ((div.loc[t] / div.loc[b]) / (nac[t] / nac[b]) - 1) * 100
-        relativos[g] = [r(v, 1) for v in rel.values]
+    rubros = []
+    for n in div.columns:
+        s = div[n]
+        acum = var(s, inicio, mes)
+        rubros.append({
+            "rubro": n,
+            "mensual": r(var(s, previo, mes)),
+            "interanual": r(var(s, mes - un_anio, mes), 1),
+            "acum_gobierno": r(acum, 1),
+            "relativo": r(((1 + acum / 100) / (1 + acum_gob / 100) - 1) * 100, 1),
+        })
 
-    rubros_mes = [{"rubro": n,
-                   "mensual": r((div.loc[mes, n] / div.loc[previo, n] - 1) * 100),
-                   "interanual": r((div.loc[mes, n] / div.loc[mes - pd.DateOffset(months=12), n] - 1) * 100, 1)}
-                  for n in div.columns]
-
-    # 5. Escenarios hasta el fin del mandato ---------------------------
+    # 3. Escenarios hasta el fin del mandato ---------------------------
     rem = CONFIG["rem"]
     rem_2027 = ((1 + rem["anual_2027"] / 100) ** (1 / 12) - 1) * 100
-    escenarios_def = {
-        "Desinflación rápida (1%)": lambda f: 1.0,
-        "Consenso REM": lambda f: rem["mensual"].get(f.strftime("%Y-%m"), rem_2027),
+    reglas = {
+        "Desinflación rápida": lambda f: 1.0,
+        "Consenso REM": lambda f: rem["mensual"].get(ym(f), rem_2027),
         "Se estanca en 2%": lambda f: 2.0,
         "Shock electoral": lambda f: ({8: 4.0, 9: 6.0, 10: 4.0, 11: 3.0}[f.month]
                                       if f.year == 2027 and f.month >= 8 else 2.0),
     }
-    futuras = pd.date_range(mes + pd.DateOffset(months=1), periods=FIN_MANDATO - K, freq="MS")
-    nivel_hoy = 1 + tray["Milei"][K] / 100
-    escenarios, fin_mandato = {}, []
-    for g in gobiernos:
-        if g != "Milei":
-            fin = gobiernos[g] + pd.DateOffset(months=FIN_MANDATO)
-            fin_mandato.append({"caso": f"{g} (real)", "gobierno": g,
-                                "acumulada": tray[g][FIN_MANDATO],
-                                "interanual_final": r(interanual(fin), 1)})
-    for nombre, regla in escenarios_def.items():
+    supuestos = {
+        "Desinflación rápida": "1% mensual hasta el final",
+        "Consenso REM": f"Expectativas del BCRA ({etiqueta(pd.Timestamp(rem['publicado'] + '-01'))})",
+        "Se estanca en 2%": "La baja se frena en el nivel actual",
+        "Shock electoral": "2% mensual y salto en el tramo electoral de 2027",
+    }
+    futuras = pd.date_range(mes + un_mes, fin, freq="MS")
+    fechas_esc = [ym(mes)] + [ym(f) for f in futuras]
+    escenarios, cierre = {}, []
+    nivel_hoy = 1 + acum_gob / 100
+    # índice relativo a 'inicio' para calcular la interanual al final
+    rel_inicio = (nac / nac[inicio]).loc[inicio:]
+    for nombre, regla in reglas.items():
         tasas = np.array([regla(f) for f in futuras]) / 100
         camino = np.r_[nivel_hoy, nivel_hoy * np.cumprod(1 + tasas)]
-        acum = (camino - 1) * 100
-        escenarios[nombre] = [r(v, 1) for v in acum]
-        completo = tray["Milei"][:K] + list(acum)
-        fin_mandato.append({
-            "caso": f"Milei · {nombre}", "gobierno": "Milei",
-            "acumulada": r(completo[FIN_MANDATO], 1),
-            "interanual_final": r(((1 + completo[FIN_MANDATO] / 100) /
-                                   (1 + completo[FIN_MANDATO - 12] / 100) - 1) * 100, 1),
+        escenarios[nombre] = [r((v - 1) * 100, 1) for v in camino]
+        completo = pd.concat([rel_inicio.loc[:previo], pd.Series(camino, index=[mes] + list(futuras))])
+        cierre.append({
+            "escenario": nombre,
+            "supuesto": supuestos[nombre],
+            "acumulada": r((completo[fin] - 1) * 100, 1),
+            "interanual_final": r((completo[fin] / completo[fin - un_anio] - 1) * 100, 1),
         })
 
-    primeros5 = tray["Milei"][5]
-    resto = ((1 + tray["Milei"][K] / 100) / (1 + primeros5 / 100) - 1) * 100
-
-    # 6. Controles de calidad -------------------------------------------
-    assert 0 < len(serie) and kpis["mensual"] is not None, "Serie vacía"
-    assert all(v is not None for v in relativos["Milei"]), "Precios relativos incompletos"
-    assert abs(tray["Milei"][0]) < 1e-9, "La trayectoria no arranca en 0"
+    # 4. Controles de calidad -------------------------------------------
+    assert serie and kpis["mensual"] is not None, "Serie vacía"
+    assert all(x["relativo"] is not None for x in rubros), "Rubros incompletos"
 
     datos = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
-        "ultimo_mes": mes.strftime("%Y-%m"),
-        "ultimo_mes_etiqueta": etiqueta(mes),
+        "ultimo_mes": ym(mes),
+        "inicio": ym(inicio),
+        "fin_mandato": ym(fin),
         "mes_gobierno": K,
-        "fin_mandato": FIN_MANDATO,
+        "meses_restantes": meses_entre(mes, fin),
         "kpis": kpis,
-        "serie_mensual": serie,
-        "gobiernos": {g: {"base": etiqueta(b), "color": CONFIG["gobiernos"][g]["color"]}
-                      for g, b in gobiernos.items()},
-        "trayectorias": tray,
-        "misma_altura": misma_altura,
-        "precios_relativos": relativos,
-        "rubros_mes": rubros_mes,
-        "escenarios": {"desde_mes": K, "series": escenarios, "rem_publicado": rem["publicado"]},
-        "cierre_mandato": fin_mandato,
-        "milei_tramos": {"primeros_5": r(primeros5, 1), "resto": r(resto, 1), "meses_resto": K - 5},
+        "serie": serie,
+        "hitos": {
+            "pico": pico,
+            "primeros_5": r(primeros5, 1),
+            "resto": r(resto, 1),
+            "meses_resto": K - 5,
+        },
+        "rubros": rubros,
+        "escenarios": {"fechas": fechas_esc, "series": escenarios, "rem_publicado": rem["publicado"]},
+        "cierre": cierre,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
     }
 
     # Si los números no cambiaron, no se reescribe el archivo: así la Action
     # no genera un commit por día y la fecha muestra el último cambio real.
     if SALIDA.exists():
-        previo = json.loads(SALIDA.read_text(encoding="utf-8"))
+        previo_json = json.loads(SALIDA.read_text(encoding="utf-8"))
         sin_fecha = lambda x: {k: v for k, v in x.items() if k != "actualizado"}
-        if sin_fecha(previo) == json.loads(json.dumps(sin_fecha(datos), ensure_ascii=False)):
+        if sin_fecha(previo_json) == json.loads(json.dumps(sin_fecha(datos), ensure_ascii=False)):
             print(f"✔️ Sin datos nuevos (último mes: {etiqueta(mes)}).")
             return
 
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"💾 {SALIDA.relative_to(RAIZ)} · {etiqueta(mes)} · mes {K} de Milei · "
+    print(f"💾 {SALIDA.relative_to(RAIZ)} · {etiqueta(mes)} · mes {K} · "
           f"mensual {kpis['mensual']}% · interanual {kpis['interanual']}%")
 
 

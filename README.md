@@ -2,10 +2,20 @@
 
 Tablero de inflación de la **Mesa de Economía Política (UNLa)**, con datos oficiales del INDEC que se actualizan solos.
 
-- Inflación mensual, interanual y acumulada
-- Gobierno vs. gobierno a la misma altura del mandato
-- Precios relativos por rubro
-- Escenarios hasta el fin del mandato
+Versión enfocada en el gobierno de Milei:
+
+- Inflación mensual, interanual y acumulada desde diciembre de 2023
+- Precios relativos y variación por rubro
+- Escenarios hasta el fin del mandato (noviembre de 2027)
+
+## Ramas
+
+| Rama | Qué tiene |
+|---|---|
+| `main` | Esta versión, solo Milei. Es la que publica GitHub Pages |
+| `comparativo` | La versión anterior: gobierno vs. gobierno (Fernández, Milei y Macri con empalme) |
+
+Para ver la versión comparativa: `git switch comparativo`. Para traer un archivo de esa rama a `main`: `git checkout comparativo -- <ruta>`.
 
 ## Cómo funciona
 
@@ -17,7 +27,7 @@ API de datos.gob.ar ──► scripts/actualizar.py ──► docs/data/dashboar
 | Archivo | Qué es |
 |---|---|
 | `scripts/actualizar.py` | Baja las series del IPC, calcula todo y escribe el JSON |
-| `config.json` | Lo que se edita a mano: colores, REM, empalme de Macri |
+| `config.json` | Lo que se edita a mano: fechas del mandato, REM, ids de rubros |
 | `docs/index.html` | El tablero. Lee el JSON y dibuja los gráficos |
 | `docs/data/dashboard.json` | Los datos procesados. Lo escribe la Action, no se toca a mano |
 | `.github/workflows/actualizar.yml` | La tarea programada que corre el script y guarda los datos |
@@ -39,7 +49,6 @@ Hasta que corra la primera actualización, el tablero muestra datos de prueba co
 |---|---|
 | Cada vez que sale el REM del BCRA (principios de mes) | Actualizar `rem` en `config.json` |
 | Si la Action falla con "Faltan rubros" | Buscar el id de la serie en datos.gob.ar y cargarlo en `ids_divisiones` |
-| Para sumar a Macri | Cargar las 13 variaciones mensuales del IPC CABA (dic-2015 a dic-2016) en `empalme_macri` |
 
 Todo se puede editar desde la web de GitHub, con el lápiz de cada archivo. Al guardar, la Action corre sola.
 
@@ -62,5 +71,5 @@ En Wix o Google Sites se puede incrustar con un iframe apuntando a la URL de Pag
 ## Fuentes y metodología
 
 - IPC Nacional, INDEC, base diciembre 2016 = 100, vía la [API de Series de Tiempo](https://datos.gob.ar/series).
-- Mes base de cada gobierno: noviembre del año de asunción (último mes completo del gobierno anterior).
+- Base: noviembre de 2023, último mes completo antes de la asunción del 10 de diciembre.
 - Los escenarios son supuestos explícitos, no pronósticos.

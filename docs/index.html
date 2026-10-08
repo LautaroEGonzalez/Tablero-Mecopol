@@ -4,504 +4,367 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tablero de Precios MECOPOL</title>
-<meta name="description" content="Inflación, precios relativos y comparación entre gobiernos con datos del INDEC. Mesa de Economía Política UNLa.">
+<meta name="description" content="Inflación durante el gobierno de Milei con datos del INDEC: mes a mes, por rubro y escenarios al fin del mandato. Mesa de Economía Política UNLa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: grilla de paneles estilo consola de monitoreo; 12 columnas que bajan a 1 en celular.
-   Tema oscuro único, elegido a propósito (pedido: "corte Grafana"). */
+/* Layout: una sola columna de lectura (máx. 1200px). Arriba la cifra del mes,
+   después la serie, los rubros y los escenarios. Pocos bordes, mucho aire.
+   Tema oscuro único, elegido a propósito. */
 :root {
   color-scheme: dark;
-  --bg:        #0e1014;
-  --panel:     #15181e;
-  --panel-hi:  #1b1f26;
-  --line:      #262a33;
-  --grid:      #20242c;
-  --fg:        #dfe2e8;
-  --fg-2:      #a3a9b6;
-  --fg-3:      #727a89;
-  --accent:    #e8eaef;
-  --good:      #3fb27f;
-  --warn:      #e0a33a;
-  --bad:       #e5534b;
-  --font-ui:   "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-num:  "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --r: 4px;
+  --bg:       #0e1014;
+  --panel:    #14171c;
+  --panel-hi: #1b1f26;
+  --line:     #23272f;
+  --grid:     #1f232a;
+  --fg:       #e3e5ea;
+  --fg-2:     #a3a9b6;
+  --fg-3:     #6f7685;
+  --accent:   #d55181;   /* identidad del período */
+  --sube:     #e66767;   /* rubro que se encareció más que el promedio */
+  --baja:     #3987e5;   /* rubro que se encareció menos */
+  --good:     #3fb27f;
+  --warn:     #e0a33a;
+  --font-ui:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 6px;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font: 14px/1.5 var(--font-ui);
-  font-stretch: 100%;
-  padding-inline: 16px;
-  padding-block: 0 32px;
+  background: var(--bg); color: var(--fg);
+  font: 15px/1.55 var(--font-ui);
+  padding-inline: 16px; padding-block: 0 48px;
 }
 a { color: var(--fg); text-underline-offset: 2px; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
 
-/* ---- barra superior ---- */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;
-  margin-inline: -16px; padding: 10px 16px;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--line);
+/* ---- encabezado ---- */
+.cab { padding-top: 28px; display: grid; gap: 14px; }
+.eyebrow {
+  font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3);
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
 }
-.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
-.brand b {
-  font-stretch: 75%; font-weight: 700; font-size: 15px;
-  letter-spacing: .08em; text-transform: uppercase;
+.eyebrow b { color: var(--fg-2); font-weight: 600; }
+h1 {
+  margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em;
+  font-size: clamp(28px, 4.2vw, 44px); line-height: 1.08; text-wrap: balance;
 }
-.brand span { color: var(--fg-2); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.meta { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--fg-3); font: 12px var(--font-num); }
-.meta strong { color: var(--fg-2); font-weight: 500; }
-.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--good); margin-right: 6px; vertical-align: 1px; }
+h1 em { font-style: normal; color: var(--accent); }
+.mandato { display: grid; gap: 6px; max-width: 520px; }
+.mandato .barra { height: 6px; background: var(--panel-hi); border-radius: 3px; overflow: hidden; }
+.mandato .barra i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: var(--fg-3); }
+.mandato .txt b { color: var(--fg-2); font-weight: 500; }
 
 .aviso {
-  margin-top: 14px; padding: 8px 12px; border: 1px solid #5c4a1c; border-radius: var(--r);
-  background: #221d10; color: #e9cf8f; font-size: 13px;
+  padding: 9px 13px; border-radius: var(--r); font-size: 13px;
+  background: #221d10; color: #e9cf8f; border: 1px solid #4d3f19;
 }
 
-/* ---- grilla ---- */
-.grid {
-  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 10px; margin-top: 14px; max-width: 1600px; margin-inline: auto;
+/* ---- cifras ---- */
+.cifras {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
-.fila-titulo {
-  grid-column: 1 / -1; display: flex; align-items: center; gap: 10px;
-  margin-top: 10px; color: var(--fg-2); font-size: 12px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; font-stretch: 85%;
-}
-.fila-titulo::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-
-.panel {
-  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
-  display: flex; flex-direction: column; min-width: 0;
-}
-.panel header {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
-  padding: 10px 12px 0;
-}
-.panel h2 { margin: 0; font-size: 13px; font-weight: 600; color: var(--fg); text-wrap: balance; }
-.panel .sub { width: 100%; margin: 2px 0 0; color: var(--fg-3); font-size: 12px; max-width: 75ch; }
-.panel .cuerpo { padding: 8px 12px 12px; flex: 1; min-width: 0; }
-.chart { width: 100%; height: 320px; }
-.chart.alto { height: 400px; }
-
-.s3 { grid-column: span 3; } .s4 { grid-column: span 4; } .s5 { grid-column: span 5; }
-.s6 { grid-column: span 6; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; }
-.s12 { grid-column: span 12; }
-@media (max-width: 1100px) {
-  .s3 { grid-column: span 6; } .s4, .s5, .s7, .s8 { grid-column: span 12; } .s6 { grid-column: span 12; }
-}
-@media (max-width: 560px) {
-  .s3 { grid-column: span 12; }
-  .chart { height: 280px; } .chart.alto { height: 460px; }
-}
-
-/* ---- paneles de número ---- */
-.stat .cuerpo { display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
-.stat .valor {
-  font: 600 38px/1.1 var(--font-num); letter-spacing: -.02em; color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.stat .valor small { font-size: 20px; color: var(--fg-2); margin-left: 2px; }
-.stat .pie { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: var(--fg-3); font-size: 12px; }
-.chip {
-  display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 3px;
-  font: 500 12px var(--font-num); border: 1px solid currentColor;
-}
+.cifra { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cifra + .cifra { border-left: 1px solid var(--line); }
+.cifra h2 { margin: 0; font-size: 13px; font-weight: 500; color: var(--fg-2); }
+.cifra .valor { font: 600 40px/1.05 var(--font-num); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cifra .valor small { font-size: 20px; color: var(--fg-3); margin-left: 2px; }
+.cifra .pie { font-size: 12px; color: var(--fg-3); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 3px; font: 500 12px var(--font-num); border: 1px solid currentColor; }
 .chip.baja { color: var(--good); } .chip.sube { color: var(--warn); } .chip.igual { color: var(--fg-2); }
-.spark { width: 100%; height: 44px; margin-top: 4px; }
-
-/* ---- controles ---- */
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-left: auto; }
-.seg button {
-  font: 500 12px var(--font-ui); color: var(--fg-2); background: transparent; border: 0;
-  padding: 4px 10px; cursor: pointer;
+.spark { width: 100%; height: 38px; }
+@media (max-width: 900px) {
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cifra:nth-child(3) { border-left: 0; }
+  .cifra:nth-child(n+3) { border-top: 1px solid var(--line); }
 }
-.seg + .seg { margin-left: 0; }
-.seg button + button { border-left: 1px solid var(--line); }
+@media (max-width: 480px) {
+  .cifras { grid-template-columns: 1fr; }
+  .cifra + .cifra { border-left: 0; border-top: 1px solid var(--line); }
+  .cifra .valor { font-size: 34px; }
+}
+
+/* ---- secciones ---- */
+.sec { display: grid; gap: 14px; }
+.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; }
+.sec-cab > div { flex: 1 1 320px; min-width: 0; }
+.sec h2 { margin: 0; font-size: 20px; font-weight: 600; font-stretch: 90%; text-wrap: balance; }
+.sec p.sub { margin: 4px 0 0; color: var(--fg-2); font-size: 14px; max-width: 68ch; }
+.caja { background: var(--panel); border-radius: var(--r); padding: 16px; min-width: 0; }
+.chart { width: 100%; height: 360px; }
+@media (max-width: 560px) { .chart { height: 300px; } }
+
+.seg { display: inline-flex; background: var(--panel); border-radius: var(--r); padding: 3px; gap: 2px; }
+.seg button {
+  font: 500 13px var(--font-ui); color: var(--fg-2); background: transparent; border: 0;
+  padding: 5px 12px; border-radius: 4px; cursor: pointer;
+}
 .seg button[aria-pressed="true"] { background: var(--panel-hi); color: var(--fg); }
 .seg button:hover { color: var(--fg); }
 
-/* ---- tablas ---- */
+.lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 72ch; }
+.lectura b { color: var(--fg); font-weight: 600; }
+
+/* ---- tabla de rubros ---- */
 .tabla-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
-th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+th, td { padding: 9px 10px; text-align: right; white-space: nowrap; }
+th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+td { font-family: var(--font-num); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--grid); }
 th:first-child, td:first-child { text-align: left; }
-td { font-family: var(--font-num); font-variant-numeric: tabular-nums; color: var(--fg); }
-td:first-child { font-family: var(--font-ui); }
+td:first-child { font-family: var(--font-ui); color: var(--fg); }
 tr:last-child td { border-bottom: 0; }
-.gob { display: inline-flex; align-items: center; gap: 8px; }
-.gob i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.barra { position: relative; }
-.barra span { position: relative; z-index: 1; }
-.barra::before {
-  content: ""; position: absolute; right: 8px; top: 50%; height: 14px; transform: translateY(-50%);
-  width: var(--w, 0%); max-width: calc(100% - 16px); background: var(--c, #444); opacity: .22; border-radius: 2px;
-}
-.nota { color: var(--fg-3); font-size: 12px; margin: 8px 0 0; }
+tbody tr:hover td { background: var(--panel-hi); }
+th.rel, td.rel { width: 38%; text-align: center; }
+.div { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; position: relative; height: 18px; }
+.div::after { content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px; background: var(--fg-3); }
+.div .izq, .div .der { display: flex; align-items: center; gap: 6px; height: 100%; }
+.div .izq { justify-content: flex-end; }
+.div .pista { flex: 1; display: flex; height: 10px; }
+.div .izq .pista { justify-content: flex-end; }
+.div i { display: block; height: 10px; min-width: 2px; }
+.div .izq i { background: var(--baja); border-radius: 2px 0 0 2px; }
+.div .der i { background: var(--sube); border-radius: 0 2px 2px 0; }
+.div span { flex: none; width: 52px; font-size: 12px; color: var(--fg-2); }
+.div .der span { text-align: left; } .div .izq span { text-align: right; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
+.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 
-/* ---- metodología ---- */
-.metodo { grid-column: 1 / -1; }
-.metodo .cuerpo { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px 28px; }
-.metodo h3 { margin: 0 0 4px; font-size: 13px; color: var(--fg); }
-.metodo p { margin: 0; color: var(--fg-2); font-size: 13px; max-width: 65ch; }
-code { font-family: var(--font-num); font-size: 12px; color: var(--fg-2); background: var(--panel-hi); padding: 1px 4px; border-radius: 3px; overflow-wrap: anywhere; }
+/* ---- escenarios ---- */
+.esc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 900px) { .esc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .esc-grid { grid-template-columns: 1fr; } }
+.esc { background: var(--panel); border-radius: var(--r); padding: 14px; display: grid; gap: 4px; align-content: start; }
+.esc h3 { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.esc h3 svg { flex: none; }
+.esc p { margin: 0; font-size: 12px; color: var(--fg-3); }
+.esc .n { display: flex; gap: 18px; margin-top: 8px; }
+.esc .n div { display: grid; }
+.esc .n b { font: 600 20px var(--font-num); font-variant-numeric: tabular-nums; }
+.esc .n span { font-size: 11px; color: var(--fg-3); }
 
-.estado { grid-column: 1 / -1; padding: 40px 16px; text-align: center; color: var(--fg-2); }
+/* ---- pie ---- */
+.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
+.notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.notas p { margin: 0; font-size: 13px; color: var(--fg-2); max-width: 62ch; }
+code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi); padding: 1px 4px; border-radius: 3px; overflow-wrap: anywhere; }
+.estado { padding: 60px 0; color: var(--fg-2); }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
-
-<div class="top">
-  <div class="brand"><b>MECOPOL</b><span>Tablero de precios · Mesa de Economía Política UNLa</span></div>
-  <div class="meta" id="meta"><span><span class="dot"></span>cargando datos…</span></div>
+<div class="wrap" id="app">
+  <div class="estado">Cargando datos del INDEC…</div>
 </div>
-
-<div id="aviso" class="aviso" hidden></div>
-
-<main class="grid" id="grid">
-  <div class="estado" id="estado">Cargando datos del INDEC…</div>
-</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script>
 (() => {
-  // ---------- utilidades ----------
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const T = {
-    fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
-    panel: css('--panel'), accent: css('--accent'), num: css('--font-num'), ui: css('--font-ui'),
-  };
-  const nf = (v, d = 1) => v == null ? '—' :
-    v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
+    panel: css('--panel'), accent: css('--accent'), num: css('--font-num'), ui: css('--font-ui') };
+  const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
   const pct = (v, d = 1, signo = false) => v == null ? '—' : (signo && v > 0 ? '+' : '') + nf(v, d) + '%';
   const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const MESL = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const etq = ym => { const [a, m] = ym.split('-'); return `${MES[+m - 1]}-${a.slice(2)}`; };
+  const largo = ym => { const [a, m] = ym.split('-'); return `${MESL[+m - 1]} de ${a}`; };
   const corto = {
-    'Alimentos y bebidas no alcohólicas': 'Alimentos y bebidas',
-    'Bebidas alcohólicas y tabaco': 'Alcohol y tabaco',
-    'Prendas de vestir y calzado': 'Ropa y calzado',
-    'Vivienda, agua, electricidad, gas y otros combustibles': 'Vivienda y servicios',
-    'Equipamiento y mantenimiento del hogar': 'Equipamiento del hogar',
-    'Salud': 'Salud', 'Transporte': 'Transporte', 'Comunicación': 'Comunicación',
-    'Recreación y cultura': 'Recreación y cultura', 'Educación': 'Educación',
-    'Restaurantes y hoteles': 'Restaurantes y hoteles', 'Bienes y servicios varios': 'Bienes y serv. varios',
+    'Alimentos y bebidas no alcohólicas': 'Alimentos y bebidas', 'Bebidas alcohólicas y tabaco': 'Alcohol y tabaco',
+    'Prendas de vestir y calzado': 'Ropa y calzado', 'Vivienda, agua, electricidad, gas y otros combustibles': 'Vivienda y servicios',
+    'Equipamiento y mantenimiento del hogar': 'Equipamiento del hogar', 'Bienes y servicios varios': 'Bienes y servicios varios',
   };
-  const graficos = [];
+  const tip = () => ({
+    trigger: 'axis', backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
+    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:6px;',
+    axisPointer: { type: 'line', lineStyle: { color: T.fg3, width: 1 } },
+  });
+  const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true }, splitLine: { show: false } }, extra);
+  const ejeY = extra => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) + '%' },
+    splitLine: { lineStyle: { color: T.grid, width: 1 } } }, extra);
   const nuevo = (el, opt) => {
-    const c = echarts.init(el, null, { renderer: 'canvas' });
-    c.setOption(Object.assign(base(), opt));
-    graficos.push(c);
+    const c = echarts.init(el);
+    c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: T.ui, color: T.fg2 }, animationDuration: 500 }, opt));
     new ResizeObserver(() => c.resize()).observe(el);
     return c;
   };
-  const base = () => ({
-    backgroundColor: 'transparent',
-    textStyle: { fontFamily: T.ui, color: T.fg2 },
-    animationDuration: 500,
-    grid: { left: 8, right: 16, top: 28, bottom: 8, containLabel: true },
-    tooltip: {
-      trigger: 'axis', backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
-      textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:4px;',
-      axisPointer: { type: 'line', lineStyle: { color: T.fg3, width: 1 } },
-    },
-  });
-  const ejeX = extra => Object.assign({
-    axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
-    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11 }, splitLine: { show: false },
-  }, extra);
-  const ejeY = extra => Object.assign({
-    type: 'value', axisLine: { show: false }, axisTick: { show: false },
-    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) + '%' },
-    splitLine: { lineStyle: { color: T.grid, width: 1 } },
-  }, extra);
-  const marca = color => `<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${color};margin-right:6px"></i>`;
-
-  // ---------- armado ----------
-  function panel({ cls, titulo, sub, controles = '', cuerpo }) {
-    return `<section class="panel ${cls}"><header><h2>${titulo}</h2>${controles}${sub ? `<p class="sub">${sub}</p>` : ''}</header><div class="cuerpo">${cuerpo}</div></section>`;
-  }
-  const seg = (id, ops, activo) => `<div class="seg" role="group" id="${id}">${ops.map(([v, t]) =>
-    `<button type="button" data-v="${v}" aria-pressed="${v === activo}">${t}</button>`).join('')}</div>`;
+  const chip = (a, p, unidad = 'pp') => {
+    if (a == null || p == null) return '';
+    const d = a - p, c = Math.abs(d) < 0.05 ? 'igual' : d < 0 ? 'baja' : 'sube';
+    return `<span class="chip ${c}" title="${c === 'baja' ? 'Bajó' : c === 'sube' ? 'Subió' : 'Igual'} respecto del mes anterior">${c === 'baja' ? '▼' : c === 'sube' ? '▲' : '■'} ${nf(Math.abs(d), 1)} ${unidad}</span>`;
+  };
+  const DASH = { 'Desinflación rápida': 'dotted', 'Consenso REM': 'solid', 'Se estanca en 2%': 'dashed', 'Shock electoral': [8, 4, 2, 4] };
+  const muestraLinea = tipo => {
+    const da = tipo === 'dotted' ? '1 4' : tipo === 'dashed' ? '6 4' : Array.isArray(tipo) ? tipo.join(' ') : '';
+    return `<svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="${T.accent}" stroke-width="2" stroke-linecap="round" ${da ? `stroke-dasharray="${da}"` : ''}/></svg>`;
+  };
 
   function render(d) {
-    const G = d.gobiernos, K = d.mes_gobierno, k = d.kpis, M = etq(d.ultimo_mes);
-    const col = g => G[g].color;
+    const k = d.kpis, M = d.ultimo_mes, K = d.mes_gobierno, total = K + d.meses_restantes;
+    const app = document.getElementById('app');
     const act = new Date(d.actualizado);
-    document.getElementById('meta').innerHTML =
-      `<span><span class="dot"></span>Último dato <strong>${M}</strong></span>` +
-      `<span>Mes <strong>${K}</strong> de gobierno</span>` +
-      `<span>Actualizado <strong>${act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' })} ${act.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</strong></span>`;
-    if (d.simulado) {
-      const a = document.getElementById('aviso'); a.hidden = false;
-      a.textContent = 'Vista previa con datos de prueba. El nivel general y los rubros desde nov-23 salen de la planilla del equipo; el período anterior es ilustrativo. En GitHub Pages se reemplaza solo por los datos reales del INDEC.';
-    }
 
-    const chip = (actual, previo) => {
-      if (actual == null || previo == null) return '';
-      const dif = actual - previo, cls = Math.abs(dif) < 0.05 ? 'igual' : dif < 0 ? 'baja' : 'sube';
-      const fl = cls === 'baja' ? '▼' : cls === 'sube' ? '▲' : '■';
-      return `<span class="chip ${cls}" title="${cls === 'baja' ? 'Bajó' : cls === 'sube' ? 'Subió' : 'Sin cambios'} respecto del mes anterior">${fl} ${nf(Math.abs(dif), 1)} pp</span>`;
-    };
-    const stat = (titulo, valor, pie, spark = '') => panel({
-      cls: 's3 stat', titulo,
-      cuerpo: `<div class="valor">${valor}</div><div class="pie">${pie}</div>${spark}`,
-    });
-    const num = (v, d) => v == null ? '—' : `${nf(v, d)}<small>%</small>`;
-    const milei0 = G.Milei.base;
+    app.innerHTML = `
+      <header class="cab">
+        <div class="eyebrow"><span><b>MECOPOL</b> · Mesa de Economía Política UNLa</span><span>Datos: INDEC</span>
+          <span>Actualizado ${act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>
+        <h1>Inflación en el gobierno de <em>Milei</em></h1>
+        <div class="mandato" role="img" aria-label="Mes ${K} de ${total} del mandato">
+          <div class="barra"><i style="width:${(K / total * 100).toFixed(1)}%"></i></div>
+          <div class="txt"><span>dic-23</span><span>Mes <b>${K}</b> de ${total} · último dato <b>${etq(M)}</b></span><span>${etq(d.fin_mandato)}</span></div>
+        </div>
+        ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
+      </header>
 
-    const grid = document.getElementById('grid');
-    grid.innerHTML = [
-      `<div class="fila-titulo">Inflación de ${M}</div>`,
-      stat('Inflación mensual', num(k.mensual, 2),
-        `${chip(k.mensual, k.mensual_previo)}<span>mes anterior ${pct(k.mensual_previo, 2)}</span>`,
-        '<div class="spark" id="sp-mensual" role="img" aria-label="Inflación mensual de los últimos 12 meses"></div>'),
-      stat('Interanual', num(k.interanual, 1),
-        `${chip(k.interanual, k.interanual_previo)}<span>vs. ${etq(shift(d.ultimo_mes, -12))}</span>`,
-        '<div class="spark" id="sp-interanual" role="img" aria-label="Inflación interanual de los últimos 12 meses"></div>'),
-      stat(`Acumulada ${d.ultimo_mes.slice(0, 4)}`, num(k.acum_anio, 1),
-        `<span>desde dic-${String(+d.ultimo_mes.slice(0, 4) - 1).slice(2)}</span>`),
-      stat('Acumulada del gobierno', num(k.acum_gobierno, 1),
-        `<span>desde ${milei0} · ${K} meses</span>`),
+      <section class="cifras" aria-label="Cifras de ${largo(M)}">
+        <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, 2)}<small>%</small></div>
+          <div class="pie">${chip(k.mensual, k.mensual_previo)}<span>mes anterior ${pct(k.mensual_previo, 2)}</span></div>
+          <div class="spark" id="sp1" role="img" aria-label="Inflación mensual, últimos 12 meses"></div></div>
+        <div class="cifra"><h2>Interanual</h2><div class="valor">${nf(k.interanual, 1)}<small>%</small></div>
+          <div class="pie">${chip(k.interanual, k.interanual_previo)}<span>vs. ${etq(shift(M, -12))}</span></div>
+          <div class="spark" id="sp2" role="img" aria-label="Inflación interanual, últimos 12 meses"></div></div>
+        <div class="cifra"><h2>Acumulada ${M.slice(0, 4)}</h2><div class="valor">${nf(k.acum_anio, 1)}<small>%</small></div>
+          <div class="pie"><span>desde dic-${String(+M.slice(0, 4) - 1).slice(2)}</span></div></div>
+        <div class="cifra"><h2>Acumulada del gobierno</h2><div class="valor">${nf(k.acum_gobierno, 1)}<small>%</small></div>
+          <div class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></div></div>
+      </section>
 
-      `<div class="fila-titulo">Serie histórica</div>`,
-      panel({
-        cls: 's12', titulo: 'Inflación nacional',
-        controles: seg('sel-medida', [['mensual', 'Mensual'], ['interanual', 'Interanual']], 'mensual') +
-                   seg('sel-rango', [['todo', 'Desde 2017'], ['gob', 'Este gobierno'], ['12', '12 meses']], 'todo'),
-        sub: 'IPC nacional del INDEC. Las franjas marcan cada gobierno.',
-        cuerpo: '<div class="chart" id="ch-serie"></div>',
-      }),
+      <section class="sec">
+        <div class="sec-cab">
+          <div><h2>Mes a mes</h2><p class="sub">IPC nacional desde diciembre de 2023, el primer mes del gobierno.</p></div>
+          <div class="seg" role="group" id="sel">${[['mensual', 'Mensual'], ['interanual', 'Interanual'], ['acumulada', 'Acumulada']]
+            .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+        </div>
+        <div class="caja"><div class="chart" id="ch-serie"></div></div>
+        <p class="lectura">El pico fue <b>${largo(d.hitos.pico.fecha)}</b>, con <b>${pct(d.hitos.pico.mensual, 1)}</b> mensual. En los primeros 5 meses los precios subieron <b>${pct(d.hitos.primeros_5, 0)}</b>; en los ${d.hitos.meses_resto} meses siguientes, <b>${pct(d.hitos.resto, 0)}</b>.</p>
+      </section>
 
-      `<div class="fila-titulo">Gobierno vs. gobierno</div>`,
-      panel({
-        cls: 's7', titulo: 'Inflación acumulada por mes de gobierno',
-        sub: 'Cada línea arranca en 0 en el último mes del gobierno anterior (noviembre del año de asunción).',
-        cuerpo: '<div class="chart" id="ch-tray"></div>',
-      }),
-      panel({
-        cls: 's5', titulo: `A la misma altura: mes ${K}`,
-        sub: 'Promedio mensual: la tasa constante que daría la misma acumulada.',
-        cuerpo: `<div class="tabla-wrap"><table id="tb-altura"></table></div>`,
-      }),
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Rubros</h2>
+          <p class="sub">El precio relativo compara cuánto subió cada rubro desde nov-23 con el nivel general. Positivo: se encareció más que el promedio.</p></div></div>
+        <div class="caja">
+          <div class="tabla-wrap"><table>
+            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(M)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+            <tbody id="tb-rubros"></tbody>
+          </table></div>
+        </div>
+        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(k.mensual, 2)} en ${etq(M)} · ${pct(k.acum_gobierno, 1)} desde nov-23</span></div>
+      </section>
 
-      `<div class="fila-titulo">Rubros y precios relativos</div>`,
-      panel({
-        cls: 's6', titulo: `Precios relativos al mes ${K}`,
-        sub: 'Cuánto subió cada rubro frente al nivel general desde el inicio del gobierno. Positivo: se encareció más que el promedio.',
-        cuerpo: '<div class="chart alto" id="ch-rel"></div>',
-      }),
-      panel({
-        cls: 's6', titulo: `Inflación de ${M} por rubro`,
-        sub: 'Variación mensual de cada división del IPC. La línea marca el nivel general.',
-        cuerpo: '<div class="chart alto" id="ch-rubros"></div>',
-      }),
+      <section class="sec">
+        <div class="sec-cab"><div><h2>¿Cómo termina el mandato?</h2>
+          <p class="sub">Inflación acumulada real y cuatro escenarios hasta ${largo(d.fin_mandato)}. Son supuestos explícitos, no pronósticos.</p></div></div>
+        <div class="caja"><div class="chart" id="ch-esc"></div></div>
+        <div class="esc-grid">${d.cierre.map(c => `
+          <div class="esc"><h3>${muestraLinea(DASH[c.escenario])}${c.escenario}</h3><p>${c.supuesto}</p>
+            <div class="n"><div><b>${pct(c.acumulada, 0)}</b><span>acumulada</span></div><div><b>${pct(c.interanual_final, 0)}</b><span>interanual final</span></div></div></div>`).join('')}
+        </div>
+      </section>
 
-      `<div class="fila-titulo">Escenarios al fin del mandato</div>`,
-      panel({
-        cls: 's7', titulo: '¿Cómo termina el mandato?',
-        sub: `Trayectoria real y cuatro escenarios hasta el mes ${d.fin_mandato} (nov-27). Son supuestos, no pronósticos. Consenso REM: relevamiento del BCRA de ${etq(d.escenarios.rem_publicado)}.`,
-        cuerpo: '<div class="chart" id="ch-esc"></div>',
-      }),
-      panel({
-        cls: 's5', titulo: 'Cierre de cada mandato',
-        sub: 'Acumulada en los 48 meses e inflación interanual con la que se entrega el gobierno.',
-        cuerpo: `<div class="tabla-wrap"><table id="tb-cierre"></table></div>
-          <p class="nota">Milei acumuló ${pct(d.milei_tramos.primeros_5, 0)} en sus primeros 5 meses y ${pct(d.milei_tramos.resto, 0)} en los ${d.milei_tramos.meses_resto} siguientes.</p>`,
-      }),
+      <footer class="notas">
+        <div><h3>Fuente</h3><p>IPC Nacional del INDEC (base diciembre 2016 = 100), vía la API de Series de Tiempo de datos.gob.ar. El tablero se revisa todos los días; el INDEC publica a mediados de cada mes.</p></div>
+        <div><h3>Punto de partida</h3><p>El gobierno asumió el 10 de diciembre de 2023, así que la base es noviembre de 2023. Eso incluye diciembre (${pct(d.hitos.pico.mensual, 1)}), el mes de la devaluación.</p></div>
+        <div><h3>Escenarios</h3><p>Consenso REM toma la mediana del Relevamiento de Expectativas de Mercado del BCRA de ${etq(d.escenarios.rem_publicado)}. Los demás son supuestos simples para ver el rango posible.</p></div>
+        <div><h3>Series</h3><p><code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales del IPC.</p></div>
+      </footer>`;
 
-      panel({
-        cls: 'metodo', titulo: 'Cómo leer este tablero',
-        cuerpo: `
-          <div><h3>Fuente</h3><p>IPC Nacional del INDEC, base diciembre 2016 = 100, vía la API de Series de Tiempo de datos.gob.ar. Se actualiza solo todos los días; el INDEC publica cada mes a mediados del mes siguiente.</p></div>
-          <div><h3>Mes base</h3><p>Todos los gobiernos asumieron un 10 de diciembre, así que se toma noviembre como último mes del gobierno anterior. Para Milei eso incluye diciembre de 2023 (25,5% mensual, mes de la devaluación). Es la convención más usada y es discutible.</p></div>
-          <div><h3>Macri</h3><p>Entre diciembre de 2015 y diciembre de 2016 el INDEC no publicó IPC nacional. Macri aparece solo cuando se carga el empalme con el IPC CABA en la configuración, y conviene aclararlo al citar el dato.</p></div>
-          <div><h3>Antes de concluir</h3><p>La inflación sola no define qué gobierno fue mejor. Pesan la inflación heredada, la dirección en que iba, los shocks de cada período (sequías, pandemia, crisis cambiarias) y lo que pasó con salarios, empleo y actividad.</p></div>
-          <div><h3>Series usadas</h3><p>Nivel general: <code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales.</p></div>`,
-      }),
-    ].join('');
-
-    // ---------- sparklines ----------
-    const ult = d.serie_mensual.slice(-12);
+    // ---- sparklines ----
+    const ult = d.serie.slice(-12);
     const spark = (id, campo, dec) => nuevo(document.getElementById(id), {
-      grid: { left: 0, right: 0, top: 4, bottom: 2 },
-      tooltip: { trigger: 'axis', formatter: p => `${etq(p[0].name)}: <b>${pct(p[0].value, dec)}</b>`, axisPointer: { type: 'none' },
-        backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12 } },
+      grid: { left: 0, right: 4, top: 4, bottom: 2 },
+      tooltip: Object.assign(tip(), { axisPointer: { type: 'none' }, formatter: p => `${etq(p[0].name)}: <b>${pct(p[0].value, dec)}</b>` }),
       xAxis: { type: 'category', data: ult.map(x => x.fecha), show: false, boundaryGap: false },
       yAxis: { type: 'value', show: false, scale: true },
-      series: [{
-        type: 'line', data: ult.map(x => x[campo]), smooth: false, symbol: 'none',
-        lineStyle: { width: 2, color: T.fg2 },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(163,169,182,.25)' }, { offset: 1, color: 'rgba(163,169,182,0)' }]) },
-        markPoint: { symbol: 'circle', symbolSize: 7, itemStyle: { color: T.accent }, label: { show: false },
-          data: [{ coord: [ult.length - 1, ult[ult.length - 1][campo]] }] },
-      }],
+      series: [{ type: 'line', data: ult.map(x => x[campo]), symbol: 'none', lineStyle: { width: 1.5, color: T.fg2 },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(163,169,182,.22)' }, { offset: 1, color: 'rgba(163,169,182,0)' }]) },
+        markPoint: { symbol: 'circle', symbolSize: 6, itemStyle: { color: T.fg }, label: { show: false }, data: [{ coord: [ult.length - 1, ult[ult.length - 1][campo]] }] } }],
     });
-    spark('sp-mensual', 'mensual', 2);
-    spark('sp-interanual', 'interanual', 1);
+    spark('sp1', 'mensual', 2); spark('sp2', 'interanual', 1);
 
-    // ---------- serie histórica ----------
-    const fechas = d.serie_mensual.map(x => x.fecha);
-    const periodos = Object.entries(G).map(([g, v]) => {
-      const ini = baseYM(v.base, 1), fin = baseYM(v.base, d.fin_mandato);
-      const a = fechas.find(f => f >= ini), b = [...fechas].reverse().find(f => f <= fin);
-      return a && b && a <= b ? [{ name: g, xAxis: a, itemStyle: { color: hexA(col(g), .10) },
-        label: { color: col(g), fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTopLeft' } }, { xAxis: b }] : null;
-    }).filter(Boolean);
-    let medida = 'mensual', rango = 'todo';
-    const chSerie = nuevo(document.getElementById('ch-serie'), {});
-    const dibujarSerie = () => {
-      const desde = rango === 'todo' ? 0 : rango === '12' ? fechas.length - 12 : fechas.findIndex(f => f >= baseYM(G.Milei.base, 1));
-      const xs = fechas.slice(desde), ys = d.serie_mensual.slice(desde).map(x => x[medida]);
-      chSerie.setOption({
-        grid: { left: 8, right: 34, top: 28, bottom: 8, containLabel: true },
-        xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false,
-          axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
+    // ---- serie ----
+    const xs = d.serie.map(x => x.fecha);
+    const ch = nuevo(document.getElementById('ch-serie'), {});
+    const dibujar = medida => {
+      const ys = d.serie.map(x => x[medida]), dec = medida === 'mensual' ? 2 : 1, ultI = ys.length - 1;
+      const barras = medida === 'mensual';
+      const serie = barras ? {
+        type: 'bar', data: ys.map((v, i) => ({ value: v, itemStyle: { color: i === ultI ? T.accent : '#59606e', borderRadius: [3, 3, 0, 0] } })),
+        barWidth: '62%',
+        label: { show: true, position: 'top', fontFamily: T.num, fontSize: 11, color: T.fg2,
+          formatter: p => (p.dataIndex === 0 || p.dataIndex === ultI) ? nf(p.value, 1) : '' },
+      } : {
+        type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2.5, color: T.accent },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(213,81,129,.22)' }, { offset: 1, color: 'rgba(213,81,129,0)' }]) },
+        markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: T.accent, borderColor: T.panel, borderWidth: 2 },
+          label: { show: true, position: 'top', color: T.fg, fontFamily: T.num, fontSize: 11, formatter: () => pct(ys[ultI], dec) },
+          data: [{ coord: [ultI, ys[ultI]] }] },
+      };
+      ch.setOption({
+        grid: { left: 4, right: 24, top: 28, bottom: 4, containLabel: true },
+        tooltip: Object.assign(tip(), barras ? { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } } } : {},
+          { formatter: p => `${largo(p[0].name)}<br>${medida[0].toUpperCase() + medida.slice(1)}: <b>${pct(p[0].value, dec)}</b>` }),
+        xAxis: ejeX({ type: 'category', data: xs, boundaryGap: barras, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
         yAxis: ejeY({}),
-        tooltip: Object.assign(base().tooltip, { formatter: p => `${etq(p[0].name)}<br>${medida === 'mensual' ? 'Mensual' : 'Interanual'}: <b>${pct(p[0].value, medida === 'mensual' ? 2 : 1)}</b>` }),
-        series: [{
-          name: medida, type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2, color: T.accent },
-          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(232,234,239,.16)' }, { offset: 1, color: 'rgba(232,234,239,0)' }]) },
-          markArea: { silent: true, data: periodos.filter(([a, b]) => b.xAxis >= xs[0]).map(([a, b]) => [Object.assign({}, a, { xAxis: a.xAxis < xs[0] ? xs[0] : a.xAxis }), b]) },
-          markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: T.accent, borderColor: T.panel, borderWidth: 2 },
-            label: { show: true, position: 'top', color: T.fg, fontFamily: T.num, fontSize: 11, formatter: () => pct(ys[ys.length - 1], medida === 'mensual' ? 2 : 1) },
-            data: [{ coord: [xs.length - 1, ys[ys.length - 1]] }] },
-        }],
+        series: [serie],
       }, { replaceMerge: ['series', 'xAxis'] });
     };
-    dibujarSerie();
-    seguir('sel-medida', v => { medida = v; dibujarSerie(); });
-    seguir('sel-rango', v => { rango = v; dibujarSerie(); });
-
-    // ---------- trayectorias ----------
-    const gobs = Object.keys(d.trayectorias);
-    nuevo(document.getElementById('ch-tray'), {
-      grid: { left: 8, right: 125, top: 28, bottom: 28, containLabel: true },
-      legend: { top: 0, left: 0, textStyle: { color: T.fg2 }, itemWidth: 14, itemHeight: 3, icon: 'rect' },
-      xAxis: ejeX({ type: 'value', min: 0, max: d.fin_mandato, interval: 12, name: 'meses de gobierno', nameLocation: 'middle', nameGap: 24,
-        nameTextStyle: { color: T.fg3, fontSize: 11 }, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11 } }),
-      yAxis: ejeY({}),
-      tooltip: Object.assign(base().tooltip, { formatter: p => `Mes ${p[0].value[0]}<br>` +
-        p.map(s => `${marca(s.color)}${s.seriesName}: <b>${pct(s.value[1], 1)}</b>`).join('<br>') }),
-      series: gobs.map(g => {
-        const datos = d.trayectorias[g].map((v, i) => [i, v]).filter(p => p[1] != null);
-        return {
-          name: g, type: 'line', data: datos, symbol: 'none', lineStyle: { width: 2, color: col(g) }, itemStyle: { color: col(g) },
-          endLabel: { show: true, color: T.fg, fontFamily: T.num, fontSize: 11, formatter: p => `${g} ${pct(p.value[1], 0)}` },
-          markLine: g === 'Milei' ? { silent: true, symbol: 'none', lineStyle: { color: T.fg3, type: 'solid', width: 1 },
-            label: { color: T.fg3, fontSize: 11, formatter: `hoy · mes ${K}`, position: 'insideEndTop' }, data: [{ xAxis: K }] } : undefined,
-        };
-      }),
-    });
-
-    const ma = d.misma_altura;
-    document.getElementById('tb-altura').innerHTML =
-      `<thead><tr><th>Gobierno</th><th>Mes</th><th>Acumulada</th><th>Prom. mensual</th><th>Heredada</th><th>Interanual</th></tr></thead><tbody>` +
-      ma.map(r => `<tr><td><span class="gob"><i style="background:${col(r.gobierno)}"></i>${r.gobierno}</span></td><td>${r.mes}</td>` +
-        `<td>${pct(r.acumulada, 1)}</td><td>${pct(r.promedio_mensual, 2)}</td><td>${pct(r.interanual_al_asumir, 1)}</td><td>${pct(r.interanual_misma_altura, 1)}</td></tr>`).join('') +
-      `</tbody>`;
-
-    // ---------- precios relativos ----------
-    const pr = d.precios_relativos;
-    const orden = pr.rubros.map((r, i) => i).sort((a, b) => pr.Milei[a] - pr.Milei[b]);
-    const relGobs = ['Fernández', 'Milei'].filter(g => pr[g]);
-    nuevo(document.getElementById('ch-rel'), {
-      grid: { left: 8, right: 24, top: 30, bottom: 8, containLabel: true },
-      legend: { top: 0, left: 0, textStyle: { color: T.fg2 }, itemWidth: 10, itemHeight: 10 },
-      tooltip: Object.assign(base().tooltip, { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } },
-        formatter: p => `${pr.rubros[orden[p[0].dataIndex]]}<br>` + p.map(s => `${marca(s.color)}${s.seriesName}: <b>${pct(s.value, 1, true)}</b>`).join('<br>') }),
-      xAxis: ejeY({ axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => (v > 0 ? '+' : '') + nf(v, 0) + '%' } }),
-      yAxis: ejeX({ type: 'category', data: orden.map(i => corto[pr.rubros[i]] || pr.rubros[i]),
-        axisLabel: { color: T.fg2, fontSize: 11, fontFamily: T.ui }, axisLine: { show: false } }),
-      series: relGobs.map(g => ({
-        name: g, type: 'bar', data: orden.map(i => pr[g][i]), barWidth: 7, barGap: '30%',
-        itemStyle: { color: col(g), borderRadius: 2 },
-        markLine: g === 'Milei' ? { silent: true, symbol: 'none', label: { show: false }, lineStyle: { color: T.fg3, type: 'solid', width: 1 }, data: [{ xAxis: 0 }] } : undefined,
-      })),
-    });
-
-    // ---------- rubros del mes ----------
-    const rm = [...d.rubros_mes].sort((a, b) => a.mensual - b.mensual);
-    nuevo(document.getElementById('ch-rubros'), {
-      grid: { left: 8, right: 40, top: 30, bottom: 8, containLabel: true },
-      tooltip: Object.assign(base().tooltip, { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } },
-        formatter: p => `${rm[p[0].dataIndex].rubro}<br>Mensual: <b>${pct(rm[p[0].dataIndex].mensual, 2)}</b><br>Interanual: ${pct(rm[p[0].dataIndex].interanual, 1)}` }),
-      xAxis: ejeY({ axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 1) + '%' } }),
-      yAxis: ejeX({ type: 'category', data: rm.map(r => corto[r.rubro] || r.rubro),
-        axisLabel: { color: T.fg2, fontSize: 11, fontFamily: T.ui }, axisLine: { show: false } }),
-      series: [{
-        type: 'bar', data: rm.map(r => r.mensual), barWidth: 12,
-        itemStyle: { color: '#7d8494', borderRadius: 2 },
-        emphasis: { itemStyle: { color: T.accent } },
-        label: { show: true, position: 'right', color: T.fg2, fontFamily: T.num, fontSize: 11, formatter: p => nf(p.value, 1) },
-        markLine: { silent: true, symbol: 'none', lineStyle: { color: T.accent, type: 'solid', width: 1 },
-          label: { color: T.fg, fontSize: 11, fontFamily: T.num, position: 'end', formatter: `General ${pct(k.mensual, 2)}` },
-          data: [{ xAxis: k.mensual }] },
-      }],
-    });
-
-    // ---------- escenarios ----------
-    const esc = d.escenarios, desde = esc.desde_mes;
-    const estilos = [[0, 'dotted'], [1, 'solid'], [2, 'dashed'], [3, [8, 4, 2, 4]]];
-    const opac = [.55, 1, .7, .85];
-    const serEsc = Object.entries(esc.series).map(([nombre, vals], i) => ({
-      name: nombre, type: 'line', symbol: 'none', data: vals.map((v, j) => [desde + j, v]),
-      lineStyle: { width: i === 1 ? 2 : 1.5, color: col('Milei'), type: estilos[i][1], opacity: opac[i] },
-      itemStyle: { color: col('Milei') },
-    }));
-    const reales = gobs.map(g => ({
-      name: `${g} (real)`, type: 'line', symbol: 'none', lineStyle: { width: 2.5, color: col(g) }, itemStyle: { color: col(g) },
-      data: d.trayectorias[g].map((v, i) => [i, v]).filter(p => p[1] != null),
-      endLabel: g !== 'Milei' ? { show: true, color: T.fg, fontFamily: T.num, fontSize: 11, formatter: p => `${g} ${pct(p.value[1], 0)}` } : undefined,
-    }));
-    nuevo(document.getElementById('ch-esc'), {
-      grid: { left: 8, right: 125, top: 56, bottom: 28, containLabel: true },
-      legend: { top: 0, left: 0, textStyle: { color: T.fg2, fontSize: 11 }, itemWidth: 22, itemHeight: 2, itemGap: 12 },
-      xAxis: ejeX({ type: 'value', min: 0, max: d.fin_mandato, interval: 12, name: 'meses de gobierno', nameLocation: 'middle', nameGap: 24,
-        nameTextStyle: { color: T.fg3, fontSize: 11 }, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11 } }),
-      yAxis: ejeY({}),
-      tooltip: Object.assign(base().tooltip, { formatter: p => `Mes ${p[0].value[0]}<br>` +
-        p.map(s => `${marca(s.color)}${s.seriesName}: <b>${pct(s.value[1], 0)}</b>`).join('<br>') }),
-      series: [...reales, ...serEsc],
-    });
-
-    const cierre = d.cierre_mandato, max = Math.max(...cierre.map(c => c.acumulada || 0));
-    document.getElementById('tb-cierre').innerHTML =
-      `<thead><tr><th>Caso</th><th>Acumulada</th><th>Interanual final</th></tr></thead><tbody>` +
-      cierre.map(c => `<tr><td><span class="gob"><i style="background:${col(c.gobierno)}${c.caso.includes('(real)') ? '' : ';opacity:.55'}"></i>${c.caso}</span></td>` +
-        `<td class="barra" style="--w:${(c.acumulada / max * 100).toFixed(1)}%;--c:${col(c.gobierno)}"><span>${pct(c.acumulada, 0)}</span></td><td>${pct(c.interanual_final, 0)}</td></tr>`).join('') +
-      `</tbody>`;
-  }
-
-  // ---------- ayudas ----------
-  function shift(ym, n) { const [a, m] = ym.split('-').map(Number); const t = a * 12 + (m - 1) + n; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; }
-  function baseYM(etqBase, n) { const [m, a] = etqBase.split('-'); return shift(`20${a}-${String(MES.indexOf(m) + 1).padStart(2, '0')}`, n); }
-  function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
-  function seguir(id, fn) {
-    const g = document.getElementById(id);
-    g.addEventListener('click', e => {
+    dibujar('mensual');
+    document.getElementById('sel').addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
-      g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
-      fn(b.dataset.v);
+      e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+      dibujar(b.dataset.v);
+    });
+
+    // ---- rubros ----
+    const rs = [...d.rubros].sort((a, b) => b.relativo - a.relativo);
+    const maxRel = Math.max(...rs.map(r => Math.abs(r.relativo)));
+    document.getElementById('tb-rubros').innerHTML = rs.map(r => {
+      const w = (Math.abs(r.relativo) / maxRel * 100).toFixed(1);
+      const barra = r.relativo >= 0
+        ? `<div class="izq"></div><div class="der"><b class="pista"><i style="width:${w}%"></i></b><span>${pct(r.relativo, 1, true)}</span></div>`
+        : `<div class="izq"><span>${pct(r.relativo, 1, true)}</span><b class="pista"><i style="width:${w}%"></i></b></div><div class="der"></div>`;
+      return `<tr><td>${corto[r.rubro] || r.rubro}</td><td class="rel"><div class="div">${barra}</div></td>` +
+        `<td>${pct(r.mensual, 1)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`;
+    }).join('');
+
+    // ---- escenarios ----
+    const ejeEsc = ['2023-11', ...xs, ...d.escenarios.fechas.slice(1)];
+    const real = [0, ...d.serie.map(x => x.acumulada)];
+    const desde = ejeEsc.indexOf(d.escenarios.fechas[0]);
+    nuevo(document.getElementById('ch-esc'), {
+      grid: { left: 4, right: 24, top: 20, bottom: 4, containLabel: true },
+      tooltip: Object.assign(tip(), { formatter: p => `${largo(p[0].name)}<br>` + p.filter(s => s.value != null)
+        .map(s => `${s.seriesName}: <b>${pct(s.value, 0)}</b>`).join('<br>') }),
+      xAxis: ejeX({ type: 'category', data: ejeEsc, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
+      yAxis: ejeY({}),
+      series: [
+        { name: 'Real', type: 'line', symbol: 'none', data: real, lineStyle: { width: 2.5, color: T.fg },
+          markLine: { silent: true, symbol: 'none', lineStyle: { color: T.fg3, type: 'solid', width: 1 },
+            label: { color: T.fg3, fontSize: 11, fontFamily: T.num, formatter: `hoy · ${etq(M)}`, position: 'insideEndTop' }, data: [{ xAxis: d.escenarios.fechas[0] }] } },
+        ...Object.entries(d.escenarios.series).map(([n, vals]) => ({
+          name: n, type: 'line', symbol: 'none', data: Array(desde).fill(null).concat(vals),
+          lineStyle: { width: 2, color: T.accent, type: DASH[n], opacity: n === 'Consenso REM' ? 1 : .75 },
+        })),
+      ],
     });
   }
+
+  function shift(ym, n) { const [a, m] = ym.split('-').map(Number); const t = a * 12 + (m - 1) + n; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; }
 
   fetch('data/dashboard.json', { cache: 'no-cache' })
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(render)
     .catch(e => {
-      document.getElementById('estado').textContent = 'No se pudieron cargar los datos (data/dashboard.json). Revisá que la Action haya corrido al menos una vez.';
-      document.getElementById('meta').innerHTML = '<span>sin datos</span>';
+      document.getElementById('app').innerHTML = '<div class="estado">No se pudieron cargar los datos (data/dashboard.json). Revisá que la Action haya corrido al menos una vez.</div>';
       console.error(e);
     });
 })();
