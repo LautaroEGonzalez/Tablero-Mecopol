@@ -1,0 +1,22 @@
+{
+  "_comentario": "Parámetros que se editan a mano. Después de cambiar algo, la próxima corrida de la Action regenera el dashboard.",
+
+  "gobiernos": {
+    "Macri":     {"base": "2015-11-01", "color": "#c98500"},
+    "Fernández": {"base": "2019-11-01", "color": "#3987e5"},
+    "Milei":     {"base": "2023-11-01", "color": "#d55181"}
+  },
+
+  "_empalme_macri": "Variación mensual (%) del IPC CABA de dic-2015 a dic-2016: 13 valores. Mientras esté vacío, Macri no aparece.",
+  "empalme_macri": [],
+
+  "_rem": "Mediana del Relevamiento de Expectativas de Mercado (BCRA). Actualizar cuando sale el REM nuevo, a principios de cada mes.",
+  "rem": {
+    "publicado": "2026-09",
+    "mensual": {"2026-09": 1.8, "2026-10": 1.7, "2026-11": 1.6, "2026-12": 1.8},
+    "anual_2027": 20.5
+  },
+
+  "_ids_divisiones": "Opcional: si la búsqueda automática de algún rubro falla, poner acá su id (ej. \"Salud\": \"148.3_...\").",
+  "ids_divisiones": {}
+}
