@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tablero de Precios MECOPOL</title>
 <meta name="description" content="Inflación durante el gobierno de Milei con datos del INDEC: mes a mes, por rubro y escenarios al fin del mandato. Mesa de Economía Política UNLa.">
+<link rel="icon" type="image/png" href="img/icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -22,7 +23,8 @@
   --fg:       #e3e5ea;
   --fg-2:     #a3a9b6;
   --fg-3:     #6f7685;
-  --accent:   #d55181;   /* identidad del período */
+  --marca:    #950b32;   /* bordó de MECOPOL (banner) */
+  --accent:   #e0527c;   /* rosa del logo, para las marcas de los gráficos */
   --sube:     #e66767;   /* rubro que se encareció más que el promedio */
   --baja:     #3987e5;   /* rubro que se encareció menos */
   --good:     #3fb27f;
@@ -40,25 +42,39 @@ body {
 }
 a { color: var(--fg); text-underline-offset: 2px; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
-.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; padding-top: 28px; }
 
-/* ---- encabezado ---- */
-.cab { padding-top: 28px; display: grid; gap: 14px; }
+/* ---- banner con la identidad de MECOPOL ---- */
+.banda {
+  margin-inline: -16px; padding: 24px 16px 22px;
+  background: var(--marca); color: #fff;
+  border-bottom: 3px solid #6e0824;
+}
+.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 22px; }
+.marca {
+  flex: none; display: block; background: #fff; border-radius: 10px; padding: 6px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+.marca img { display: block; width: 92px; height: auto; }
+.banda-txt { flex: 1; min-width: 0; display: grid; gap: 10px; }
 .eyebrow {
-  font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3);
-  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.78); display: flex; flex-wrap: wrap; gap: 4px 14px;
 }
-.eyebrow b { color: var(--fg-2); font-weight: 600; }
 h1 {
-  margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em;
-  font-size: clamp(28px, 4.2vw, 44px); line-height: 1.08; text-wrap: balance;
+  margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em; color: #fff;
+  font-size: clamp(26px, 4vw, 42px); line-height: 1.08; text-wrap: balance;
 }
-h1 em { font-style: normal; color: var(--accent); }
-.mandato { display: grid; gap: 6px; max-width: 520px; }
-.mandato .barra { height: 6px; background: var(--panel-hi); border-radius: 3px; overflow: hidden; }
-.mandato .barra i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
-.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: var(--fg-3); }
-.mandato .txt b { color: var(--fg-2); font-weight: 500; }
+.mandato { display: grid; gap: 6px; max-width: 560px; }
+.mandato:empty { display: none; }
+.mandato .barra { height: 6px; background: rgba(0,0,0,.28); border-radius: 3px; overflow: hidden; }
+.mandato .barra i { display: block; height: 100%; background: #fff; border-radius: 3px; }
+.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: rgba(255,255,255,.75); }
+.mandato .txt b { color: #fff; font-weight: 500; }
+@media (max-width: 560px) {
+  .banda-in { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .marca img { width: 72px; }
+}
 
 .aviso {
   padding: 9px 13px; border-radius: var(--r); font-size: 13px;
@@ -160,6 +176,19 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
 </style>
 </head>
 <body>
+<header class="banda">
+  <div class="banda-in">
+    <a class="marca" href="https://mecopolunla.wixsite.com/mecopol" target="_blank" rel="noopener">
+      <img src="img/logo-mecopol.png" width="320" height="316" alt="MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús">
+    </a>
+    <div class="banda-txt">
+      <div class="eyebrow" id="eyebrow"><span>Tablero de precios</span><span>Mesa de Economía Política UNLa</span><span>Datos: INDEC</span></div>
+      <h1>Inflación en el gobierno de Milei</h1>
+      <div class="mandato" id="mandato"></div>
+    </div>
+  </div>
+</header>
+
 <div class="wrap" id="app">
   <div class="estado">Cargando datos del INDEC…</div>
 </div>
@@ -213,17 +242,15 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     const app = document.getElementById('app');
     const act = new Date(d.actualizado);
 
+    document.getElementById('eyebrow').insertAdjacentHTML('beforeend',
+      `<span>Actualizado ${act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>`);
+    const man = document.getElementById('mandato');
+    man.setAttribute('role', 'img'); man.setAttribute('aria-label', `Mes ${K} de ${total} del mandato`);
+    man.innerHTML = `<div class="barra"><i style="width:${(K / total * 100).toFixed(1)}%"></i></div>
+      <div class="txt"><span>dic-23</span><span>Mes <b>${K}</b> de ${total} · último dato <b>${etq(M)}</b></span><span>${etq(d.fin_mandato)}</span></div>`;
+
     app.innerHTML = `
-      <header class="cab">
-        <div class="eyebrow"><span><b>MECOPOL</b> · Mesa de Economía Política UNLa</span><span>Datos: INDEC</span>
-          <span>Actualizado ${act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>
-        <h1>Inflación en el gobierno de <em>Milei</em></h1>
-        <div class="mandato" role="img" aria-label="Mes ${K} de ${total} del mandato">
-          <div class="barra"><i style="width:${(K / total * 100).toFixed(1)}%"></i></div>
-          <div class="txt"><span>dic-23</span><span>Mes <b>${K}</b> de ${total} · último dato <b>${etq(M)}</b></span><span>${etq(d.fin_mandato)}</span></div>
-        </div>
-        ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
-      </header>
+      ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
 
       <section class="cifras" aria-label="Cifras de ${largo(M)}">
         <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, 2)}<small>%</small></div>
@@ -303,7 +330,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
           formatter: p => (p.dataIndex === 0 || p.dataIndex === ultI) ? nf(p.value, 1) : '' },
       } : {
         type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2.5, color: T.accent },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(213,81,129,.22)' }, { offset: 1, color: 'rgba(213,81,129,0)' }]) },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(224,82,124,.22)' }, { offset: 1, color: 'rgba(224,82,124,0)' }]) },
         markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: T.accent, borderColor: T.panel, borderWidth: 2 },
           label: { show: true, position: 'top', color: T.fg, fontFamily: T.num, fontSize: 11, formatter: () => pct(ys[ultI], dec) },
           data: [{ coord: [ultI, ys[ultI]] }] },
