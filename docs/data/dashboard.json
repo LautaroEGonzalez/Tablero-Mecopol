@@ -1,6 +1,5 @@
 {
- "simulado": true,
- "actualizado": "2026-10-08T14:58+00:00",
+ "actualizado": "2026-10-08T15:26+00:00",
  "ultimo_mes": "2026-08",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -12,74 +11,74 @@
   "interanual": 33.5,
   "interanual_previo": 33.8,
   "acum_anio": 21.3,
-  "acum_gobierno": 335.9,
+  "acum_gobierno": 336.0,
   "promedio_mensual": 4.56
  },
  "serie": [
   {
    "fecha": "2023-12",
-   "mensual": 25.46,
-   "interanual": 172.8,
+   "mensual": 25.47,
+   "interanual": 211.4,
    "acumulada": 25.5
   },
   {
    "fecha": "2024-01",
    "mensual": 20.61,
-   "interanual": 211.9,
+   "interanual": 254.2,
    "acumulada": 51.3
   },
   {
    "fecha": "2024-02",
    "mensual": 13.24,
-   "interanual": 228.5,
+   "interanual": 276.2,
    "acumulada": 71.4
   },
   {
    "fecha": "2024-03",
    "mensual": 11.01,
-   "interanual": 239.3,
+   "interanual": 287.9,
    "acumulada": 90.2
   },
   {
    "fecha": "2024-04",
    "mensual": 8.83,
-   "interanual": 243.5,
+   "interanual": 289.4,
    "acumulada": 107.0
   },
   {
    "fecha": "2024-05",
    "mensual": 4.18,
-   "interanual": 232.9,
+   "interanual": 276.4,
    "acumulada": 115.7
   },
   {
    "fecha": "2024-06",
    "mensual": 4.58,
-   "interanual": 223.8,
-   "acumulada": 125.5
+   "interanual": 271.5,
+   "acumulada": 125.6
   },
   {
    "fecha": "2024-07",
    "mensual": 4.03,
-   "interanual": 213.4,
+   "interanual": 263.4,
    "acumulada": 134.6
   },
   {
    "fecha": "2024-08",
    "mensual": 4.17,
-   "interanual": 203.7,
+   "interanual": 236.7,
    "acumulada": 144.4
   },
   {
    "fecha": "2024-09",
    "mensual": 3.47,
-   "interanual": 192.3,
+   "interanual": 209.0,
    "acumulada": 152.9
   },
   {
    "fecha": "2024-10",
    "mensual": 2.69,
-   "interanual": 179.2,
+   "interanual": 193.0,
    "acumulada": 159.7
   },
   {
@@ -182,7 +181,7 @@
    "fecha": "2026-03",
    "mensual": 3.38,
    "interanual": 32.6,
-   "acumulada": 293.3
+   "acumulada": 293.4
   },
   {
    "fecha": "2026-04",
@@ -212,14 +211,14 @@
    "fecha": "2026-08",
    "mensual": 1.66,
    "interanual": 33.5,
-   "acumulada": 335.9
+   "acumulada": 336.0
   }
  ],
  "hitos": {
   "pico": {
    "fecha": "2023-12",
-   "mensual": 25.46,
-   "interanual": 172.8,
+   "mensual": 25.47,
+   "interanual": 211.4,
    "acumulada": 25.5
   },
   "primeros_5": 107.0,
@@ -229,87 +228,87 @@
  "rubros": [
   {
    "rubro": "Alimentos y bebidas no alcohólicas",
-   "mensual": 1.4,
-   "interanual": 34.5,
-   "acum_gobierno": 306.7,
-   "relativo": -6.7
+   "mensual": 1.66,
+   "interanual": 34.9,
+   "acum_gobierno": 307.7,
+   "relativo": -6.5
   },
   {
    "rubro": "Bebidas alcohólicas y tabaco",
-   "mensual": 1.6,
-   "interanual": 22.0,
-   "acum_gobierno": 282.8,
-   "relativo": -12.2
+   "mensual": 2.12,
+   "interanual": 22.6,
+   "acum_gobierno": 284.8,
+   "relativo": -11.7
   },
   {
    "rubro": "Prendas de vestir y calzado",
-   "mensual": 1.8,
-   "interanual": 13.8,
-   "acum_gobierno": 167.2,
-   "relativo": -38.7
+   "mensual": -0.65,
+   "interanual": 11.0,
+   "acum_gobierno": 160.8,
+   "relativo": -40.2
   },
   {
    "rubro": "Vivienda, agua, electricidad, gas y otros combustibles",
-   "mensual": 2.0,
-   "interanual": 47.9,
-   "acum_gobierno": 632.0,
-   "relativo": 67.9
+   "mensual": 2.81,
+   "interanual": 49.1,
+   "acum_gobierno": 637.9,
+   "relativo": 69.3
   },
   {
    "rubro": "Equipamiento y mantenimiento del hogar",
-   "mensual": 2.2,
-   "interanual": 25.3,
-   "acum_gobierno": 238.4,
-   "relativo": -22.4
+   "mensual": 1.45,
+   "interanual": 24.4,
+   "acum_gobierno": 235.9,
+   "relativo": -22.9
   },
   {
    "rubro": "Salud",
-   "mensual": 2.4,
-   "interanual": 33.1,
+   "mensual": 2.41,
+   "interanual": 33.2,
    "acum_gobierno": 355.4,
    "relativo": 4.5
   },
   {
    "rubro": "Transporte",
-   "mensual": 2.6,
-   "interanual": 39.6,
-   "acum_gobierno": 405.2,
-   "relativo": 15.9
+   "mensual": 1.55,
+   "interanual": 38.2,
+   "acum_gobierno": 400.0,
+   "relativo": 14.7
   },
   {
    "rubro": "Comunicación",
-   "mensual": 2.8,
-   "interanual": 37.5,
-   "acum_gobierno": 454.7,
-   "relativo": 27.2
+   "mensual": 2.28,
+   "interanual": 36.8,
+   "acum_gobierno": 451.9,
+   "relativo": 26.6
   },
   {
    "rubro": "Recreación y cultura",
-   "mensual": 3.0,
-   "interanual": 35.5,
-   "acum_gobierno": 313.7,
-   "relativo": -5.1
+   "mensual": -0.01,
+   "interanual": 31.5,
+   "acum_gobierno": 301.6,
+   "relativo": -7.9
   },
   {
    "rubro": "Educación",
-   "mensual": 3.2,
-   "interanual": 40.9,
-   "acum_gobierno": 470.9,
-   "relativo": 30.9
+   "mensual": 2.53,
+   "interanual": 40.0,
+   "acum_gobierno": 467.2,
+   "relativo": 30.1
   },
   {
    "rubro": "Restaurantes y hoteles",
-   "mensual": 3.4,
-   "interanual": 36.7,
-   "acum_gobierno": 389.6,
-   "relativo": 12.3
+   "mensual": 1.82,
+   "interanual": 34.6,
+   "acum_gobierno": 382.2,
+   "relativo": 10.6
   },
   {
    "rubro": "Bienes y servicios varios",
-   "mensual": 3.6,
-   "interanual": 34.3,
-   "acum_gobierno": 427.7,
-   "relativo": 21.1
+   "mensual": 2.44,
+   "interanual": 32.8,
+   "acum_gobierno": 421.8,
+   "relativo": 19.7
   }
  ],
  "escenarios": {
@@ -333,7 +332,7 @@
   ],
   "series": {
    "Desinflación rápida": [
-    335.9,
+    336.0,
     340.3,
     344.7,
     349.2,
@@ -351,7 +350,7 @@
     406.1
    ],
    "Consenso REM": [
-    335.9,
+    336.0,
     343.8,
     351.3,
     358.6,
@@ -369,36 +368,36 @@
     453.8
    ],
    "Se estanca en 2%": [
-    335.9,
+    336.0,
     344.7,
     353.6,
     362.6,
     371.9,
     381.3,
-    390.9,
+    391.0,
     400.8,
     410.8,
     421.0,
     431.4,
-    442.0,
+    442.1,
     452.9,
-    463.9,
+    464.0,
     475.2,
     486.7
    ],
    "Shock electoral": [
-    335.9,
+    336.0,
     344.7,
     353.6,
     362.6,
     371.9,
     381.3,
-    390.9,
+    391.0,
     400.8,
     410.8,
     421.0,
     431.4,
-    442.0,
+    442.1,
     463.7,
     497.6,
     521.5,
@@ -436,18 +435,18 @@
  "fuentes": {
   "nivel_general": "148.3_INIVELNAL_DICI_M_26",
   "divisiones": {
-   "Alimentos y bebidas no alcohólicas": "148.3_IDIV01NAL_DICI_M_31",
-   "Bebidas alcohólicas y tabaco": "148.3_IDIV02NAL_DICI_M_32",
-   "Prendas de vestir y calzado": "148.3_IDIV03NAL_DICI_M_33",
-   "Vivienda, agua, electricidad, gas y otros combustibles": "148.3_IDIV04NAL_DICI_M_34",
-   "Equipamiento y mantenimiento del hogar": "148.3_IDIV05NAL_DICI_M_35",
-   "Salud": "148.3_IDIV06NAL_DICI_M_36",
-   "Transporte": "148.3_IDIV07NAL_DICI_M_37",
-   "Comunicación": "148.3_IDIV08NAL_DICI_M_38",
-   "Recreación y cultura": "148.3_IDIV09NAL_DICI_M_39",
-   "Educación": "148.3_IDIV10NAL_DICI_M_40",
-   "Restaurantes y hoteles": "148.3_IDIV11NAL_DICI_M_41",
-   "Bienes y servicios varios": "148.3_IDIV12NAL_DICI_M_42"
+   "Alimentos y bebidas no alcohólicas": "146.3_IALIMENNAL_DICI_M_45",
+   "Bebidas alcohólicas y tabaco": "146.3_IBEBIDANAL_DICI_M_39",
+   "Prendas de vestir y calzado": "146.3_IPRENDANAL_DICI_M_35",
+   "Vivienda, agua, electricidad, gas y otros combustibles": "146.3_IVIVIENNAL_DICI_M_52",
+   "Equipamiento y mantenimiento del hogar": "146.3_IEQUIPANAL_DICI_M_46",
+   "Salud": "146.3_ISALUDNAL_DICI_M_18",
+   "Transporte": "146.3_ITRANSPNAL_DICI_M_23",
+   "Comunicación": "146.3_ICOMUNINAL_DICI_M_27",
+   "Recreación y cultura": "146.3_IRECREANAL_DICI_M_31",
+   "Educación": "146.3_IEDUCACNAL_DICI_M_22",
+   "Restaurantes y hoteles": "146.3_IRESTAUNAL_DICI_M_33",
+   "Bienes y servicios varios": "146.3_IBIENESNAL_DICI_M_36"
   }
  }
 }
