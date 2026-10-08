@@ -21,7 +21,6 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import requests
 
@@ -194,41 +193,7 @@ def main():
             "relativo": r(((1 + acum / 100) / (1 + acum_gob / 100) - 1) * 100, 1),
         })
 
-    # 3. Escenarios hasta el fin del mandato ---------------------------
-    rem = CONFIG["rem"]
-    rem_2027 = ((1 + rem["anual_2027"] / 100) ** (1 / 12) - 1) * 100
-    reglas = {
-        "Desinflación rápida": lambda f: 1.0,
-        "Consenso REM": lambda f: rem["mensual"].get(ym(f), rem_2027),
-        "Se estanca en 2%": lambda f: 2.0,
-        "Shock electoral": lambda f: ({8: 4.0, 9: 6.0, 10: 4.0, 11: 3.0}[f.month]
-                                      if f.year == 2027 and f.month >= 8 else 2.0),
-    }
-    supuestos = {
-        "Desinflación rápida": "1% mensual hasta el final",
-        "Consenso REM": f"Expectativas del BCRA ({etiqueta(pd.Timestamp(rem['publicado'] + '-01'))})",
-        "Se estanca en 2%": "La baja se frena en el nivel actual",
-        "Shock electoral": "2% mensual y salto en el tramo electoral de 2027",
-    }
-    futuras = pd.date_range(mes + un_mes, fin, freq="MS")
-    fechas_esc = [ym(mes)] + [ym(f) for f in futuras]
-    escenarios, cierre = {}, []
-    nivel_hoy = 1 + acum_gob / 100
-    # índice relativo a 'inicio' para calcular la interanual al final
-    rel_inicio = (nac / nac[inicio]).loc[inicio:]
-    for nombre, regla in reglas.items():
-        tasas = np.array([regla(f) for f in futuras]) / 100
-        camino = np.r_[nivel_hoy, nivel_hoy * np.cumprod(1 + tasas)]
-        escenarios[nombre] = [r((v - 1) * 100, 1) for v in camino]
-        completo = pd.concat([rel_inicio.loc[:previo], pd.Series(camino, index=[mes] + list(futuras))])
-        cierre.append({
-            "escenario": nombre,
-            "supuesto": supuestos[nombre],
-            "acumulada": r((completo[fin] - 1) * 100, 1),
-            "interanual_final": r((completo[fin] / completo[fin - un_anio] - 1) * 100, 1),
-        })
-
-    # 4. Controles de calidad -------------------------------------------
+    # 3. Controles de calidad -------------------------------------------
     assert serie and kpis["mensual"] is not None, "Serie vacía"
     assert all(x["relativo"] is not None for x in rubros), "Rubros incompletos"
 
@@ -248,8 +213,6 @@ def main():
             "meses_resto": K - 5,
         },
         "rubros": rubros,
-        "escenarios": {"fechas": fechas_esc, "series": escenarios, "rem_publicado": rem["publicado"]},
-        "cierre": cierre,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
     }
 

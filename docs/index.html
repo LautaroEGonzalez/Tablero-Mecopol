@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tablero de Precios MECOPOL</title>
-<meta name="description" content="Inflación durante el gobierno de Milei con datos del INDEC: mes a mes, por rubro y escenarios al fin del mandato. Mesa de Economía Política UNLa.">
+<meta name="description" content="Inflación durante el gobierno de Milei con datos del INDEC: mes a mes y por rubro. Mesa de Economía Política UNLa.">
 <link rel="icon" type="image/png" href="img/icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: una sola columna de lectura (máx. 1200px). Arriba la cifra del mes,
-   después la serie, los rubros y los escenarios. Pocos bordes, mucho aire.
+   después la serie y los rubros. Pocos bordes, mucho aire.
    Tema oscuro único, elegido a propósito. */
 :root {
   color-scheme: dark;
@@ -152,19 +152,6 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
 .leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 
-/* ---- escenarios ---- */
-.esc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-@media (max-width: 900px) { .esc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .esc-grid { grid-template-columns: 1fr; } }
-.esc { background: var(--panel); border-radius: var(--r); padding: 14px; display: grid; gap: 4px; align-content: start; }
-.esc h3 { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-.esc h3 svg { flex: none; }
-.esc p { margin: 0; font-size: 12px; color: var(--fg-3); }
-.esc .n { display: flex; gap: 18px; margin-top: 8px; }
-.esc .n div { display: grid; }
-.esc .n b { font: 600 20px var(--font-num); font-variant-numeric: tabular-nums; }
-.esc .n span { font-size: 11px; color: var(--fg-3); }
-
 /* ---- pie ---- */
 .notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
 .notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
@@ -231,11 +218,6 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     const d = a - p, c = Math.abs(d) < 0.05 ? 'igual' : d < 0 ? 'baja' : 'sube';
     return `<span class="chip ${c}" title="${c === 'baja' ? 'Bajó' : c === 'sube' ? 'Subió' : 'Igual'} respecto del mes anterior">${c === 'baja' ? '▼' : c === 'sube' ? '▲' : '■'} ${nf(Math.abs(d), 1)} ${unidad}</span>`;
   };
-  const DASH = { 'Desinflación rápida': 'dotted', 'Consenso REM': 'solid', 'Se estanca en 2%': 'dashed', 'Shock electoral': [8, 4, 2, 4] };
-  const muestraLinea = tipo => {
-    const da = tipo === 'dotted' ? '1 4' : tipo === 'dashed' ? '6 4' : Array.isArray(tipo) ? tipo.join(' ') : '';
-    return `<svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="${T.accent}" stroke-width="2" stroke-linecap="round" ${da ? `stroke-dasharray="${da}"` : ''}/></svg>`;
-  };
 
   function render(d) {
     const k = d.kpis, M = d.ultimo_mes, K = d.mes_gobierno, total = K + d.meses_restantes;
@@ -287,20 +269,9 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
         <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(k.mensual, 2)} en ${etq(M)} · ${pct(k.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
-      <section class="sec">
-        <div class="sec-cab"><div><h2>¿Cómo termina el mandato?</h2>
-          <p class="sub">Inflación acumulada real y cuatro escenarios hasta ${largo(d.fin_mandato)}. Son supuestos explícitos, no pronósticos.</p></div></div>
-        <div class="caja"><div class="chart" id="ch-esc"></div></div>
-        <div class="esc-grid">${d.cierre.map(c => `
-          <div class="esc"><h3>${muestraLinea(DASH[c.escenario])}${c.escenario}</h3><p>${c.supuesto}</p>
-            <div class="n"><div><b>${pct(c.acumulada, 0)}</b><span>acumulada</span></div><div><b>${pct(c.interanual_final, 0)}</b><span>interanual final</span></div></div></div>`).join('')}
-        </div>
-      </section>
-
       <footer class="notas">
         <div><h3>Fuente</h3><p>IPC Nacional del INDEC (base diciembre 2016 = 100), vía la API de Series de Tiempo de datos.gob.ar. El tablero se revisa todos los días; el INDEC publica a mediados de cada mes.</p></div>
         <div><h3>Punto de partida</h3><p>El gobierno asumió el 10 de diciembre de 2023, así que la base es noviembre de 2023. Eso incluye diciembre (${pct(d.hitos.pico.mensual, 1)}), el mes de la devaluación.</p></div>
-        <div><h3>Escenarios</h3><p>Consenso REM toma la mediana del Relevamiento de Expectativas de Mercado del BCRA de ${etq(d.escenarios.rem_publicado)}. Los demás son supuestos simples para ver el rango posible.</p></div>
         <div><h3>Series</h3><p><code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales del IPC.</p></div>
       </footer>`;
 
@@ -363,26 +334,6 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
         `<td>${pct(r.mensual, 1)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`;
     }).join('');
 
-    // ---- escenarios ----
-    const ejeEsc = ['2023-11', ...xs, ...d.escenarios.fechas.slice(1)];
-    const real = [0, ...d.serie.map(x => x.acumulada)];
-    const desde = ejeEsc.indexOf(d.escenarios.fechas[0]);
-    nuevo(document.getElementById('ch-esc'), {
-      grid: { left: 4, right: 24, top: 20, bottom: 4, containLabel: true },
-      tooltip: Object.assign(tip(), { formatter: p => `${largo(p[0].name)}<br>` + p.filter(s => s.value != null)
-        .map(s => `${s.seriesName}: <b>${pct(s.value, 0)}</b>`).join('<br>') }),
-      xAxis: ejeX({ type: 'category', data: ejeEsc, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
-      yAxis: ejeY({}),
-      series: [
-        { name: 'Real', type: 'line', symbol: 'none', data: real, lineStyle: { width: 2.5, color: T.fg },
-          markLine: { silent: true, symbol: 'none', lineStyle: { color: T.fg3, type: 'solid', width: 1 },
-            label: { color: T.fg3, fontSize: 11, fontFamily: T.num, formatter: `hoy · ${etq(M)}`, position: 'insideEndTop' }, data: [{ xAxis: d.escenarios.fechas[0] }] } },
-        ...Object.entries(d.escenarios.series).map(([n, vals]) => ({
-          name: n, type: 'line', symbol: 'none', data: Array(desde).fill(null).concat(vals),
-          lineStyle: { width: 2, color: T.accent, type: DASH[n], opacity: n === 'Consenso REM' ? 1 : .75 },
-        })),
-      ],
-    });
   }
 
   function shift(ym, n) { const [a, m] = ym.split('-').map(Number); const t = a * 12 + (m - 1) + n; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; }
