@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-09T13:45+00:00",
+ "actualizado": "2026-10-09T14:50+00:00",
  "ultimo_mes": "2026-08",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -319,21 +319,21 @@
    },
    "interanual": {
     "oficial": 33.5,
-    "reponderado": 34.2
+    "reponderado": 34.6
    },
    "acum_anio": {
     "oficial": 21.3,
-    "reponderado": 21.6
+    "reponderado": 21.9
    },
    "acum_gobierno": {
     "oficial": 336.0,
-    "reponderado": 342.4
+    "reponderado": 351.0
    }
   },
   "anios": {
    "2017": {
     "oficial": 24.8,
-    "reponderado": 25.4
+    "reponderado": 26.0
    },
    "2018": {
     "oficial": 47.6,
@@ -341,31 +341,31 @@
    },
    "2019": {
     "oficial": 53.8,
-    "reponderado": 53.3
+    "reponderado": 53.1
    },
    "2020": {
     "oficial": 36.1,
-    "reponderado": 35.3
+    "reponderado": 34.4
    },
    "2021": {
     "oficial": 50.9,
-    "reponderado": 49.7
+    "reponderado": 49.6
    },
    "2022": {
     "oficial": 94.8,
-    "reponderado": 93.1
+    "reponderado": 92.7
    },
    "2023": {
     "oficial": 211.4,
-    "reponderado": 209.6
+    "reponderado": 208.2
    },
    "2024": {
     "oficial": 117.8,
-    "reponderado": 120.5
+    "reponderado": 123.4
    },
    "2025": {
     "oficial": 31.5,
-    "reponderado": 31.6
+    "reponderado": 32.2
    }
   },
   "otras": [
@@ -379,7 +379,7 @@
     "reponderado": 133.6,
     "publicado": "2025-01",
     "link": "https://www.utdt.edu/ver_nota_prensa.php?id_nota_prensa=22547&id_item_menu=6",
-    "mecopol": 120.5,
+    "mecopol": 123.4,
     "oficial_mecopol": 117.8
    },
    {
@@ -392,7 +392,7 @@
     "reponderado": 288.2,
     "publicado": "2025-12",
     "link": "https://centrocepa.com.ar/documentos/informes/733-controversias-y-cuestionamientos-metodologicos-en-el-indec-bajo-la-presidencia-de-javier-milei",
-    "mecopol": 253.6,
+    "mecopol": 259.3,
     "oficial_mecopol": 249.5
    },
    {
@@ -418,7 +418,7 @@
     "reponderado": 2.8,
     "publicado": "2026-02",
     "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
-    "mecopol": 2.84,
+    "mecopol": 2.81,
     "oficial_mecopol": 2.88
    },
    {
@@ -431,7 +431,7 @@
     "reponderado": 2.8,
     "publicado": "2026-02",
     "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
-    "mecopol": 2.84,
+    "mecopol": 2.81,
     "oficial_mecopol": 2.88
    },
    {
@@ -444,7 +444,7 @@
     "reponderado": 2.7,
     "publicado": "2026-02",
     "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
-    "mecopol": 2.84,
+    "mecopol": 2.81,
     "oficial_mecopol": 2.88
    },
    {
@@ -457,7 +457,7 @@
     "reponderado": 2.8,
     "publicado": "2026-02",
     "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
-    "mecopol": 2.84,
+    "mecopol": 2.81,
     "oficial_mecopol": 2.88
    },
    {
@@ -470,7 +470,7 @@
     "reponderado": 344.3,
     "publicado": "2026-08",
     "link": "https://www.conclusion.com.ar/politica/economia/la-inflacion-acumulada-seria-15-puntos-mayor-si-el-gobierno-hubiera-aplicado-la-nueva-medicion-prevista-para-principios-de-ano/08/2026/",
-    "mecopol": 335.2,
+    "mecopol": 343.4,
     "oficial_mecopol": 328.8
    },
    {
@@ -483,7 +483,7 @@
     "reponderado": 2.14,
     "publicado": "2026-08",
     "link": "https://www.conclusion.com.ar/politica/economia/la-inflacion-acumulada-seria-15-puntos-mayor-si-el-gobierno-hubiera-aplicado-la-nueva-medicion-prevista-para-principios-de-ano/08/2026/",
-    "mecopol": 2.13,
+    "mecopol": 2.2,
     "oficial_mecopol": 2.11
    }
   ],
@@ -496,9 +496,9 @@
      "acumulada": 25.5
     },
     "reponderado": {
-     "mensual": 25.4,
-     "interanual": 209.6,
-     "acumulada": 25.4
+     "mensual": 25.2,
+     "interanual": 208.2,
+     "acumulada": 25.2
     }
    },
    {
@@ -509,9 +509,9 @@
      "acumulada": 51.3
     },
     "reponderado": {
-     "mensual": 21.1,
-     "interanual": 253.2,
-     "acumulada": 51.9
+     "mensual": 21.2,
+     "interanual": 251.6,
+     "acumulada": 51.7
     }
    },
    {
@@ -522,8 +522,8 @@
      "acumulada": 71.4
     },
     "reponderado": {
-     "mensual": 13.7,
-     "interanual": 276.9,
+     "mensual": 13.9,
+     "interanual": 276.1,
      "acumulada": 72.8
     }
    },
@@ -535,9 +535,9 @@
      "acumulada": 90.2
     },
     "reponderado": {
-     "mensual": 11.2,
-     "interanual": 289.9,
-     "acumulada": 92.2
+     "mensual": 11.4,
+     "interanual": 289.7,
+     "acumulada": 92.5
     }
    },
    {
@@ -548,9 +548,9 @@
      "acumulada": 107.0
     },
     "reponderado": {
-     "mensual": 9.1,
-     "interanual": 293.0,
-     "acumulada": 109.7
+     "mensual": 9.4,
+     "interanual": 294.2,
+     "acumulada": 110.5
     }
    },
    {
@@ -561,9 +561,9 @@
      "acumulada": 115.7
     },
     "reponderado": {
-     "mensual": 4.3,
-     "interanual": 280.4,
-     "acumulada": 118.6
+     "mensual": 4.2,
+     "interanual": 281.0,
+     "acumulada": 119.4
     }
    },
    {
@@ -574,9 +574,9 @@
      "acumulada": 125.6
     },
     "reponderado": {
-     "mensual": 4.7,
-     "interanual": 275.5,
-     "acumulada": 128.8
+     "mensual": 4.9,
+     "interanual": 276.3,
+     "acumulada": 130.1
     }
    },
    {
@@ -587,9 +587,9 @@
      "acumulada": 134.6
     },
     "reponderado": {
-     "mensual": 3.9,
-     "interanual": 266.9,
-     "acumulada": 137.6
+     "mensual": 4.0,
+     "interanual": 267.8,
+     "acumulada": 139.3
     }
    },
    {
@@ -600,9 +600,9 @@
      "acumulada": 144.4
     },
     "reponderado": {
-     "mensual": 4.2,
-     "interanual": 240.8,
-     "acumulada": 147.7
+     "mensual": 4.3,
+     "interanual": 242.3,
+     "acumulada": 149.6
     }
    },
    {
@@ -614,8 +614,8 @@
     },
     "reponderado": {
      "mensual": 3.5,
-     "interanual": 213.0,
-     "acumulada": 156.3
+     "interanual": 215.1,
+     "acumulada": 158.5
     }
    },
    {
@@ -626,9 +626,9 @@
      "acumulada": 159.7
     },
     "reponderado": {
-     "mensual": 2.6,
-     "interanual": 196.3,
-     "acumulada": 162.9
+     "mensual": 2.7,
+     "interanual": 198.7,
+     "acumulada": 165.4
     }
    },
    {
@@ -639,9 +639,9 @@
      "acumulada": 166.0
     },
     "reponderado": {
-     "mensual": 2.4,
-     "interanual": 169.2,
-     "acumulada": 169.2
+     "mensual": 2.5,
+     "interanual": 172.1,
+     "acumulada": 172.1
     }
    },
    {
@@ -652,9 +652,9 @@
      "acumulada": 173.2
     },
     "reponderado": {
-     "mensual": 2.7,
-     "interanual": 120.5,
-     "acumulada": 176.5
+     "mensual": 2.8,
+     "interanual": 123.4,
+     "acumulada": 179.7
     }
    },
    {
@@ -665,9 +665,9 @@
      "acumulada": 179.3
     },
     "reponderado": {
-     "mensual": 2.1,
-     "interanual": 85.8,
-     "acumulada": 182.3
+     "mensual": 2.2,
+     "interanual": 88.5,
+     "acumulada": 185.9
     }
    },
    {
@@ -679,8 +679,8 @@
     },
     "reponderado": {
      "mensual": 2.5,
-     "interanual": 67.4,
-     "acumulada": 189.3
+     "interanual": 69.5,
+     "acumulada": 192.9
     }
    },
    {
@@ -691,9 +691,9 @@
      "acumulada": 196.6
     },
     "reponderado": {
-     "mensual": 3.7,
-     "interanual": 56.0,
-     "acumulada": 199.9
+     "mensual": 3.6,
+     "interanual": 57.7,
+     "acumulada": 203.6
     }
    },
    {
@@ -705,8 +705,8 @@
     },
     "reponderado": {
      "mensual": 2.7,
-     "interanual": 46.9,
-     "acumulada": 208.0
+     "interanual": 48.1,
+     "acumulada": 211.8
     }
    },
    {
@@ -718,8 +718,8 @@
     },
     "reponderado": {
      "mensual": 1.5,
-     "interanual": 42.9,
-     "acumulada": 212.4
+     "interanual": 44.3,
+     "acumulada": 216.6
     }
    },
    {
@@ -730,9 +730,9 @@
      "acumulada": 214.5
     },
     "reponderado": {
-     "mensual": 1.6,
-     "interanual": 38.8,
-     "acumulada": 217.5
+     "mensual": 1.7,
+     "interanual": 40.0,
+     "acumulada": 222.0
     }
    },
    {
@@ -744,8 +744,8 @@
     },
     "reponderado": {
      "mensual": 2.0,
-     "interanual": 36.2,
-     "acumulada": 223.7
+     "interanual": 37.3,
+     "acumulada": 228.5
     }
    },
    {
@@ -757,8 +757,8 @@
     },
     "reponderado": {
      "mensual": 1.9,
-     "interanual": 33.1,
-     "acumulada": 229.7
+     "interanual": 34.2,
+     "acumulada": 234.9
     }
    },
    {
@@ -770,8 +770,8 @@
     },
     "reponderado": {
      "mensual": 2.2,
-     "interanual": 31.4,
-     "acumulada": 236.8
+     "interanual": 32.4,
+     "acumulada": 242.2
     }
    },
    {
@@ -783,8 +783,8 @@
     },
     "reponderado": {
      "mensual": 2.4,
-     "interanual": 31.2,
-     "acumulada": 244.9
+     "interanual": 32.0,
+     "acumulada": 250.4
     }
    },
    {
@@ -795,9 +795,9 @@
      "acumulada": 249.5
     },
     "reponderado": {
-     "mensual": 2.5,
-     "interanual": 31.4,
-     "acumulada": 253.6
+     "mensual": 2.6,
+     "interanual": 32.1,
+     "acumulada": 259.3
     }
    },
    {
@@ -809,8 +809,8 @@
     },
     "reponderado": {
      "mensual": 2.9,
-     "interanual": 31.6,
-     "acumulada": 263.9
+     "interanual": 32.2,
+     "acumulada": 269.8
     }
    },
    {
@@ -822,8 +822,8 @@
     },
     "reponderado": {
      "mensual": 2.8,
-     "interanual": 32.6,
-     "acumulada": 274.3
+     "interanual": 33.0,
+     "acumulada": 280.2
     }
    },
    {
@@ -835,8 +835,8 @@
     },
     "reponderado": {
      "mensual": 3.0,
-     "interanual": 33.2,
-     "acumulada": 285.3
+     "interanual": 33.7,
+     "acumulada": 291.6
     }
    },
    {
@@ -847,9 +847,9 @@
      "acumulada": 293.4
     },
     "reponderado": {
-     "mensual": 3.4,
-     "interanual": 32.9,
-     "acumulada": 298.5
+     "mensual": 3.5,
+     "interanual": 33.5,
+     "acumulada": 305.2
     }
    },
    {
@@ -861,8 +861,8 @@
     },
     "reponderado": {
      "mensual": 2.7,
-     "interanual": 32.8,
-     "acumulada": 309.1
+     "interanual": 33.5,
+     "acumulada": 316.2
     }
    },
    {
@@ -874,8 +874,8 @@
     },
     "reponderado": {
      "mensual": 2.2,
-     "interanual": 33.8,
-     "acumulada": 318.1
+     "interanual": 34.4,
+     "acumulada": 325.5
     }
    },
    {
@@ -886,9 +886,9 @@
      "acumulada": 320.0
     },
     "reponderado": {
-     "mensual": 1.9,
-     "interanual": 34.2,
-     "acumulada": 326.1
+     "mensual": 2.0,
+     "interanual": 34.7,
+     "acumulada": 333.9
     }
    },
    {
@@ -899,9 +899,9 @@
      "acumulada": 328.8
     },
     "reponderado": {
-     "mensual": 2.1,
-     "interanual": 34.4,
-     "acumulada": 335.2
+     "mensual": 2.2,
+     "interanual": 35.0,
+     "acumulada": 343.4
     }
    },
    {
@@ -913,45 +913,45 @@
     },
     "reponderado": {
      "mensual": 1.7,
-     "interanual": 34.2,
-     "acumulada": 342.4
+     "interanual": 34.6,
+     "acumulada": 351.0
     }
    }
   ],
   "ponderaciones": [
    {
     "rubro": "Alimentos y bebidas no alcohólicas",
-    "vigente": 23.4,
+    "vigente": 26.9,
     "engho_2017_18": 22.7
    },
    {
     "rubro": "Bebidas alcohólicas y tabaco",
-    "vigente": 3.3,
+    "vigente": 3.5,
     "engho_2017_18": 1.9
    },
    {
     "rubro": "Prendas de vestir y calzado",
-    "vigente": 8.5,
+    "vigente": 9.9,
     "engho_2017_18": 6.8
    },
    {
     "rubro": "Vivienda, agua, electricidad, gas y otros combustibles",
-    "vigente": 10.5,
+    "vigente": 9.4,
     "engho_2017_18": 14.5
    },
    {
     "rubro": "Equipamiento y mantenimiento del hogar",
-    "vigente": 6.3,
+    "vigente": 6.4,
     "engho_2017_18": 5.4
    },
    {
     "rubro": "Salud",
-    "vigente": 8.8,
+    "vigente": 8.0,
     "engho_2017_18": 6.4
    },
    {
     "rubro": "Transporte",
-    "vigente": 11.6,
+    "vigente": 11.0,
     "engho_2017_18": 14.3
    },
    {
@@ -961,29 +961,977 @@
    },
    {
     "rubro": "Recreación y cultura",
-    "vigente": 7.5,
+    "vigente": 7.3,
     "engho_2017_18": 8.6
    },
    {
     "rubro": "Educación",
-    "vigente": 3.0,
+    "vigente": 2.3,
     "engho_2017_18": 3.1
    },
    {
     "rubro": "Restaurantes y hoteles",
-    "vigente": 10.8,
+    "vigente": 9.0,
     "engho_2017_18": 6.6
    },
    {
     "rubro": "Bienes y servicios varios",
-    "vigente": 3.6,
+    "vigente": 3.5,
     "engho_2017_18": 4.3
    }
   ],
-  "control_error_pct": 1.99,
+  "control_error_pct": 0.05,
   "periodo_encuesta": [
    "2017-11",
    "2018-11"
+  ]
+ },
+ "regiones": {
+  "ids": {
+   "GBA": "101.1_I2NG_2016_M_22",
+   "Pampeana": "145.3_INGPAMANA_DICI_M_15",
+   "Noreste": "145.3_INGNEANEA_DICI_M_10",
+   "Noroeste": "148.3_INIVELNOA_DICI_M_21",
+   "Cuyo": "145.3_INGCUYUYO_DICI_M_11",
+   "Patagonia": "148.3_INIVELNIA_DICI_M_27"
+  },
+  "regiones": [
+   {
+    "region": "GBA",
+    "peso": 44.7,
+    "mensual": 1.64,
+    "interanual": 33.7,
+    "acum_anio": 21.4,
+    "acum_gobierno": 344.3,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 25.08
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 19.55
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 14.97
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 11.48
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 9.23
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 4.3
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 4.35
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 4.04
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 4.14
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.72
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 2.82
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 2.6
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.87
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 2.02
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 2.23
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 3.85
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.76
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.5
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 2.02
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 1.87
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 1.87
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 2.1
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.4
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.48
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 2.79
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 2.77
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 2.62
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 3.41
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.76
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 2.28
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 1.87
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 2.27
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.64
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 23.4,
+     "Bebidas alcohólicas y tabaco": 3.3,
+     "Prendas de vestir y calzado": 8.5,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 10.5,
+     "Equipamiento y mantenimiento del hogar": 6.3,
+     "Salud": 8.8,
+     "Transporte": 11.6,
+     "Comunicación": 2.8,
+     "Recreación y cultura": 7.5,
+     "Educación": 3.0,
+     "Restaurantes y hoteles": 10.8,
+     "Bienes y servicios varios": 3.6
+    }
+   },
+   {
+    "region": "Pampeana",
+    "peso": 34.2,
+    "mensual": 1.63,
+    "interanual": 33.1,
+    "acum_anio": 20.9,
+    "acum_gobierno": 328.6,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 25.7
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 21.2
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 11.89
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 11.28
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 8.76
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 4.02
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 4.74
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 3.93
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 3.91
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.21
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 2.57
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 2.31
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.53
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 2.35
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 2.5
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 3.61
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.81
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.57
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 1.31
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 1.99
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 1.84
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 2.01
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.32
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.48
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 2.91
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 2.9
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 3.02
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 3.28
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.39
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 2.0
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 2.03
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 2.0
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.63
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 28.6,
+     "Bebidas alcohólicas y tabaco": 3.8,
+     "Prendas de vestir y calzado": 10.4,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 8.7,
+     "Equipamiento y mantenimiento del hogar": 6.3,
+     "Salud": 8.2,
+     "Transporte": 10.4,
+     "Comunicación": 2.9,
+     "Recreación y cultura": 7.4,
+     "Educación": 1.6,
+     "Restaurantes y hoteles": 8.1,
+     "Bienes y servicios varios": 3.6
+    }
+   },
+   {
+    "region": "Noreste",
+    "peso": 4.5,
+    "mensual": 1.75,
+    "interanual": 37.0,
+    "acum_anio": 24.4,
+    "acum_gobierno": 319.5,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 28.35
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 19.5
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 10.9
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 10.35
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 6.29
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 3.73
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 4.38
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 4.61
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 4.37
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.27
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 2.56
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 1.78
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.93
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 2.48
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 1.91
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 3.13
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.66
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.27
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 1.06
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 1.71
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 1.68
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 1.79
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.18
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.38
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 3.38
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 3.84
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 3.15
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 4.15
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.73
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 2.65
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 1.93
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 2.0
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.75
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 35.3,
+     "Bebidas alcohólicas y tabaco": 3.6,
+     "Prendas de vestir y calzado": 11.6,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 8.1,
+     "Equipamiento y mantenimiento del hogar": 7.8,
+     "Salud": 5.3,
+     "Transporte": 9.6,
+     "Comunicación": 2.8,
+     "Recreación y cultura": 6.2,
+     "Educación": 1.4,
+     "Restaurantes y hoteles": 5.0,
+     "Bienes y servicios varios": 3.3
+    }
+   },
+   {
+    "region": "Noroeste",
+    "peso": 6.9,
+    "mensual": 1.78,
+    "interanual": 34.0,
+    "acum_anio": 22.3,
+    "acum_gobierno": 328.1,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 25.23
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 21.71
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 11.69
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 8.77
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 9.1
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 4.17
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 4.76
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 3.59
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 5.05
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.42
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 2.55
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 1.93
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.72
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 2.59
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 2.58
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 4.33
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.87
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.22
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 1.22
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 1.68
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 1.97
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 2.19
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.14
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.3
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 2.61
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 2.85
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 3.54
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 3.95
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.54
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 2.09
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 1.67
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 1.99
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.78
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 34.7,
+     "Bebidas alcohólicas y tabaco": 3.1,
+     "Prendas de vestir y calzado": 12.4,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 7.0,
+     "Equipamiento y mantenimiento del hogar": 6.1,
+     "Salud": 6.3,
+     "Transporte": 8.4,
+     "Comunicación": 2.6,
+     "Recreación y cultura": 5.9,
+     "Educación": 2.0,
+     "Restaurantes y hoteles": 8.0,
+     "Bienes y servicios varios": 3.4
+    }
+   },
+   {
+    "region": "Cuyo",
+    "peso": 5.2,
+    "mensual": 1.65,
+    "interanual": 33.4,
+    "acum_anio": 20.5,
+    "acum_gobierno": 332.1,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 25.85
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 22.29
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 13.54
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 9.31
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 8.15
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 4.27
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 5.06
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 4.59
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 4.52
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.03
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 2.24
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 2.14
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.31
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 1.97
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 2.67
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 3.52
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.85
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.63
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 0.97
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 1.86
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 2.11
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 2.15
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.34
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.82
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 2.96
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 2.99
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 3.41
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 3.21
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.12
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 2.08
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 1.59
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 1.87
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.65
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 28.4,
+     "Bebidas alcohólicas y tabaco": 3.6,
+     "Prendas de vestir y calzado": 11.4,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 8.9,
+     "Equipamiento y mantenimiento del hogar": 6.3,
+     "Salud": 7.4,
+     "Transporte": 12.1,
+     "Comunicación": 2.5,
+     "Recreación y cultura": 6.7,
+     "Educación": 2.2,
+     "Restaurantes y hoteles": 6.8,
+     "Bienes y servicios varios": 3.6
+    }
+   },
+   {
+    "region": "Patagonia",
+    "peso": 4.6,
+    "mensual": 1.78,
+    "interanual": 31.6,
+    "acum_anio": 19.6,
+    "acum_gobierno": 344.0,
+    "serie_mensual": [
+     {
+      "fecha": "2023-12",
+      "valor": 24.31
+     },
+     {
+      "fecha": "2024-01",
+      "valor": 24.19
+     },
+     {
+      "fecha": "2024-02",
+      "valor": 11.31
+     },
+     {
+      "fecha": "2024-03",
+      "valor": 10.46
+     },
+     {
+      "fecha": "2024-04",
+      "valor": 8.45
+     },
+     {
+      "fecha": "2024-05",
+      "valor": 4.52
+     },
+     {
+      "fecha": "2024-06",
+      "valor": 4.95
+     },
+     {
+      "fecha": "2024-07",
+      "valor": 4.16
+     },
+     {
+      "fecha": "2024-08",
+      "valor": 4.61
+     },
+     {
+      "fecha": "2024-09",
+      "valor": 3.73
+     },
+     {
+      "fecha": "2024-10",
+      "valor": 3.23
+     },
+     {
+      "fecha": "2024-11",
+      "valor": 3.29
+     },
+     {
+      "fecha": "2024-12",
+      "valor": 2.65
+     },
+     {
+      "fecha": "2025-01",
+      "valor": 2.51
+     },
+     {
+      "fecha": "2025-02",
+      "valor": 3.21
+     },
+     {
+      "fecha": "2025-03",
+      "valor": 3.31
+     },
+     {
+      "fecha": "2025-04",
+      "valor": 2.67
+     },
+     {
+      "fecha": "2025-05",
+      "valor": 1.5
+     },
+     {
+      "fecha": "2025-06",
+      "valor": 1.82
+     },
+     {
+      "fecha": "2025-07",
+      "valor": 2.14
+     },
+     {
+      "fecha": "2025-08",
+      "valor": 1.95
+     },
+     {
+      "fecha": "2025-09",
+      "valor": 2.4
+     },
+     {
+      "fecha": "2025-10",
+      "valor": 2.41
+     },
+     {
+      "fecha": "2025-11",
+      "valor": 2.33
+     },
+     {
+      "fecha": "2025-12",
+      "valor": 2.57
+     },
+     {
+      "fecha": "2026-01",
+      "valor": 2.88
+     },
+     {
+      "fecha": "2026-02",
+      "valor": 2.98
+     },
+     {
+      "fecha": "2026-03",
+      "valor": 2.48
+     },
+     {
+      "fecha": "2026-04",
+      "valor": 2.62
+     },
+     {
+      "fecha": "2026-05",
+      "valor": 1.69
+     },
+     {
+      "fecha": "2026-06",
+      "valor": 1.62
+     },
+     {
+      "fecha": "2026-07",
+      "valor": 2.03
+     },
+     {
+      "fecha": "2026-08",
+      "valor": 1.78
+     }
+    ],
+    "ponderaciones": {
+     "Alimentos y bebidas no alcohólicas": 27.4,
+     "Bebidas alcohólicas y tabaco": 3.5,
+     "Prendas de vestir y calzado": 12.8,
+     "Vivienda, agua, electricidad, gas y otros combustibles": 10.1,
+     "Equipamiento y mantenimiento del hogar": 6.5,
+     "Salud": 5.0,
+     "Transporte": 13.4,
+     "Comunicación": 3.2,
+     "Recreación y cultura": 7.8,
+     "Educación": 2.1,
+     "Restaurantes y hoteles": 5.1,
+     "Bienes y servicios varios": 3.1
+    }
+   }
   ]
  },
  "fuentes": {
