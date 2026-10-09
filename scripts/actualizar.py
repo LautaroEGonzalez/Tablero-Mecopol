@@ -202,6 +202,67 @@ def reponderar(ids_div, nac_corta, inicio, mes):
 
 
 # ------------------------------------------------------------------
+# Regiones
+# ------------------------------------------------------------------
+REGIONES_IPC = ["GBA", "Pampeana", "Noreste", "Noroeste", "Cuyo", "Patagonia"]
+
+
+def buscar_region(region):
+    """Busca la serie del nivel general, mensual y en nivel, de una región del IPC."""
+    clave = region.lower()
+    otras = [x.lower() for x in REGIONES_IPC if x != region]
+    for pagina in range(3):
+        j = pedir(SEARCH, {"q": f"IPC Nivel General {region} Base dic 2016 Mensual",
+                           "limit": 100, "start": pagina * 100})
+        for x in j.get("data", []):
+            f, d = x.get("field", {}), x.get("dataset", {})
+            desc = (f.get("description") or "").lower()
+            dset = (d.get("title") or "").lower()
+            if (f.get("frequency") == "R/P1M" and "diciembre 2016" in dset
+                    and "nivel general" in desc and clave in desc
+                    and not any(o in desc for o in otras)
+                    and not any(p in desc for p in ["variaci", "tasa", "incidencia"])):
+                return f.get("id")
+    return None
+
+
+def regiones(inicio, mes):
+    un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
+    ids = {}
+    for reg in REGIONES_IPC:
+        fid = CONFIG.get("ids_regiones", {}).get(reg) or buscar_region(reg)
+        print(f"   {'✅' if fid else '❌'} región {reg}: {fid}")
+        if fid:
+            ids[reg] = fid
+    if len(ids) < len(REGIONES_IPC):
+        print("   ⚠️ faltan regiones: el mapa queda con los datos anteriores")
+        return None
+    df = traer(list(ids.values()), ym(inicio - un_anio) + "-01", ym(mes) + "-01")
+    df.columns = list(ids)
+    pond = pd.read_csv(RAIZ / "fuentes" / "ponderaciones_regionales.csv").set_index("division")
+    pesos_region = pond.loc["_peso_region"]
+    pond = pond.drop("_peso_region")
+
+    def v(s, a, b, n=1):
+        return r((s[b] / s[a] - 1) * 100, n)
+
+    salida = []
+    for reg in REGIONES_IPC:
+        s = df[reg]
+        salida.append({
+            "region": reg,
+            "peso": float(pesos_region[reg]),
+            "mensual": v(s, mes - un_mes, mes, 2),
+            "interanual": v(s, mes - un_anio, mes),
+            "acum_anio": v(s, pd.Timestamp(mes.year - 1, 12, 1), mes),
+            "acum_gobierno": v(s, inicio, mes),
+            "serie_mensual": [{"fecha": ym(f), "valor": v(s, f - un_mes, f, 2)} for f in s.index if f > inicio],
+            "ponderaciones": {d: float(pond.loc[d, reg]) for d in pond.index},
+        })
+    return {"ids": ids, "regiones": salida}
+
+
+# ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
 def main():
@@ -273,7 +334,16 @@ def main():
     # la ENGHo 2017/18: costo de esa canasta fija en cada mes, por divisiones.
     reponderado = reponderar(ids_div, nac, inicio, mes)
 
-    # 4. Controles de calidad -------------------------------------------
+    # 4. Regiones ---------------------------------------------------------
+    try:
+        por_region = regiones(inicio, mes)
+    except Exception as e:  # el mapa no debe frenar la actualización de la portada
+        print(f"   ⚠️ regiones: {e}")
+        por_region = None
+    if por_region is None and SALIDA.exists():
+        por_region = json.loads(SALIDA.read_text(encoding="utf-8")).get("regiones")
+
+    # 5. Controles de calidad -------------------------------------------
     assert serie and kpis["mensual"] is not None, "Serie vacía"
     assert all(x["relativo"] is not None for x in rubros), "Rubros incompletos"
 
@@ -294,6 +364,7 @@ def main():
         },
         "rubros": rubros,
         "reponderado": reponderado,
+        "regiones": por_region,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
     }
 

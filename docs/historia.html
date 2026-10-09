@@ -115,6 +115,13 @@ tbody tr:hover td { background: var(--panel-hi); }
 td.dif { color: var(--warn); }
 td .mute { color: var(--fg-3); }
 .tabla-chica table { min-width: 520px; }
+@media (max-width: 700px) {
+  table { min-width: 0; font-size: 13px; }
+  th, td { padding: 8px 6px; }
+  .solo-ancho { display: none; }
+  .tabla-chica table { min-width: 0; }
+  .nom { gap: 6px; }
+}
 
 /* ---- notas ---- */
 .notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
@@ -171,6 +178,7 @@ td .mute { color: var(--fg-3); }
   const marca = c => `<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c};margin-right:6px"></i>`;
   const seg = (id, ops) => `<div class="seg" role="group" id="${id}">${ops.map(([v, t], i) =>
     `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`;
+  const angosto = () => window.innerWidth < 700;
   const seguir = (id, fn) => document.getElementById(id).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
@@ -198,11 +206,7 @@ td .mute { color: var(--fg-3); }
       </section>
 
       <p class="lectura">El promedio anual más bajo fue el de <b>${minG.nombre}</b> (${pct(minG.promedio_anual, 1)}) y el más alto, el de <b>${maxG.nombre}</b> (${pct(maxG.promedio_anual, 1)}).
-<<<<<<< HEAD
-        ${difs.length ? `Entre 2007 y 2015 el INDEC estuvo intervenido: con la serie oficial de esos años, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
-=======
         ${difs.length ? `Entre 2007 y 2015 el IPC oficial dio muy por debajo de las mediciones provinciales: con la serie oficial, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
->>>>>>> b7c17c1 (nueva presentacion del proyecto)
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Inflación interanual, mes a mes</h2>
@@ -223,11 +227,11 @@ td .mute { color: var(--fg-3); }
         <div class="sec-cab"><div><h2>Mandato por mandato</h2>
           <p class="sub">Cómo recibió cada gobierno la inflación, cómo la dejó y cuánto subieron los precios en el medio. El mes base es el último mes completo del gobierno anterior.</p></div></div>
         <div class="caja"><div class="tabla-wrap"><table>
-          <thead><tr><th>Gobierno</th><th>Período</th><th>Heredada<br>(interanual)</th><th>Promedio<br>anual</th><th>Acumulada</th><th>Entregada<br>(interanual)</th><th>Mes más alto</th><th>Mes más bajo</th></tr></thead>
+          <thead><tr><th>Gobierno</th><th class="solo-ancho">Período</th><th>Heredada<br>(interanual)</th><th>Promedio<br>anual</th><th class="solo-ancho">Acumulada</th><th>Entregada<br>(interanual)</th><th class="solo-ancho">Mes más alto</th><th class="solo-ancho">Mes más bajo</th></tr></thead>
           <tbody>${G.map(g => `<tr><td><span class="nom"><i style="background:${g.color}"></i>${g.nombre}</span></td>
-            <td>${etq(sig(g.base))}–${g.en_curso ? 'hoy' : etq(g.fin)}</td><td>${pct(g.heredada, 1)}</td><td><b>${pct(g.promedio_anual, 1)}</b></td>
-            <td>${pct(g.acumulada, 0)}</td><td>${pct(g.entregada, 1)}${g.en_curso ? ' <span class="mute">(a hoy)</span>' : ''}</td>
-            <td>${pct(g.mes_max.valor, 1)} <span class="mute">${etq(g.mes_max.fecha)}</span></td><td>${pct(g.mes_min.valor, 1)} <span class="mute">${etq(g.mes_min.fecha)}</span></td></tr>`).join('')}
+            <td class="solo-ancho">${etq(sig(g.base))}–${g.en_curso ? 'hoy' : etq(g.fin)}</td><td>${pct(g.heredada, 1)}</td><td><b>${pct(g.promedio_anual, 1)}</b></td>
+            <td class="solo-ancho">${pct(g.acumulada, 0)}</td><td>${pct(g.entregada, 1)}${g.en_curso ? ' <span class="mute">(a hoy)</span>' : ''}</td>
+            <td class="solo-ancho">${pct(g.mes_max.valor, 1)} <span class="mute">${etq(g.mes_max.fecha)}</span></td><td class="solo-ancho">${pct(g.mes_min.valor, 1)} <span class="mute">${etq(g.mes_min.fecha)}</span></td></tr>`).join('')}
           </tbody></table></div></div>
       </section>
 
@@ -251,11 +255,7 @@ td .mute { color: var(--fg-3); }
 
       <footer class="notas">
         <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Se encadenan las variaciones mensuales de cada fuente.</p></div>
-<<<<<<< HEAD
-        <div><h3>Por qué CIFRA-CTA</h3><p>Entre 2007 y 2015 el INDEC estuvo intervenido y sus cifras quedaron muy por debajo de las de las provincias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
-=======
         <div><h3>Por qué CIFRA-CTA</h3><p>En 2007 cambiaron la conducción y la metodología del IPC del INDEC, y hasta 2015 el índice oficial quedó muy por debajo de los índices provinciales, de las mediciones de las centrales sindicales y de las paritarias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
->>>>>>> b7c17c1 (nueva presentacion del proyecto)
         <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>.</p></div>
         <div><h3>Borrador</h3><p>Análisis en construcción. La inflación es una sola dimensión: falta sumar salarios, empleo, consumo y actividad para evaluar cada gobierno.</p></div>
       </footer>`;
@@ -266,14 +266,14 @@ td .mute { color: var(--fg-3); }
     const bandas = G.map(g => {
       const a = xs.find(f => f >= sig(g.base)), b = [...xs].reverse().find(f => f <= g.fin);
       return a && b ? [{ name: g.corto, xAxis: a, itemStyle: { color: hexA(g.color, .10) },
-        label: { color: g.color, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: b }] : null;
+        label: { show: !angosto(), color: g.color, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: b }] : null;
     }).filter(Boolean);
     const chS = nuevo(document.getElementById('ch-serie'), {});
     const dibS = esc => chS.setOption({
       grid: { left: 4, right: 24, top: 30, bottom: 4, containLabel: true },
       tooltip: Object.assign(tip(), { formatter: p => { const x = S[p[0].dataIndex];
         return `${largo(x.fecha)}<br>Interanual: <b>${pct(x.interanual, 1)}</b><br><span style="color:${T.fg3}">${x.fuente}</span>`; } }),
-      xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => v.slice(0, 4), interval: (i, v) => v.endsWith('-01') && +v.slice(0, 4) % 2 === 0 } }),
+      xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => v.slice(0, 4), interval: (i, v) => v.endsWith('-01') && +v.slice(0, 4) % (angosto() ? 4 : 2) === 0 } }),
       yAxis: esc === 'log' ? ejeY({ type: 'log', logBase: 10, min: 1 }) : ejeY({ min: 0 }),
       series: [{ type: 'line', data: S.map(x => x.interanual), symbol: 'none', lineStyle: { width: 2, color: T.fg },
         markArea: { silent: true, data: bandas } }],
@@ -298,10 +298,10 @@ td .mute { color: var(--fg-3); }
       series: [
         { name: 'Serie principal', type: 'bar', barGap: '8%', barMaxWidth: 26,
           data: A.map(a => ({ value: a.variacion, itemStyle: { color: colA(a), opacity: a.parcial ? .55 : 1, borderRadius: [3, 3, 0, 0] } })),
-          label: { show: true, position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg2, formatter: p => nf(p.value, 0) } },
+          label: { show: !angosto(), position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg2, formatter: p => nf(p.value, 0) } },
         { name: 'INDEC oficial', type: 'bar', barMaxWidth: 26,
           data: A.map(a => a.oficial ? { value: a.oficial.variacion, itemStyle: { color: { image: rayas(colA(a)), repeat: 'repeat' }, borderColor: colA(a), borderWidth: 1, borderRadius: [3, 3, 0, 0] } } : null),
-          label: { show: true, position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg3, formatter: p => p.value == null ? '' : nf(p.value, 0) } },
+          label: { show: !angosto(), position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg3, formatter: p => p.value == null ? '' : nf(p.value, 0) } },
       ],
     });
 

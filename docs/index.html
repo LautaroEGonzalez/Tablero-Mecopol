@@ -170,6 +170,20 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .pond table { min-width: 0; font-size: 13px; }
 .pond th, .pond td { padding: 8px 6px; }
 .pond th { white-space: normal; }
+/* ---- regiones ---- */
+.reg-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 10px; align-items: start; }
+@media (max-width: 900px) { .reg-grid { grid-template-columns: 1fr; } }
+.mapa { width: 100%; height: 600px; }
+@media (max-width: 560px) { .mapa { height: 560px; } }
+.reg table { min-width: 0; font-size: 13px; }
+.reg th, .reg td { padding: 8px 6px; }
+.reg th { white-space: normal; }
+.reg td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
+.reg tr.activa td { background: var(--panel-hi); }
+.pesos td.max { color: var(--fg); font-weight: 600; }
+.pesos td { color: var(--fg-2); }
+.pesos td:first-child { color: var(--fg); }
+.nota-reg { margin: 0; font-size: 12px; color: var(--fg-3); max-width: 80ch; }
 .dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
 @media (max-width: 900px) { .dos-col { grid-template-columns: 1fr; } }
 .leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
@@ -280,6 +294,26 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
         <div class="caja"><div class="chart" id="ch-serie"></div></div>
         <p class="lectura">El pico fue <b>${largo(d.hitos.pico.fecha)}</b>, con <b>${pct(d.hitos.pico.mensual, 1)}</b> mensual. En los primeros 5 meses los precios subieron <b>${pct(d.hitos.primeros_5, 0)}</b>; en los ${d.hitos.meses_resto} meses siguientes, <b>${pct(d.hitos.resto, 0)}</b>.</p>
       </section>
+
+      ${d.regiones ? `
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Por región</h2>
+          <p class="sub">El INDEC mide el IPC en seis regiones, no por provincia. Cada región tiene su propia canasta, así que el mismo aumento pega distinto según dónde se viva.</p></div>
+          <div class="seg" role="group" id="sel-reg">${[['mensual', `${MESL[+M.slice(5) - 1][0].toUpperCase() + MESL[+M.slice(5) - 1].slice(1)}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
+            .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
+        <div class="reg-grid">
+          <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div></div>
+          <div style="display:grid;gap:10px">
+            <div class="caja reg"><div class="tabla-wrap"><table>
+              <thead><tr><th>Región</th><th>${etq(M)}</th><th>Interanual</th><th>Desde nov-23</th><th>Peso en el IPC</th></tr></thead>
+              <tbody id="tb-reg"></tbody></table></div></div>
+            <div class="caja pond pesos"><div class="tabla-wrap"><table>
+              <thead><tr><th>Peso de cada rubro (%)</th>${d.regiones.regiones.map(r => `<th>${r.region === 'Pampeana' ? 'Pamp.' : r.region === 'Patagonia' ? 'Patag.' : r.region}</th>`).join('')}</tr></thead>
+              <tbody id="tb-pesos"></tbody></table></div></div>
+          </div>
+        </div>
+        <p class="nota-reg">En negrita, la región donde ese rubro pesa más. Las ponderaciones son las del IPC vigente (ENGHo 2004/05, a precios de dic-2016). El IPC mide cuánto suben los precios, no cuánto cuestan: que una región sea más cara no implica que tenga más inflación. GBA es la Ciudad de Buenos Aires y los 24 partidos del conurbano.</p>
+      </section>` : ''}
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Rubros</h2>
@@ -404,6 +438,58 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
         e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
         dibR(b.dataset.v);
       });
+    }
+
+    // ---- regiones ----
+    if (d.regiones) {
+      const RG = d.regiones.regiones;
+      const ord = ['Alimentos y bebidas no alcohólicas', 'Vivienda, agua, electricidad, gas y otros combustibles', 'Transporte',
+        'Restaurantes y hoteles', 'Prendas de vestir y calzado', 'Salud', 'Recreación y cultura', 'Equipamiento y mantenimiento del hogar',
+        'Bebidas alcohólicas y tabaco', 'Educación', 'Comunicación', 'Bienes y servicios varios'];
+      document.getElementById('tb-pesos').innerHTML = ord.map(div => {
+        const vals = RG.map(r => r.ponderaciones[div]), mx = Math.max(...vals);
+        return `<tr><td>${corto[div] || div}</td>${vals.map(v => `<td class="${v === mx ? 'max' : ''}">${nf(v, 1)}</td>`).join('')}</tr>`;
+      }).join('');
+      const centro = { GBA: [-53.6, -35.4] };   // etiqueta de GBA, en el mar, con una línea al AMBA
+      fetch('geo/regiones_ipc.json').then(r => r.json()).then(geo => {
+        echarts.registerMap('regiones', geo);
+        const pos = Object.fromEntries(geo.features.map(f => [f.properties.name, [f.properties.cx, f.properties.cy]]));
+        pos.Patagonia = [-68.5, -44.5]; pos.Pampeana = [-61.6, -35.6]; pos.Cuyo = [-68.6, -32.6];
+        const ch = nuevo(document.getElementById('ch-mapa'), {});
+        const dibujar = med => {
+          const dec = med === 'mensual' ? 2 : 1, vals = RG.map(r => r[med]);
+          const mn = Math.min(...vals), mx = Math.max(...vals);
+          document.getElementById('tb-reg').innerHTML = [...RG].sort((a, b) => b[med] - a[med]).map(r =>
+            `<tr><td>${r.region}</td><td>${pct(r.mensual, 2)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td><td>${nf(r.peso, 1)}%</td></tr>`).join('');
+          ch.setOption({
+            tooltip: { trigger: 'item', backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
+              formatter: p => { const r = RG.find(x => x.region === p.name); if (!r) return '';
+                const top = Object.entries(r.ponderaciones).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${corto[k] || k} ${nf(v, 1)}%`).join(' · ');
+                return `<b>${r.region}</b><br>${etq(M)}: <b>${pct(r.mensual, 2)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}<br><span style="color:${T.fg3}">Lo que más pesa: ${top}</span>`; } },
+            visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
+              text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
+              inRange: { color: ['#3b2430', '#8e3557', '#e0527c', '#f5a3bd'] }, seriesIndex: 0 },
+            geo: { map: 'regiones', roam: false, aspectScale: 0.82, layoutCenter: ['50%', '48%'], layoutSize: window.innerWidth < 560 ? '100%' : '96%',
+              itemStyle: { areaColor: '#20242c', borderColor: T.panel, borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
+            series: [
+              { type: 'map', geoIndex: 0, data: RG.map(r => ({ name: r.region, value: r[med] })) },
+              { type: 'lines', coordinateSystem: 'geo', silent: true, symbol: 'none', lineStyle: { color: T.fg2, width: 1 },
+                data: [{ coords: [[-58.45, -34.62], [centro.GBA[0] - 0.6, centro.GBA[1] + 0.3]] }] },
+              { type: 'scatter', coordinateSystem: 'geo', symbolSize: 0, silent: true,
+                data: RG.map(r => ({ name: r.region, value: [...(centro[r.region] || pos[r.region]), r[med]] })),
+                label: { show: true, formatter: p => `{n|${p.name}}\n{v|${pct(p.value[2], dec)}}`, align: 'center',
+                  rich: { n: { color: T.fg, fontSize: window.innerWidth < 560 ? 10 : 11, fontFamily: T.ui, fontWeight: 600, lineHeight: 15, textShadowColor: 'rgba(0,0,0,.6)', textShadowBlur: 3 },
+                          v: { color: T.fg, fontSize: window.innerWidth < 560 ? 11 : 13, fontFamily: T.num, fontWeight: 600, lineHeight: 16, textShadowColor: 'rgba(0,0,0,.6)', textShadowBlur: 3 } } } },
+            ],
+          }, { replaceMerge: ['series'] });
+        };
+        dibujar('mensual');
+        document.getElementById('sel-reg').addEventListener('click', e => {
+          const b = e.target.closest('button'); if (!b) return;
+          e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+          dibujar(b.dataset.v);
+        });
+      }).catch(err => { document.getElementById('ch-mapa').textContent = 'No se pudo cargar el mapa.'; console.error(err); });
     }
 
     // ---- rubros ----
