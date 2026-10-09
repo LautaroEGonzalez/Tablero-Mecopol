@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-09T19:17+00:00",
+ "actualizado": "2026-10-09T19:32+00:00",
  "etapa": "solo fuentes oficiales",
  "hitos": {
   "sancion": {
@@ -158,13 +158,67 @@
    "nombre": "Javier Milei",
    "color": "#d55181",
    "desde": 2023,
-   "hasta": null,
-   "variacion": null
+   "hasta": 2025,
+   "variacion": -28.9
   }
  ],
- "indice": [],
+ "indice": [
+  {
+   "anio": 2022,
+   "valor": 94.5,
+   "tipo": "ejecutado",
+   "devengado_millones": 558994.0,
+   "ipc_promedio": 4392.59,
+   "gobierno": "af"
+  },
+  {
+   "anio": 2023,
+   "valor": 100.0,
+   "tipo": "ejecutado",
+   "devengado_millones": 1380749.3,
+   "ipc_promedio": 10256.81,
+   "gobierno": "af"
+  },
+  {
+   "anio": 2024,
+   "valor": 75.2,
+   "tipo": "ejecutado",
+   "devengado_millones": 3320980.3,
+   "ipc_promedio": 32808.74,
+   "gobierno": "milei"
+  },
+  {
+   "anio": 2025,
+   "valor": 71.1,
+   "tipo": "ejecutado",
+   "devengado_millones": 4457061.3,
+   "ipc_promedio": 46561.17,
+   "gobierno": "milei"
+  }
+ ],
  "unaj": {
-  "indice": [],
+  "indice": [
+   {
+    "anio": 2022,
+    "valor": 91.0,
+    "devengado_millones": 3737.1
+   },
+   {
+    "anio": 2023,
+    "valor": 100.0,
+    "devengado_millones": 9594.2
+   },
+   {
+    "anio": 2024,
+    "valor": 87.2,
+    "devengado_millones": 26772.8
+   },
+   {
+    "anio": 2025,
+    "valor": 82.6,
+    "devengado_millones": 35986.1
+   }
+  ],
   "vigente_actual": null
  },
  "gobiernos": [
@@ -231,12 +285,56 @@
   "2025": 46561.17
  },
  "presupuesto_abierto_estado": {
-  "errores": [
-   "Todavía no corrió en la Action: la primera corrida baja Presupuesto Abierto"
-  ],
+  "errores": [],
   "controles": [],
-  "anios": [],
+  "anios": [
+   2022,
+   2023,
+   2024,
+   2025
+  ],
   "url": "https://www.presupuestoabierto.gob.ar/sici/datos-abiertos"
  },
- "presupuesto_abierto": {}
+ "presupuesto_abierto": {
+  "2023": {
+   "devengado": 1380749.323,
+   "vigente": 1385289.441,
+   "devengado_inciso5": 1379604.185,
+   "unaj_devengado": 9594.189,
+   "unaj_vigente": 4816.502,
+   "filas": 1006,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2023/credito-anual-2023.zip",
+   "bajado": "2026-10-09"
+  },
+  "2024": {
+   "devengado": 3320980.307,
+   "vigente": 3351610.263,
+   "devengado_inciso5": 3318004.506,
+   "unaj_devengado": 26772.793,
+   "unaj_vigente": 4816.502,
+   "filas": 784,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2024/credito-anual-2024.zip",
+   "bajado": "2026-10-09"
+  },
+  "2025": {
+   "devengado": 4457061.256,
+   "vigente": 4460309.397,
+   "devengado_inciso5": 4451892.882,
+   "unaj_devengado": 35986.099,
+   "unaj_vigente": 4816.502,
+   "filas": 485,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2025/credito-anual-2025.zip",
+   "bajado": "2026-10-09"
+  },
+  "2022": {
+   "devengado": 558994.038,
+   "vigente": 562910.631,
+   "devengado_inciso5": 558655.78,
+   "unaj_devengado": 3737.102,
+   "unaj_vigente": 2411.414,
+   "filas": 1157,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2022/credito-anual-2022.zip",
+   "bajado": "2026-10-09"
+  }
+ }
 }
