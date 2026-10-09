@@ -12,6 +12,7 @@ on:
     paths:
       - "scripts/**"
       - "config.json"
+      - "fuentes/**"
       - "requirements.txt"
 
 permissions:
@@ -26,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -39,11 +40,16 @@ jobs:
       - name: Bajar datos y calcular indicadores
         run: python scripts/actualizar.py
 
+      - name: Serie histórica por gobierno (Mirada larga)
+        # si falla, la portada se actualiza igual y la página histórica queda con sus últimos datos
+        continue-on-error: true
+        run: python scripts/historia.py
+
       - name: Guardar cambios (solo si hay datos nuevos)
         run: |
           git config user.name  "mecopol-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/dashboard.json
+          git add docs/data/*.json
           if git diff --cached --quiet; then
             echo "Sin cambios en los datos."
           else
