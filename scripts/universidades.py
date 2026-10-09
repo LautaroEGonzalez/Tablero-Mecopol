@@ -1,23 +1,23 @@
 """
-MECOPOL · Universidades y Ley 27.795
-====================================
+MECOPOL · Universidades y Ley 27.795 — primera etapa, solo fuentes oficiales
+==========================================================================
 
 Arma docs/data/universidades.json para docs/universidades.html.
 
-1. Lee las cifras recopiladas, cada una con su fuente y link
-   (fuentes/universidades_fuentes.csv).
-2. Intenta calcular una serie propia: baja de Presupuesto Abierto el crédito
-   anual de cada año (dgsiaf-repo.mecon.gob.ar), suma el DEVENGADO del programa
-   "Desarrollo de la Educación Superior" y lo deflacta con el IPC promedio anual
-   de la serie oficial que usa el tablero (docs/data/historia.json).
-3. Controla la serie propia contra las cifras recopiladas. Si da parecido, la
-   usa para los años ejecutados; si no, o si no se pudo bajar, usa las
-   recopiladas y deja la propia en el JSON para revisarla.
+- Hechos (fechas, votaciones, normas, fallos): fuentes/universidades_fuentes.csv.
+  Solo entran datos con fuente oficial (Boletín Oficial, Congreso, Poder Judicial).
+- Financiamiento: baja de Presupuesto Abierto (Ministerio de Economía) el crédito
+  anual de cada año, suma el DEVENGADO del programa 26 "Desarrollo de la Educación
+  Superior" (el que nombra el art. 2 de la Ley 27.795) y lo deflacta con el IPC
+  promedio anual de la serie oficial del tablero (docs/data/historia.json, INDEC).
+- UNAJ: si el archivo de Presupuesto Abierto trae el detalle por universidad
+  (columna subparcial_desc), se calcula también la serie de la UNAJ.
 
-Los años cerrados se bajan una sola vez y quedan guardados en el JSON
-(clave "presupuesto_abierto"); el año en curso se vuelve a bajar cada 7 días.
-2026 (crédito vigente) y 2027 (proyecto) salen siempre de las cifras
-recopiladas: no son ejecución.
+No se usan cifras de consultoras, centros de estudio ni medios. Si Presupuesto
+Abierto no se puede bajar, la página muestra la sección como pendiente.
+
+Los años cerrados se bajan una sola vez y quedan guardados en el JSON (clave
+"presupuesto_abierto"); el año en curso se vuelve a bajar cada 7 días.
 """
 
 import csv
@@ -46,30 +46,13 @@ PA_PAGINA = "https://www.presupuestoabierto.gob.ar/sici/datos-abiertos"
 PROGRAMA = "desarrollo de la educacion superior"
 UNAJ = "arturo jauretche"
 DESDE = 2015                 # para tener la base de Macri (2015 → 2019)
-MAX_DESCARGAS = 4           # por corrida, para no pasar el tiempo de la Action; el resto sigue al día siguiente
-TOLERANCIA = 8.0             # puntos del índice 2023 = 100 contra las cifras recopiladas
+MAX_DESCARGAS = 4            # por corrida, para no pasar el tiempo de la Action; el resto sigue al día siguiente
 MANDATOS = [("macri", 2015, 2019), ("af", 2019, 2023), ("milei", 2023, None)]
 
 
 def norm(s):
     s = unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode().lower()
     return re.sub(r"\s+", " ", s).strip()
-
-
-def num(x):
-    try:
-        return float(x)
-    except (TypeError, ValueError):
-        return None
-
-
-# ---------------------------------------------------------------- recopiladas
-def leer_fuentes():
-    filas = list(csv.DictReader(FUENTES.open(encoding="utf-8")))
-    por = {}
-    for f in filas:
-        por.setdefault(f["seccion"], []).append(f)
-    return por
 
 
 # ---------------------------------------------------------- Presupuesto Abierto
@@ -108,7 +91,7 @@ def bajar_anio(anio):
     c_inc = col("inciso_id", obligatoria=False)
     c_sub = col("subparcial_desc", obligatoria=False)
     usar = [c for c in (c_prog, c_dev, c_vig, c_inc, c_sub) if c]
-    tot = {"devengado": 0.0, "vigente": 0.0, "devengado_inciso5": 0.0, "unaj_devengado": 0.0, "filas": 0}
+    tot = {"devengado": 0.0, "vigente": 0.0, "devengado_inciso5": 0.0, "unaj_devengado": 0.0, "unaj_vigente": 0.0, "filas": 0}
     for ch in pd.read_csv(io.StringIO(texto), sep=sep, usecols=usar, dtype=str, chunksize=200_000):
         ch = ch[ch[c_prog].map(norm).str.contains(PROGRAMA, na=False)]
         if ch.empty:
@@ -121,7 +104,9 @@ def bajar_anio(anio):
         if c_inc:
             tot["devengado_inciso5"] += ch.loc[ch[c_inc].str.strip() == "5", c_dev].sum()
         if c_sub:
-            tot["unaj_devengado"] += ch.loc[ch[c_sub].map(norm).str.contains(UNAJ, na=False), c_dev].sum()
+            es_unaj = ch[c_sub].map(norm).str.contains(UNAJ, na=False)
+            tot["unaj_devengado"] += ch.loc[es_unaj, c_dev].sum()
+            tot["unaj_vigente"] += ch.loc[es_unaj, c_vig].sum()
     if not tot["filas"]:
         raise RuntimeError(f"{anio}: no aparece el programa '{PROGRAMA}'")
     return {k: (round(v, 3) if isinstance(v, float) else v) for k, v in tot.items()} | {
@@ -132,7 +117,7 @@ def presupuesto_abierto(previo):
     hoy = datetime.now(timezone.utc).date()
     cache = dict(previo.get("presupuesto_abierto", {}))
     errores, seguidos, bajados = [], 0, 0
-    # primero los años que sirven para controlar contra las cifras recopiladas
+    # primero 2023 (la base) y los años más recientes
     orden = [2023, 2024, 2025] + list(range(2022, DESDE - 1, -1)) + list(range(2026, hoy.year + 1))
     for anio in dict.fromkeys(a for a in orden if DESDE <= a <= hoy.year):
         c = cache.get(str(anio))
@@ -153,11 +138,12 @@ def presupuesto_abierto(previo):
             seguidos += 1
             if seguidos >= 2 and not cache:
                 errores.append("Se cortó la descarga: Presupuesto Abierto no responde")
-                print("   ⚠️ Presupuesto Abierto no responde; se usan las cifras recopiladas")
+                print("   ⚠️ Presupuesto Abierto no responde; la sección queda pendiente")
                 break
             continue
         seguidos = 0
     return cache, errores
+
 
 
 # ------------------------------------------------------------------ deflactor
@@ -187,101 +173,77 @@ def gobierno_de(anio, gobs):
     return mejor or list(gobs)[-1]      # años futuros: el último gobierno
 
 
+
 # ----------------------------------------------------------------------- main
 def main():
     previo = json.loads(SALIDA.read_text(encoding="utf-8")) if SALIDA.exists() else {}
-    F = leer_fuentes()
+    filas = list(csv.DictReader(FUENTES.open(encoding="utf-8")))
+    F = {}
+    for f in filas:
+        F.setdefault(f["seccion"], []).append(f)
     ipc, gobs = ipc_promedio_anual()
+    hoy = datetime.now(timezone.utc).date()
 
-    recop = {int(f["fecha"]): {"anio": int(f["fecha"]), "valor": float(f["valor"]), "tipo": f["tipo"],
-                               "como": f["texto"], "fuente": f["fuente"], "link": f["link"], "origen": "recopilada"}
-             for f in F["indice"]}
-
-    # serie propia
+    # serie propia: devengado real, 2023 = 100 (solo años cerrados con IPC de 12 meses)
     cache, errores = presupuesto_abierto(previo)
-    propio, unaj = {}, {}
+    indice, unaj_idx, controles = [], [], []
     base = cache.get("2023")
-    if base and 2023 in ipc:
+    if base and 2023 in ipc and base["devengado"] > 0:
         real23 = base["devengado"] / ipc[2023]
-        u23 = base.get("unaj_devengado") or 0
-        for a, c in cache.items():
-            a = int(a)
-            if a in ipc and c["devengado"] > 0:
-                propio[a] = round(c["devengado"] / ipc[a] / real23 * 100, 1)
-                if u23 and c.get("unaj_devengado"):
-                    unaj[a] = round(c["unaj_devengado"] / ipc[a] / (u23 / ipc[2023]) * 100, 1)
-    control = [{"anio": a, "propia": propio[a], "recopilada": recop[a]["valor"], "dif": r(propio[a] - recop[a]["valor"], 1)}
-               for a in sorted(propio) if a in recop and a != 2023]
-    usa_propia = bool(control) and all(abs(c["dif"]) <= TOLERANCIA for c in control) and 2024 in propio
-    if propio:
-        print("🔎 Control serie propia vs. recopilada: " + ", ".join(f"{c['anio']} {c['propia']} vs {c['recopilada']}" for c in control))
-    print(f"   modo: {'serie propia' if usa_propia else 'cifras recopiladas'}")
+        u23 = (base.get("unaj_devengado") or 0) / ipc[2023]
+        for a in sorted(int(x) for x in cache):
+            c = cache[str(a)]
+            if a not in ipc or a >= hoy.year or c["devengado"] <= 0:
+                continue
+            indice.append({"anio": a, "valor": r(c["devengado"] / ipc[a] / real23 * 100, 1), "tipo": "ejecutado",
+                           "devengado_millones": r(c["devengado"], 1), "ipc_promedio": r(ipc[a], 2),
+                           "gobierno": gobierno_de(a, gobs)})
+            if u23 and c.get("unaj_devengado"):
+                unaj_idx.append({"anio": a, "valor": r(c["unaj_devengado"] / ipc[a] / u23 * 100, 1),
+                                 "devengado_millones": r(c["unaj_devengado"], 1)})
+        # controles de consistencia (no contra terceros): el programa aparece y los montos son razonables
+        for x in indice:
+            if not 20 <= x["valor"] <= 250:
+                controles.append(f"{x['anio']}: índice {x['valor']} fuera de rango, revisar el archivo de Presupuesto Abierto")
+    if controles:
+        print("⚠️ " + " · ".join(controles))
+        indice, unaj_idx = [], []
+    por = {x["anio"]: x for x in indice}
 
-    indice = []
-    for a in sorted(set(recop) | (set(propio) if usa_propia else set())):
-        if usa_propia and a in propio:
-            fila = {"anio": a, "valor": propio[a], "tipo": "ejecutado", "origen": "propia",
-                    "como": "Devengado del programa Desarrollo de la Educación Superior, deflactado con el IPC promedio anual",
-                    "fuente": "Presupuesto Abierto (MECON) e IPC del tablero", "link": PA_PAGINA}
-            if a in recop:
-                fila["recopilada"] = recop[a]["valor"]
-        elif a in recop:   # años sin serie propia (todavía no bajados, o vigente y proyecto): cifra recopilada
-            fila = dict(recop[a])
-        else:
-            continue
-        fila["gobierno"] = gobierno_de(a, gobs)
-        indice.append(fila)
-    por_anio = {x["anio"]: x for x in indice}
-
-    # variación real por mandato
-    directo = lambda x: x.get("origen") == "propia" or x["anio"] == 2023 or "vs. 2023" in x.get("como", "")
-    ultimo_ej = max(x["anio"] for x in indice if x["tipo"] == "ejecutado")
     tarjetas = []
+    ult = max(por) if por else None
     for gid, a0, a1 in MANDATOS:
-        a1 = a1 or ultimo_ej
+        a1 = a1 or ult
         g = gobs.get(gid, {"id": gid, "corto": gid, "nombre": gid, "color": "#888"})
-        x0, x1 = por_anio.get(a0), por_anio.get(a1)
-        t = {"id": gid, "corto": g["corto"], "nombre": g["nombre"], "color": g["color"], "desde": a0, "hasta": a1,
-             "variacion": r((x1["valor"] / x0["valor"] - 1) * 100, 1) if x0 and x1 else None,
-             # aproximado: una punta sale de encadenar variaciones de fuentes distintas, no de una comparación directa con 2023
-             "aproximado": bool(x0 and x1 and not (directo(x0) and directo(x1))),
-             "fuentes": []}
-        if x0 and x1:   # aproximado: todas las fuentes del encadenamiento; si no, las de las puntas
-            tramo = [por_anio[a] for a in range(a0, a1 + 1) if a in por_anio] if t["aproximado"] else [x0, x1]
-            t["fuentes"] = list(dict.fromkeys(x["fuente"] for x in tramo if x.get("fuente")))
-        if gid == "milei" and 2026 in por_anio and por_anio[2026]["tipo"] == "vigente":
-            t["vigente_2026"] = r(por_anio[2026]["valor"] - 100, 1)
-        tarjetas.append(t)
+        x0, x1 = por.get(a0), por.get(a1) if a1 else None
+        tarjetas.append({"id": gid, "corto": g["corto"], "nombre": g["nombre"], "color": g["color"], "desde": a0, "hasta": a1,
+                         "variacion": r((x1["valor"] / x0["valor"] - 1) * 100, 1) if x0 and x1 else None})
 
-    def filas(sec):
-        return F.get(sec, [])
+    # UNAJ en el año en curso: crédito vigente según Presupuesto Abierto
+    actual = cache.get(str(hoy.year), {})
+    unaj = {"indice": unaj_idx if len(unaj_idx) >= 3 else [],
+            "vigente_actual": {"anio": hoy.year, "millones": r(actual["unaj_vigente"], 1),
+                               "sistema_millones": r(actual["vigente"], 1), "bajado": actual.get("bajado")}
+            if actual.get("unaj_vigente") else None}
 
-    cifras = {}
-    for f in filas("cifra"):
-        cifras.setdefault(f["clave"], {})[f["tipo"]] = {"valor": num(f["valor"]), "texto": f["texto"], "fecha": f["fecha"],
-                                                         "fuente": f["fuente"], "link": f["link"]}
+    def link_de(f):
+        return {"fecha": f["fecha"], "texto": f["texto"], "fuente": f["fuente"], "link": f["link"]}
+
     datos = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
-        "modo": "propia" if usa_propia else "recopilada",
-        "hitos": {f["clave"]: {"fecha": f["fecha"], "texto": f["texto"], "link": f["link"]} for f in filas("hito")},
-        "estado": {"texto": filas("estado")[0]["texto"], "detalle": filas("estado")[0]["tipo"]} if filas("estado") else None,
+        "etapa": "solo fuentes oficiales",
+        "hitos": {f["clave"]: link_de(f) for f in F.get("hito", [])},
+        "ley": [{"clave": f["clave"], "texto": f["texto"], "fuente": f["fuente"], "link": f["link"]} for f in F.get("ley", [])],
+        "gobierno_dice": [{"texto": f["texto"], "fuente": f["fuente"], "link": f["link"]} for f in F.get("gobierno", [])],
+        "cronologia": [{"actor": f["tipo"], **link_de(f)} for f in F.get("crono", [])],
+        "pendientes": [f["texto"] for f in F.get("pendiente", [])],
         "tarjetas": tarjetas,
         "indice": indice,
-        "pbi": [{"anio": int(f["fecha"]), "valor": float(f["valor"]), "max": num(f["valor_max"]), "tipo": f["tipo"],
-                 "nota": f["texto"], "fuente": f["fuente"], "link": f["link"], "gobierno": gobierno_de(int(f["fecha"]), gobs)}
-                for f in filas("pbi")],
-        "salario": [{"fecha": f["fecha"], "valor": float(f["valor"]), "fuente": f["fuente"], "link": f["link"], "nota": f["texto"]}
-                    for f in filas("salario")],
-        "cifras": cifras,
-        "unaj": {"presupuesto_2026": {f["clave"]: {"valor": float(f["valor"]), "texto": f["texto"]} for f in filas("unaj")},
-                 "fuente": filas("unaj")[0]["fuente"] if filas("unaj") else None,
-                 "link": filas("unaj")[0]["link"] if filas("unaj") else None,
-                 "indice": [{"anio": a, "valor": v} for a, v in sorted(unaj.items())] if len(unaj) >= 3 and usa_propia else []},
-        "cronologia": [{"fecha": f["fecha"], "actor": f["tipo"], "texto": f["texto"], "link": f["link"]} for f in filas("crono")],
+        "unaj": unaj,
         "gobiernos": list(gobs.values()),
         "ipc_promedio": {str(a): r(v, 2) for a, v in sorted(ipc.items()) if a >= DESDE},
-        "serie_propia": {"indice": {str(a): v for a, v in sorted(propio.items())}, "control": control,
-                         "tolerancia": TOLERANCIA, "errores": errores},
+        "presupuesto_abierto_estado": {"errores": errores, "controles": controles,
+                                       "anios": sorted(int(a) for a in cache), "url": PA_PAGINA},
         "presupuesto_abierto": cache,
     }
 
@@ -291,7 +253,7 @@ def main():
             print("✔️ Sin cambios en universidades.")
             return
     SALIDA.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"💾 {SALIDA.relative_to(RAIZ)} · modo {datos['modo']} · " +
+    print(f"💾 {SALIDA.relative_to(RAIZ)} · años de Presupuesto Abierto: {datos['presupuesto_abierto_estado']['anios']} · " +
           " · ".join(f"{t['corto']} {t['variacion']}%" for t in tarjetas))
 
 

@@ -9,7 +9,7 @@
 | `estimaciones_reponderadas.csv` | Lo que publicaron otros (Di Tella, CEPA, consultoras, el Gobierno) con las ponderaciones 2017/18, para comparar con la estimación propia | Link en la columna `link` |
 | `indec_ipcnu_2014_2015.csv` | Variación mensual del IPC Nacional urbano (IPCNu) del INDEC, ene-2014 a oct-2015. Sale de los índices de cada informe de prensa; donde solo se tiene la variación publicada (redondeada a un decimal), se usa esa. Encadenada da 23,8% en 2014 (publicado: 23,9%) y 11,9% en ene-oct 2015 | Informes de prensa IPCNu del INDEC, link en la columna `fuente` |
 | `ipc_2015_2016_sin_indice_nacional.csv` | Variación mensual de nov-2015 a dic-2016: IPC de la Ciudad de Buenos Aires (nov-2015 a abr-2016, calculada con los índices del cuadro 5 de los informes de la Dirección de Estadística porteña) e IPC GBA del INDEC (may a dic-2016, la publicada en cada informe) | Link en la columna `fuente` |
-| `universidades_fuentes.csv` | Cifras de la página "Universidades y Ley 27.795": índice real (2023 = 100), % del PBI, mediciones de salario, cifras clave, presupuesto 2026 de la UNAJ, fechas del contador y cronología. Una fila por dato, con columnas `seccion, clave, fecha, valor, valor_max, tipo, texto, fuente, link` | Link en la columna `link` (vacío si la fuente no tiene un artículo identificado) |
+| `universidades_fuentes.csv` | Hechos de la página "Universidades y Ley 27.795": fechas del contador, artículos de la ley, considerandos del decreto, cronología y lista de temas en revisión. Columnas `seccion, clave, fecha, valor, valor_max, tipo, texto, fuente, link` | Solo fuentes oficiales, link en la columna `link` |
 | `indec_oficial_2007_2015.csv` | Inflación anual que publicó el INDEC entre 2007 y 2015, con el link a la nota de cada año | Diarios de la época, ver columna `fuente` |
 
 ## Cómo se arma la serie larga (Mirada larga)
@@ -43,10 +43,10 @@ Control: la variación promedio de 2018 da 34,1%, igual a la que informa la nota
 
 ## Universidades y Ley 27.795
 
+Primera etapa: **solo fuentes oficiales**. No se usan cifras de consultoras, centros de estudio ni medios.
+
 `scripts/universidades.py` arma `docs/data/universidades.json`:
 
-- **Cifras recopiladas:** salen de `universidades_fuentes.csv`. Para sumar o corregir un dato se edita ese archivo (también desde la web de GitHub) y la Action regenera el JSON.
-- **Serie propia:** baja de Presupuesto Abierto el crédito anual de cada año (`dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/<año>/credito-anual-<año>.zip`), suma el devengado del programa "Desarrollo de la Educación Superior" y lo deflacta con el IPC promedio anual de `historia.json` (la serie oficial de Mirada larga), con 2023 = 100. Baja hasta 4 años por corrida, empezando por 2023–2025; los años cerrados quedan guardados en el JSON y no se vuelven a bajar.
-- **Control:** la serie propia se usa solo si da, año por año, a menos de 8 puntos de las cifras recopiladas (2019–2025). Si no, la página sigue con las recopiladas y el JSON guarda la propia y el control (`serie_propia`) para revisarlos.
-- **UNAJ:** si el archivo de Presupuesto Abierto trae el detalle por universidad (columna `subparcial_desc`), se calcula también el índice real de la UNAJ y aparece en el gráfico.
-- 2026 (crédito vigente) y 2027 (proyecto) salen siempre de las cifras recopiladas: no son ejecución.
+- **Hechos:** fechas, votaciones, normas y fallos salen de `universidades_fuentes.csv`, cada uno con link a la fuente oficial (Boletín Oficial, texto de la norma, Cámara de Diputados, Senado, Poder Judicial). Lo que todavía no tiene fuente oficial va como `pendiente` y se muestra al pie como "en revisión".
+- **Financiamiento:** baja de Presupuesto Abierto el crédito anual de cada año (`dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/<año>/credito-anual-<año>.zip`), suma el devengado del programa 26 "Desarrollo de la Educación Superior" (el que nombra el art. 2 de la ley) y lo deflacta con el IPC promedio anual de `historia.json` (INDEC), con 2023 = 100. Baja hasta 4 años por corrida, empezando por 2023; los años cerrados quedan guardados en el JSON. Si un índice da fuera de rango (menos de 20 o más de 250), no se publica y el log avisa.
+- **UNAJ:** si el archivo trae el detalle por universidad (columna `subparcial_desc`), se calcula su serie y su crédito vigente del año en curso.
