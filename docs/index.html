@@ -71,6 +71,10 @@ h1 {
 .mandato .barra i { display: block; height: 100%; background: #fff; border-radius: 3px; }
 .mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: rgba(255,255,255,.75); }
 .mandato .txt b { color: #fff; font-weight: 500; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { font-size: 13px; text-decoration: none; color: rgba(255,255,255,.8); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,.25); }
+.nav a[aria-current="page"] { background: rgba(0,0,0,.25); color: #fff; border-color: transparent; }
+.nav a:hover { color: #fff; border-color: rgba(255,255,255,.6); }
 @media (max-width: 560px) {
   .banda-in { flex-direction: column; align-items: flex-start; gap: 14px; }
   .marca img { width: 72px; }
@@ -172,6 +176,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       <div class="eyebrow" id="eyebrow"><span>Tablero de precios</span><span>Mesa de Economía Política UNLa</span><span>Datos: INDEC</span></div>
       <h1>Inflación en el gobierno de Milei</h1>
       <div class="mandato" id="mandato"></div>
+      <nav class="nav" aria-label="Páginas del tablero"><a href="./" aria-current="page">Gobierno actual</a><a href="historia.html">Mirada larga 2003–hoy</a></nav>
     </div>
   </div>
 </header>

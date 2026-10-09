@@ -7,6 +7,8 @@ Versión enfocada en el gobierno de Milei:
 - Inflación mensual, interanual y acumulada desde diciembre de 2023
 - Precios relativos y variación por rubro
 
+Y una segunda página, **Mirada larga** (`docs/historia.html`, borrador), con la inflación por gobierno desde 2003: Kirchner, CFK I y II, Macri, Alberto Fernández y Milei.
+
 ## Ramas
 
 | Rama | Qué tiene |
@@ -26,6 +28,8 @@ API de datos.gob.ar ──► scripts/actualizar.py ──► docs/data/dashboar
 | Archivo | Qué es |
 |---|---|
 | `scripts/actualizar.py` | Baja las series del IPC, calcula todo y escribe el JSON |
+| `scripts/historia.py` | Arma la serie larga 2002–hoy y escribe `docs/data/historia.json` |
+| `fuentes/` | Series que no están en la API: IPC Provincias de CIFRA-CTA y el IPC oficial anual 2007–2015 con sus links |
 | `config.json` | Lo que se edita a mano: fechas del mandato e ids de rubros |
 | `docs/index.html` | El tablero. Lee el JSON y dibuja los gráficos |
 | `docs/data/dashboard.json` | Los datos procesados. Lo escribe la Action, no se toca a mano |
@@ -70,3 +74,4 @@ En Wix o Google Sites se puede incrustar con un iframe apuntando a la URL de Pag
 
 - IPC Nacional, INDEC, base diciembre 2016 = 100, vía la [API de Series de Tiempo](https://datos.gob.ar/series).
 - Base: noviembre de 2023, último mes completo antes de la asunción del 10 de diciembre.
+- Mirada larga: INDEC IPC GBA hasta dic-2006, IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) de 2007 a 2016 (el INDEC estuvo intervenido entre 2007 y 2015 y en 2016 no hubo índice nacional) e INDEC IPC Nacional desde 2017. La serie oficial 2007–2015 se muestra al lado para comparar.

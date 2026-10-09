@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mirada Larga MECOPOL</title>
+<meta name="description" content="Inflación por gobierno desde 2003: Kirchner, Cristina Fernández, Macri, Alberto Fernández y Milei. Borrador de análisis. Mesa de Economía Política UNLa.">
+<link rel="icon" type="image/png" href="img/icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: misma columna de lectura que la portada. Banner bordó, tarjetas por gobierno,
+   después la serie larga, los años y la tabla de mandatos. Tema oscuro único. */
+:root {
+  color-scheme: dark;
+  --bg:       #0e1014;
+  --panel:    #14171c;
+  --panel-hi: #1b1f26;
+  --line:     #23272f;
+  --grid:     #1f232a;
+  --fg:       #e3e5ea;
+  --fg-2:     #a3a9b6;
+  --fg-3:     #6f7685;
+  --marca:    #950b32;
+  --warn:     #e0a33a;
+  --font-ui:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 6px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--font-ui); padding-inline: 16px; padding-block: 0 48px; }
+a { color: var(--fg); text-underline-offset: 2px; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; padding-top: 28px; }
+
+/* ---- banner ---- */
+.banda { margin-inline: -16px; padding: 24px 16px 22px; background: var(--marca); color: #fff; border-bottom: 3px solid #6e0824; }
+.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 22px; }
+.marca { flex: none; display: block; background: #fff; border-radius: 10px; padding: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+.marca img { display: block; width: 92px; height: auto; }
+.banda-txt { flex: 1; min-width: 0; display: grid; gap: 10px; }
+.eyebrow { font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.78); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.borrador { padding: 1px 8px; border: 1px solid rgba(255,255,255,.55); border-radius: 3px; color: #fff; letter-spacing: .1em; }
+h1 { margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em; color: #fff; font-size: clamp(26px, 4vw, 42px); line-height: 1.08; text-wrap: balance; }
+.bajada { margin: 0; color: rgba(255,255,255,.82); max-width: 62ch; font-size: 15px; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { font-size: 13px; text-decoration: none; color: rgba(255,255,255,.8); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,.25); }
+.nav a[aria-current="page"] { background: rgba(0,0,0,.25); color: #fff; border-color: transparent; }
+.nav a:hover { color: #fff; border-color: rgba(255,255,255,.6); }
+@media (max-width: 560px) { .banda-in { flex-direction: column; align-items: flex-start; gap: 14px; } .marca img { width: 72px; } }
+
+/* ---- tarjetas por gobierno ---- */
+.gobs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.gob { padding: 18px 16px 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.gob + .gob { border-left: 1px solid var(--line); }
+.gob h2 { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.gob h2 i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.gob .per { font: 12px var(--font-num); color: var(--fg-3); }
+.gob .valor { font: 600 30px/1.1 var(--font-num); letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-top: 8px; }
+.gob .valor small { font-size: 15px; color: var(--fg-3); margin-left: 1px; }
+.gob .lbl { font-size: 12px; color: var(--fg-2); }
+.gob .sec2 { font-size: 12px; color: var(--fg-3); margin-top: 6px; }
+.gob .sec2 b { font-family: var(--font-num); color: var(--fg-2); font-weight: 500; }
+.chip { display: inline-block; padding: 0 6px; border-radius: 3px; font: 500 11px var(--font-num); border: 1px solid currentColor; color: var(--warn); }
+@media (max-width: 1100px) {
+  .gobs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gob:nth-child(4) { border-left: 0; } .gob:nth-child(n+4) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .gobs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gob:nth-child(n) { border-left: 0; border-top: 1px solid var(--line); }
+  .gob:nth-child(2n) { border-left: 1px solid var(--line); }
+  .gob:nth-child(-n+2) { border-top: 0; }
+}
+
+/* ---- secciones ---- */
+.sec { display: grid; gap: 14px; }
+.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; }
+.sec-cab > div { flex: 1 1 320px; min-width: 0; }
+.sec h2 { margin: 0; font-size: 20px; font-weight: 600; font-stretch: 90%; text-wrap: balance; }
+.sec p.sub { margin: 4px 0 0; color: var(--fg-2); font-size: 14px; max-width: 70ch; }
+.caja { background: var(--panel); border-radius: var(--r); padding: 16px; min-width: 0; }
+.chart { width: 100%; height: 380px; }
+@media (max-width: 560px) { .chart { height: 320px; } }
+.seg { display: inline-flex; background: var(--panel); border-radius: var(--r); padding: 3px; gap: 2px; }
+.seg button { font: 500 13px var(--font-ui); color: var(--fg-2); background: transparent; border: 0; padding: 5px 12px; border-radius: 4px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--panel-hi); color: var(--fg); }
+.seg button:hover { color: var(--fg); }
+.lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 74ch; }
+.lectura b { color: var(--fg); font-weight: 600; }
+
+/* franja de fuentes bajo la serie */
+.fuentes-tira { display: flex; height: 22px; border-radius: 3px; overflow: hidden; font: 11px/22px var(--font-num); color: var(--fg); margin-top: 8px; }
+.fuentes-tira span { padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fuentes-tira .indec { background: #262b33; } .fuentes-tira .cifra { background: #3a2f1a; color: #f0d79a; }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
+.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.leyenda i.raya { background: repeating-linear-gradient(45deg, #8a909c 0 2px, transparent 2px 5px); border: 1px solid #8a909c; }
+
+/* ---- tablas ---- */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+th, td { padding: 9px 10px; text-align: right; white-space: nowrap; }
+th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--line); vertical-align: bottom; }
+td { font-family: var(--font-num); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; }
+td:first-child { font-family: var(--font-ui); }
+tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--panel-hi); }
+.nom { display: inline-flex; align-items: center; gap: 8px; }
+.nom i { width: 10px; height: 10px; border-radius: 2px; }
+td.dif { color: var(--warn); }
+td .mute { color: var(--fg-3); }
+.tabla-chica table { min-width: 520px; }
+
+/* ---- notas ---- */
+.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
+.notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.notas p { margin: 0; font-size: 13px; color: var(--fg-2); max-width: 62ch; }
+.notas a { color: var(--fg-2); }
+.estado { padding: 60px 0; color: var(--fg-2); }
+.aviso { padding: 9px 13px; border-radius: var(--r); font-size: 13px; background: #221d10; color: #e9cf8f; border: 1px solid #4d3f19; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="banda">
+  <div class="banda-in">
+    <a class="marca" href="https://mecopolunla.wixsite.com/mecopol" target="_blank" rel="noopener">
+      <img src="img/logo-mecopol.png" width="320" height="316" alt="MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús">
+    </a>
+    <div class="banda-txt">
+      <div class="eyebrow"><span>Mirada larga</span><span class="borrador">Borrador</span><span>Mesa de Economía Política UNLa</span></div>
+      <h1>Inflación por gobierno, 2003 a hoy</h1>
+      <p class="bajada">Seis gobiernos medidos con la misma vara. Para comparar mandatos de distinta duración, la cifra principal es el promedio anual.</p>
+      <nav class="nav" aria-label="Páginas del tablero"><a href="./">Gobierno actual</a><a href="historia.html" aria-current="page">Mirada larga 2003–hoy</a></nav>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="app"><div class="estado">Cargando la serie histórica…</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+(() => {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
+    panel: css('--panel'), num: css('--font-num'), ui: css('--font-ui') };
+  const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pct = (v, d = 1) => v == null ? '—' : nf(v, d) + '%';
+  const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const MESL = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const etq = ym => { const [a, m] = ym.split('-'); return `${MES[+m - 1]}-${a.slice(2)}`; };
+  const largo = ym => { const [a, m] = ym.split('-'); return `${MESL[+m - 1]} de ${a}`; };
+  const sig = ym => { const [a, m] = ym.split('-').map(Number); return m === 12 ? `${a + 1}-01` : `${a}-${String(m + 1).padStart(2, '0')}`; };
+  const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+  const tip = () => ({ trigger: 'axis', backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
+    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:6px;',
+    axisPointer: { type: 'line', lineStyle: { color: T.fg3, width: 1 } } });
+  const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true }, splitLine: { show: false } }, extra);
+  const ejeY = extra => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) + '%' },
+    splitLine: { lineStyle: { color: T.grid, width: 1 } } }, extra);
+  const nuevo = (el, opt) => { const c = echarts.init(el);
+    c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: T.ui, color: T.fg2 }, animationDuration: 500 }, opt));
+    new ResizeObserver(() => c.resize()).observe(el); return c; };
+  const marca = c => `<i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c};margin-right:6px"></i>`;
+  const seg = (id, ops) => `<div class="seg" role="group" id="${id}">${ops.map(([v, t], i) =>
+    `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`;
+  const seguir = (id, fn) => document.getElementById(id).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+
+  function render(d) {
+    const G = d.gobiernos, byId = Object.fromEntries(G.map(g => [g.id, g]));
+    const cal = Object.fromEntries((d.calendario || []).map(c => [c.id, c]));
+    const app = document.getElementById('app');
+    const ord = [...G].sort((a, b) => a.promedio_anual - b.promedio_anual);
+    const minG = ord[0], maxG = ord[ord.length - 1];
+    const difs = (d.calendario || []).filter(c => c.difiere);
+
+    app.innerHTML = `
+      ${d.simulado ? '<div class="aviso">Vista previa: los tramos 2007–2016 (CIFRA-CTA) y desde nov-2023 son reales, pero 2002–2006 y 2017–2023 son aproximados. En GitHub Pages se reemplazan solos por las series reales del INDEC.</div>' : ''}
+
+      <section class="gobs" aria-label="Promedio anual de inflación por gobierno">
+        ${G.map(g => `<div class="gob">
+          <h2><i style="background:${g.color}"></i>${g.corto}</h2>
+          <div class="per">${etq(sig(g.base))} – ${g.en_curso ? 'hoy' : etq(g.fin)}</div>
+          <div class="valor">${nf(g.promedio_anual, 1)}<small>%</small></div>
+          <div class="lbl">promedio anual${g.en_curso ? ' <span class="chip">en curso</span>' : ''}</div>
+          <div class="sec2">Acumulada <b>${pct(g.acumulada, 0)}</b> en ${g.meses} meses</div>
+          ${cal[g.id] && cal[g.id].difiere ? `<div class="sec2">INDEC oficial <b>${pct(cal[g.id].oficial, 1)}</b>/año</div>` : ''}
+        </div>`).join('')}
+      </section>
+
+      <p class="lectura">El promedio anual más bajo fue el de <b>${minG.nombre}</b> (${pct(minG.promedio_anual, 1)}) y el más alto, el de <b>${maxG.nombre}</b> (${pct(maxG.promedio_anual, 1)}).
+        ${difs.length ? `Entre 2007 y 2015 el INDEC estuvo intervenido: con la serie oficial de esos años, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
+
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Inflación interanual, mes a mes</h2>
+          <p class="sub">Cuánto subieron los precios respecto del mismo mes del año anterior. Las franjas marcan cada gobierno.</p></div>
+          ${seg('sel-escala', [['lin', 'Escala lineal'], ['log', 'Logarítmica']])}</div>
+        <div class="caja"><div class="chart" id="ch-serie"></div>
+          <div class="fuentes-tira" id="tira" aria-label="Fuente de cada tramo de la serie"></div></div>
+      </section>
+
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Inflación de cada año</h2>
+          <p class="sub">De diciembre a diciembre. Entre 2007 y 2015 se muestran las dos mediciones: la serie de provincias de CIFRA-CTA y lo que publicó el INDEC.</p></div></div>
+        <div class="caja"><div class="chart" id="ch-anual"></div></div>
+        <div class="leyenda">${G.map(g => `<span><i style="background:${g.color}"></i>${g.corto}</span>`).join('')}<span><i class="raya"></i>INDEC oficial 2007–2015</span></div>
+      </section>
+
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Mandato por mandato</h2>
+          <p class="sub">Cómo recibió cada gobierno la inflación, cómo la dejó y cuánto subieron los precios en el medio. El mes base es el último mes completo del gobierno anterior.</p></div></div>
+        <div class="caja"><div class="tabla-wrap"><table>
+          <thead><tr><th>Gobierno</th><th>Período</th><th>Heredada<br>(interanual)</th><th>Promedio<br>anual</th><th>Acumulada</th><th>Entregada<br>(interanual)</th><th>Mes más alto</th><th>Mes más bajo</th></tr></thead>
+          <tbody>${G.map(g => `<tr><td><span class="nom"><i style="background:${g.color}"></i>${g.nombre}</span></td>
+            <td>${etq(sig(g.base))}–${g.en_curso ? 'hoy' : etq(g.fin)}</td><td>${pct(g.heredada, 1)}</td><td><b>${pct(g.promedio_anual, 1)}</b></td>
+            <td>${pct(g.acumulada, 0)}</td><td>${pct(g.entregada, 1)}${g.en_curso ? ' <span class="mute">(a hoy)</span>' : ''}</td>
+            <td>${pct(g.mes_max.valor, 1)} <span class="mute">${etq(g.mes_max.fecha)}</span></td><td>${pct(g.mes_min.valor, 1)} <span class="mute">${etq(g.mes_min.fecha)}</span></td></tr>`).join('')}
+          </tbody></table></div></div>
+      </section>
+
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Las dos series, lado a lado</h2>
+          <p class="sub">Promedio anual de cada gobierno contando años calendario completos, con la serie de CIFRA-CTA y con la oficial del INDEC. Solo cambian los años 2007 a 2015. Con este método, el diciembre de cada cambio de gobierno (y enero a mayo de 2003) queda en el año del gobierno anterior, por eso las cifras difieren de las de las tarjetas.</p></div></div>
+        <div class="caja tabla-chica"><div class="tabla-wrap"><table>
+          <thead><tr><th>Gobierno</th><th>Años</th><th>CIFRA-CTA</th><th>INDEC oficial</th><th>Diferencia</th></tr></thead>
+          <tbody>${(d.calendario || []).map(c => `<tr><td><span class="nom"><i style="background:${byId[c.id].color}"></i>${byId[c.id].nombre}</span></td>
+            <td>${c.anios}</td><td>${pct(c.alternativa, 1)}</td><td>${pct(c.oficial, 1)}</td>
+            <td class="${c.difiere ? 'dif' : ''}">${c.difiere ? nf(c.oficial - c.alternativa, 1) + ' pp' : '<span class="mute">igual</span>'}</td></tr>`).join('')}
+          </tbody></table></div></div>
+      </section>
+
+      <section class="sec">
+        <div class="sec-cab"><div><h2>Precios a lo largo de cada mandato</h2>
+          <p class="sub">Índice de precios con el inicio de cada gobierno igual a 100. En escala logarítmica, la misma pendiente es la misma inflación, sin importar el nivel.</p></div>
+          ${seg('sel-tray', [['log', 'Logarítmica'], ['lin', 'Escala lineal']])}</div>
+        <div class="caja"><div class="chart" id="ch-tray"></div></div>
+      </section>
+
+      <footer class="notas">
+        <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Se encadenan las variaciones mensuales de cada fuente.</p></div>
+        <div><h3>Por qué CIFRA-CTA</h3><p>Entre 2007 y 2015 el INDEC estuvo intervenido y sus cifras quedaron muy por debajo de las de las provincias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
+        <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>.</p></div>
+        <div><h3>Borrador</h3><p>Análisis en construcción. La inflación es una sola dimensión: falta sumar salarios, empleo, consumo y actividad para evaluar cada gobierno.</p></div>
+      </footer>`;
+
+    // ---------- serie interanual ----------
+    const S = d.serie.filter(x => x.interanual != null);
+    const xs = S.map(x => x.fecha);
+    const bandas = G.map(g => {
+      const a = xs.find(f => f >= sig(g.base)), b = [...xs].reverse().find(f => f <= g.fin);
+      return a && b ? [{ name: g.corto, xAxis: a, itemStyle: { color: hexA(g.color, .10) },
+        label: { color: g.color, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: b }] : null;
+    }).filter(Boolean);
+    const chS = nuevo(document.getElementById('ch-serie'), {});
+    const dibS = esc => chS.setOption({
+      grid: { left: 4, right: 24, top: 30, bottom: 4, containLabel: true },
+      tooltip: Object.assign(tip(), { formatter: p => { const x = S[p[0].dataIndex];
+        return `${largo(x.fecha)}<br>Interanual: <b>${pct(x.interanual, 1)}</b><br><span style="color:${T.fg3}">${x.fuente}</span>`; } }),
+      xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => v.slice(0, 4), interval: (i, v) => v.endsWith('-01') && +v.slice(0, 4) % 2 === 0 } }),
+      yAxis: esc === 'log' ? ejeY({ type: 'log', logBase: 10, min: 1 }) : ejeY({ min: 0 }),
+      series: [{ type: 'line', data: S.map(x => x.interanual), symbol: 'none', lineStyle: { width: 2, color: T.fg },
+        markArea: { silent: true, data: bandas } }],
+    }, { replaceMerge: ['series', 'yAxis'] });
+    dibS('lin'); seguir('sel-escala', dibS);
+    const total = xs.length;
+    document.getElementById('tira').innerHTML = d.empalme.map(e => {
+      const n = xs.filter(f => f >= e.desde && f <= e.hasta).length;
+      return n ? `<span class="${e.fuente === 'CIFRA-CTA' ? 'cifra' : 'indec'}" style="width:${(n / total * 100).toFixed(2)}%" title="${e.fuente}: ${e.serie}">${e.fuente}</span>` : '';
+    }).join('');
+
+    // ---------- barras anuales ----------
+    const A = d.anual, colA = a => byId[a.gobierno] ? byId[a.gobierno].color : T.fg3;
+    nuevo(document.getElementById('ch-anual'), {
+      grid: { left: 4, right: 16, top: 24, bottom: 4, containLabel: true },
+      tooltip: Object.assign(tip(), { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } },
+        formatter: p => { const a = A[p[0].dataIndex];
+          return `<b>${a.anio}</b>${a.parcial ? ` (hasta ${etq(a.hasta)})` : ''} · ${byId[a.gobierno].corto}<br>${a.fuente === 'CIFRA-CTA' ? 'CIFRA-CTA' : 'INDEC'}: <b>${pct(a.variacion, 1)}</b>` +
+            (a.oficial ? `<br>INDEC oficial: <b>${pct(a.oficial.variacion, 1)}</b>${a.oficial.meses < 12 ? ` (${a.oficial.meses} meses)` : ''}` : ''); } }),
+      xAxis: ejeX({ type: 'category', data: A.map(a => a.parcial ? `${a.anio}*` : String(a.anio)), axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true } }),
+      yAxis: ejeY({}),
+      series: [
+        { name: 'Serie principal', type: 'bar', barGap: '8%', barMaxWidth: 26,
+          data: A.map(a => ({ value: a.variacion, itemStyle: { color: colA(a), opacity: a.parcial ? .55 : 1, borderRadius: [3, 3, 0, 0] } })),
+          label: { show: true, position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg2, formatter: p => nf(p.value, 0) } },
+        { name: 'INDEC oficial', type: 'bar', barMaxWidth: 26,
+          data: A.map(a => a.oficial ? { value: a.oficial.variacion, itemStyle: { color: { image: rayas(colA(a)), repeat: 'repeat' }, borderColor: colA(a), borderWidth: 1, borderRadius: [3, 3, 0, 0] } } : null),
+          label: { show: true, position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg3, formatter: p => p.value == null ? '' : nf(p.value, 0) } },
+      ],
+    });
+
+    // ---------- trayectorias ----------
+    const chT = nuevo(document.getElementById('ch-tray'), {});
+    const maxN = Math.max(...G.map(g => g.trayectoria.length));
+    const dibT = esc => chT.setOption({
+      grid: { left: 4, right: 110, top: 34, bottom: 28, containLabel: true },
+      legend: { top: 0, left: 0, textStyle: { color: T.fg2, fontSize: 12 }, itemWidth: 14, itemHeight: 3, icon: 'rect' },
+      tooltip: Object.assign(tip(), { formatter: p => `Mes ${p[0].value[0]} de gobierno<br>` +
+        p.map(s => `${marca(s.color)}${s.seriesName}: <b>${pct(s.value[1] - 100, 0)}</b>`).join('<br>') }),
+      xAxis: ejeX({ type: 'value', min: 0, max: Math.ceil((maxN - 1) / 12) * 12, interval: 12, name: 'meses de gobierno', nameLocation: 'middle', nameGap: 24,
+        nameTextStyle: { color: T.fg3, fontSize: 11 }, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11 } }),
+      yAxis: esc === 'log' ? ejeY({ type: 'log', logBase: 10, min: 100, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) } })
+                           : ejeY({ min: 100, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) } }),
+      series: G.map(g => ({ name: g.corto, type: 'line', symbol: 'none', lineStyle: { width: 2, color: g.color }, itemStyle: { color: g.color },
+        data: g.trayectoria.map((v, i) => [i, 100 + v]),
+        endLabel: { show: true, color: T.fg, fontFamily: T.num, fontSize: 11, formatter: p => `${g.corto} ${nf(p.value[1], 0)}` } })),
+    }, { replaceMerge: ['series', 'yAxis'] });
+    dibT('log'); seguir('sel-tray', dibT);
+  }
+
+  // patrón rayado para las barras "INDEC oficial"
+  function rayas(color) {
+    const c = document.createElement('canvas'); c.width = c.height = 6;
+    const x = c.getContext('2d'); x.fillStyle = 'rgba(0,0,0,0)'; x.fillRect(0, 0, 6, 6);
+    x.strokeStyle = color; x.lineWidth = 1.5; x.beginPath(); x.moveTo(0, 6); x.lineTo(6, 0); x.moveTo(-1, 1); x.lineTo(1, -1); x.moveTo(5, 7); x.lineTo(7, 5); x.stroke();
+    return c;
+  }
+
+  fetch('data/historia.json', { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(e => { document.getElementById('app').innerHTML = '<div class="estado">No se pudo cargar la serie histórica (data/historia.json). Revisá que la Action haya corrido.</div>'; console.error(e); });
+})();
+</script>
+</body>
+</html>
