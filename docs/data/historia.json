@@ -1,1710 +1,2562 @@
 {
- "actualizado": "2026-10-09T03:10+00:00",
+ "actualizado": "2026-10-09T16:08+00:00",
  "ultimo_mes": "2026-08",
  "serie": [
   {
    "fecha": "2003-01",
    "mensual": 1.32,
    "interanual": 39.6,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 39.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-02",
    "mensual": 0.57,
    "interanual": 36.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 36.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-03",
    "mensual": 0.59,
    "interanual": 31.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 31.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-04",
    "mensual": 0.06,
    "interanual": 19.4,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 19.4,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-05",
    "mensual": -0.39,
    "interanual": 14.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 14.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-06",
    "mensual": -0.09,
    "interanual": 10.2,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.2,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-07",
    "mensual": 0.45,
    "interanual": 7.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 7.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-08",
    "mensual": 0.02,
    "interanual": 4.9,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 4.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-09",
    "mensual": 0.04,
    "interanual": 3.5,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 3.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-10",
    "mensual": 0.59,
    "interanual": 3.9,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 3.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-11",
    "mensual": 0.25,
    "interanual": 3.6,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 3.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2003-12",
    "mensual": 0.21,
    "interanual": 3.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 3.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-01",
    "mensual": 0.42,
    "interanual": 2.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 2.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-02",
    "mensual": 0.1,
    "interanual": 2.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 2.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-03",
    "mensual": 0.6,
    "interanual": 2.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 2.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-04",
    "mensual": 0.85,
    "interanual": 3.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 3.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-05",
    "mensual": 0.6,
    "interanual": 4.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 4.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-06",
    "mensual": 0.7,
    "interanual": 4.9,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 4.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-07",
    "mensual": 0.46,
    "interanual": 4.9,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 4.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-08",
    "mensual": 0.34,
    "interanual": 5.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 5.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-09",
    "mensual": 0.63,
    "interanual": 5.9,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 5.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-10",
    "mensual": 0.39,
    "interanual": 5.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 5.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-11",
    "mensual": 0.0,
    "interanual": 5.4,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 5.4,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2004-12",
    "mensual": 0.84,
    "interanual": 6.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 6.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-01",
    "mensual": 1.48,
    "interanual": 7.2,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 7.2,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-02",
    "mensual": 0.95,
    "interanual": 8.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 8.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-03",
    "mensual": 1.54,
    "interanual": 9.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-04",
    "mensual": 0.49,
    "interanual": 8.8,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 8.8,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-05",
    "mensual": 0.6,
    "interanual": 8.8,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 8.8,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-06",
    "mensual": 0.92,
    "interanual": 9.0,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.0,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-07",
    "mensual": 1.0,
    "interanual": 9.6,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-08",
    "mensual": 0.44,
    "interanual": 9.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-09",
    "mensual": 1.17,
    "interanual": 10.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-10",
    "mensual": 0.78,
    "interanual": 10.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-11",
    "mensual": 1.21,
    "interanual": 12.0,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 12.0,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2005-12",
    "mensual": 1.11,
    "interanual": 12.3,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 12.3,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-01",
    "mensual": 1.28,
    "interanual": 12.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 12.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-02",
    "mensual": 0.4,
    "interanual": 11.5,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 11.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-03",
    "mensual": 1.2,
    "interanual": 11.1,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 11.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-04",
    "mensual": 0.97,
    "interanual": 11.6,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 11.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-05",
    "mensual": 0.47,
    "interanual": 11.5,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 11.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-06",
    "mensual": 0.48,
    "interanual": 11.0,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 11.0,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-07",
    "mensual": 0.62,
    "interanual": 10.6,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-08",
    "mensual": 0.56,
    "interanual": 10.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-09",
    "mensual": 0.9,
    "interanual": 10.4,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.4,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-10",
    "mensual": 0.86,
    "interanual": 10.5,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-11",
    "mensual": 0.71,
    "interanual": 10.0,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 10.0,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2006-12",
    "mensual": 0.98,
    "interanual": 9.8,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.8,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-01",
    "mensual": 1.15,
    "interanual": 9.7,
-   "fuente": "INDEC (GBA)"
+   "fuente": "INDEC (GBA)",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-02",
    "mensual": 1.15,
    "interanual": 10.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-03",
    "mensual": 1.15,
    "interanual": 10.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.1,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-04",
    "mensual": 1.87,
    "interanual": 11.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.9,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-05",
    "mensual": 2.17,
    "interanual": 13.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.8,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-06",
    "mensual": 2.22,
    "interanual": 15.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.8,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-07",
    "mensual": 2.97,
    "interanual": 18.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-08",
    "mensual": 3.4,
    "interanual": 21.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.7,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-09",
    "mensual": 2.57,
    "interanual": 23.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.6,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-10",
    "mensual": 2.39,
    "interanual": 25.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.4,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-11",
    "mensual": 0.53,
    "interanual": 25.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2007-12",
    "mensual": 0.91,
    "interanual": 24.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.5,
+   "indec_serie": "IPC GBA",
+   "cifra": null
   },
   {
    "fecha": "2008-01",
    "mensual": 1.17,
    "interanual": 24.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.9
   },
   {
    "fecha": "2008-02",
    "mensual": 2.49,
    "interanual": 26.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.4,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.6
   },
   {
    "fecha": "2008-03",
    "mensual": 3.85,
    "interanual": 29.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 29.9
   },
   {
    "fecha": "2008-04",
    "mensual": 3.36,
    "interanual": 31.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 31.9
   },
   {
    "fecha": "2008-05",
    "mensual": 1.78,
    "interanual": 31.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 31.3
   },
   {
    "fecha": "2008-06",
    "mensual": 2.03,
    "interanual": 31.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.3,
+   "indec_serie": "IPC GBA",
+   "cifra": 31.1
   },
   {
    "fecha": "2008-07",
    "mensual": 1.52,
    "interanual": 29.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 29.3
   },
   {
    "fecha": "2008-08",
    "mensual": 1.12,
    "interanual": 26.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.4
   },
   {
    "fecha": "2008-09",
    "mensual": 1.39,
    "interanual": 25.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.0
   },
   {
    "fecha": "2008-10",
    "mensual": 0.83,
    "interanual": 23.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.4,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.0
   },
   {
    "fecha": "2008-11",
    "mensual": 0.8,
    "interanual": 23.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 7.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.4
   },
   {
    "fecha": "2008-12",
    "mensual": 0.56,
    "interanual": 22.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 7.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.9
   },
   {
    "fecha": "2009-01",
    "mensual": 0.86,
    "interanual": 22.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 6.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.6
   },
   {
    "fecha": "2009-02",
    "mensual": 0.53,
    "interanual": 20.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 6.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 20.2
   },
   {
    "fecha": "2009-03",
    "mensual": 1.55,
    "interanual": 17.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 6.3,
+   "indec_serie": "IPC GBA",
+   "cifra": 17.6
   },
   {
    "fecha": "2009-04",
    "mensual": 1.36,
    "interanual": 15.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 5.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 15.3
   },
   {
    "fecha": "2009-05",
    "mensual": 0.59,
    "interanual": 13.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 5.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 13.9
   },
   {
    "fecha": "2009-06",
    "mensual": 0.49,
    "interanual": 12.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 5.3,
+   "indec_serie": "IPC GBA",
+   "cifra": 12.2
   },
   {
    "fecha": "2009-07",
    "mensual": 0.92,
    "interanual": 11.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 5.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 11.6
   },
   {
    "fecha": "2009-08",
    "mensual": 1.46,
    "interanual": 12.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 5.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 12.0
   },
   {
    "fecha": "2009-09",
    "mensual": 1.0,
    "interanual": 11.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 6.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 11.5
   },
   {
    "fecha": "2009-10",
    "mensual": 1.55,
    "interanual": 12.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 6.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 12.3
   },
   {
    "fecha": "2009-11",
    "mensual": 1.27,
    "interanual": 12.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 7.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 12.8
   },
   {
    "fecha": "2009-12",
    "mensual": 2.39,
    "interanual": 14.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 7.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 14.9
   },
   {
    "fecha": "2010-01",
    "mensual": 2.13,
    "interanual": 16.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 8.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 16.3
   },
   {
    "fecha": "2010-02",
    "mensual": 3.41,
    "interanual": 19.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 19.7
   },
   {
    "fecha": "2010-03",
    "mensual": 2.6,
    "interanual": 20.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 20.9
   },
   {
    "fecha": "2010-04",
    "mensual": 1.96,
    "interanual": 21.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 21.6
   },
   {
    "fecha": "2010-05",
    "mensual": 1.52,
    "interanual": 22.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.8
   },
   {
    "fecha": "2010-06",
    "mensual": 1.21,
    "interanual": 23.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.6
   },
   {
    "fecha": "2010-07",
    "mensual": 1.35,
    "interanual": 24.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.2
   },
   {
    "fecha": "2010-08",
    "mensual": 1.3,
    "interanual": 24.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.0
   },
   {
    "fecha": "2010-09",
    "mensual": 1.13,
    "interanual": 24.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.1
   },
   {
    "fecha": "2010-10",
    "mensual": 2.56,
    "interanual": 25.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.4
   },
   {
    "fecha": "2010-11",
    "mensual": 2.26,
    "interanual": 26.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.6
   },
   {
    "fecha": "2010-12",
    "mensual": 1.92,
    "interanual": 26.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.0
   },
   {
    "fecha": "2011-01",
    "mensual": 1.52,
    "interanual": 25.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.6,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.2
   },
   {
    "fecha": "2011-02",
    "mensual": 1.45,
    "interanual": 22.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.9
   },
   {
    "fecha": "2011-03",
    "mensual": 2.3,
    "interanual": 22.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.5
   },
   {
    "fecha": "2011-04",
    "mensual": 2.13,
    "interanual": 22.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.7
   },
   {
    "fecha": "2011-05",
    "mensual": 1.54,
    "interanual": 22.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.7
   },
   {
    "fecha": "2011-06",
    "mensual": 1.35,
    "interanual": 22.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.9
   },
   {
    "fecha": "2011-07",
    "mensual": 1.94,
    "interanual": 23.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.6
   },
   {
    "fecha": "2011-08",
    "mensual": 1.9,
    "interanual": 24.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.4
   },
   {
    "fecha": "2011-09",
    "mensual": 1.82,
    "interanual": 25.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.2
   },
   {
    "fecha": "2011-10",
    "mensual": 1.01,
    "interanual": 23.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.3
   },
   {
    "fecha": "2011-11",
    "mensual": 1.74,
    "interanual": 22.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.7
   },
   {
    "fecha": "2011-12",
    "mensual": 1.8,
    "interanual": 22.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.5
   },
   {
    "fecha": "2012-01",
    "mensual": 1.33,
    "interanual": 22.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.3
   },
   {
    "fecha": "2012-02",
    "mensual": 1.18,
    "interanual": 22.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.7,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.0
   },
   {
    "fecha": "2012-03",
    "mensual": 2.78,
    "interanual": 22.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 22.6
   },
   {
    "fecha": "2012-04",
    "mensual": 2.68,
    "interanual": 23.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.2
   },
   {
    "fecha": "2012-05",
    "mensual": 1.63,
    "interanual": 23.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.3
   },
   {
    "fecha": "2012-06",
    "mensual": 1.69,
    "interanual": 23.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 23.7
   },
   {
    "fecha": "2012-07",
    "mensual": 3.92,
    "interanual": 26.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 9.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.1
   },
   {
    "fecha": "2012-08",
    "mensual": 2.09,
    "interanual": 26.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.4
   },
   {
    "fecha": "2012-09",
    "mensual": 1.67,
    "interanual": 26.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.0,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.2
   },
   {
    "fecha": "2012-10",
    "mensual": 1.5,
    "interanual": 26.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.2,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.8
   },
   {
    "fecha": "2012-11",
    "mensual": 1.94,
    "interanual": 27.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.6,
+   "indec_serie": "IPC GBA",
+   "cifra": 27.0
   },
   {
    "fecha": "2012-12",
    "mensual": 1.82,
    "interanual": 27.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 27.1
   },
   {
    "fecha": "2013-01",
    "mensual": 2.22,
    "interanual": 28.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 11.1,
+   "indec_serie": "IPC GBA",
+   "cifra": 28.2
   },
   {
    "fecha": "2013-02",
    "mensual": 1.31,
    "interanual": 28.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.8,
+   "indec_serie": "IPC GBA",
+   "cifra": 28.3
   },
   {
    "fecha": "2013-03",
    "mensual": 1.48,
    "interanual": 26.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.6,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.7
   },
   {
    "fecha": "2013-04",
    "mensual": 1.89,
    "interanual": 25.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.7
   },
   {
    "fecha": "2013-05",
    "mensual": 1.54,
    "interanual": 25.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.3,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.6
   },
   {
    "fecha": "2013-06",
    "mensual": 1.99,
    "interanual": 26.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.0
   },
   {
    "fecha": "2013-07",
    "mensual": 2.54,
    "interanual": 24.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.6,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.3
   },
   {
    "fecha": "2013-08",
    "mensual": 2.11,
    "interanual": 24.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.4
   },
   {
    "fecha": "2013-09",
    "mensual": 2.13,
    "interanual": 24.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 24.9
   },
   {
    "fecha": "2013-10",
    "mensual": 2.27,
    "interanual": 25.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 25.9
   },
   {
    "fecha": "2013-11",
    "mensual": 2.41,
    "interanual": 26.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.5,
+   "indec_serie": "IPC GBA",
+   "cifra": 26.5
   },
   {
    "fecha": "2013-12",
    "mensual": 2.35,
    "interanual": 27.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 10.9,
+   "indec_serie": "IPC GBA",
+   "cifra": 27.1
   },
   {
    "fecha": "2014-01",
    "mensual": 4.35,
    "interanual": 29.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 13.8,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 29.8
   },
   {
    "fecha": "2014-02",
    "mensual": 4.88,
    "interanual": 34.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 17.1,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 34.3
   },
   {
    "fecha": "2014-03",
    "mensual": 3.47,
    "interanual": 37.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 19.2,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 37.0
   },
   {
    "fecha": "2014-04",
    "mensual": 2.8,
    "interanual": 38.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 20.5,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 38.2
   },
   {
    "fecha": "2014-05",
    "mensual": 2.35,
    "interanual": 39.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 21.3,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 39.3
   },
   {
    "fecha": "2014-06",
    "mensual": 2.1,
    "interanual": 39.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 21.9,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 39.4
   },
   {
    "fecha": "2014-07",
    "mensual": 2.08,
    "interanual": 38.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 22.5,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 38.8
   },
   {
    "fecha": "2014-08",
    "mensual": 2.14,
    "interanual": 38.8,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 23.0,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 38.8
   },
   {
    "fecha": "2014-09",
    "mensual": 2.43,
    "interanual": 39.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 23.7,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 39.3
   },
   {
    "fecha": "2014-10",
    "mensual": 1.97,
    "interanual": 38.9,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 24.1,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 38.9
   },
   {
    "fecha": "2014-11",
    "mensual": 1.92,
    "interanual": 38.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 24.3,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 38.2
   },
   {
    "fecha": "2014-12",
    "mensual": 1.52,
    "interanual": 37.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 23.8,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 37.1
   },
   {
    "fecha": "2015-01",
    "mensual": 1.74,
    "interanual": 33.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 20.7,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 33.6
   },
   {
    "fecha": "2015-02",
    "mensual": 1.58,
    "interanual": 29.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 17.8,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 29.4
   },
   {
    "fecha": "2015-03",
    "mensual": 1.63,
    "interanual": 27.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 16.4,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 27.1
   },
   {
    "fecha": "2015-04",
    "mensual": 2.27,
    "interanual": 26.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 15.6,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 26.5
   },
   {
    "fecha": "2015-05",
    "mensual": 2.09,
    "interanual": 26.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 15.2,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 26.2
   },
   {
    "fecha": "2015-06",
    "mensual": 1.33,
    "interanual": 25.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 14.8,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 25.2
   },
   {
    "fecha": "2015-07",
    "mensual": 2.14,
    "interanual": 25.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 14.8,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 25.3
   },
   {
    "fecha": "2015-08",
    "mensual": 2.02,
    "interanual": 25.1,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 14.6,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 25.1
   },
   {
    "fecha": "2015-09",
    "mensual": 1.77,
    "interanual": 24.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 14.4,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 24.3
   },
   {
    "fecha": "2015-10",
    "mensual": 1.67,
    "interanual": 24.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": 14.3,
+   "indec_serie": "IPCNu (nacional urbano)",
+   "cifra": 24.0
   },
   {
    "fecha": "2015-11",
    "mensual": 1.91,
    "interanual": 24.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 24.0
   },
   {
    "fecha": "2015-12",
    "mensual": 4.52,
    "interanual": 27.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 27.6
   },
   {
    "fecha": "2016-01",
    "mensual": 4.18,
    "interanual": 30.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 30.7
   },
   {
    "fecha": "2016-02",
    "mensual": 3.7,
    "interanual": 33.4,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 33.4
   },
   {
    "fecha": "2016-03",
    "mensual": 3.08,
    "interanual": 35.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 35.3
   },
   {
    "fecha": "2016-04",
    "mensual": 5.58,
    "interanual": 39.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 39.7
   },
   {
    "fecha": "2016-05",
    "mensual": 4.5,
    "interanual": 43.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 43.0
   },
   {
    "fecha": "2016-06",
    "mensual": 3.17,
    "interanual": 45.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 45.6
   },
   {
    "fecha": "2016-07",
    "mensual": 2.24,
    "interanual": 45.7,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 45.7
   },
   {
    "fecha": "2016-08",
    "mensual": -0.39,
    "interanual": 42.3,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 42.3
   },
   {
    "fecha": "2016-09",
    "mensual": 1.2,
    "interanual": 41.5,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 41.5
   },
   {
    "fecha": "2016-10",
    "mensual": 2.75,
    "interanual": 43.0,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 43.0
   },
   {
    "fecha": "2016-11",
    "mensual": 1.63,
    "interanual": 42.6,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 42.6
   },
   {
    "fecha": "2016-12",
    "mensual": 1.31,
    "interanual": 38.2,
-   "fuente": "CIFRA-CTA"
+   "fuente": "CIFRA-CTA",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 38.2
   },
   {
    "fecha": "2017-01",
    "mensual": 1.59,
    "interanual": 34.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 35.2
   },
   {
    "fecha": "2017-02",
    "mensual": 2.07,
    "interanual": 32.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 33.3
   },
   {
    "fecha": "2017-03",
    "mensual": 2.37,
    "interanual": 31.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 33.0
   },
   {
    "fecha": "2017-04",
    "mensual": 2.66,
    "interanual": 28.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 28.7
   },
   {
    "fecha": "2017-05",
    "mensual": 1.43,
    "interanual": 24.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 25.4
   },
   {
    "fecha": "2017-06",
    "mensual": 1.19,
    "interanual": 21.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 23.3
   },
   {
    "fecha": "2017-07",
    "mensual": 1.73,
    "interanual": 21.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 22.7
   },
   {
    "fecha": "2017-08",
    "mensual": 1.4,
    "interanual": 23.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 25.1
   },
   {
    "fecha": "2017-09",
    "mensual": 1.9,
    "interanual": 24.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 25.6
   },
   {
    "fecha": "2017-10",
    "mensual": 1.51,
    "interanual": 22.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 24.0
   },
   {
    "fecha": "2017-11",
    "mensual": 1.38,
    "interanual": 22.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": null,
+   "indec_serie": null,
+   "cifra": 23.6
   },
   {
    "fecha": "2017-12",
    "mensual": 3.14,
    "interanual": 24.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 24.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": 25.8
   },
   {
    "fecha": "2018-01",
    "mensual": 1.76,
    "interanual": 25.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 25.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": 25.4
   },
   {
    "fecha": "2018-02",
    "mensual": 2.42,
    "interanual": 25.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 25.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": 25.9
   },
   {
    "fecha": "2018-03",
    "mensual": 2.34,
    "interanual": 25.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 25.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": 25.1
   },
   {
    "fecha": "2018-04",
    "mensual": 2.74,
    "interanual": 25.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 25.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": 25.9
   },
   {
    "fecha": "2018-05",
    "mensual": 2.08,
    "interanual": 26.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 26.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": 26.7
   },
   {
    "fecha": "2018-06",
    "mensual": 3.74,
    "interanual": 29.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 29.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": 29.6
   },
   {
    "fecha": "2018-07",
    "mensual": 3.1,
    "interanual": 31.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 31.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": 31.1
   },
   {
    "fecha": "2018-08",
    "mensual": 3.89,
    "interanual": 34.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 34.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": 33.8
   },
   {
    "fecha": "2018-09",
    "mensual": 6.53,
    "interanual": 40.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 40.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": 40.0
   },
   {
    "fecha": "2018-10",
    "mensual": 5.39,
    "interanual": 45.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 45.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": 45.3
   },
   {
    "fecha": "2018-11",
    "mensual": 3.15,
    "interanual": 48.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 48.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": 47.7
   },
   {
    "fecha": "2018-12",
    "mensual": 2.57,
    "interanual": 47.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 47.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": 46.8
   },
   {
    "fecha": "2019-01",
    "mensual": 2.91,
    "interanual": 49.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 49.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-02",
    "mensual": 3.77,
    "interanual": 51.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 51.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-03",
    "mensual": 4.68,
    "interanual": 54.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 54.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-04",
    "mensual": 3.4,
    "interanual": 55.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 55.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-05",
    "mensual": 3.1,
    "interanual": 57.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 57.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-06",
    "mensual": 2.72,
    "interanual": 55.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 55.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-07",
    "mensual": 2.2,
    "interanual": 54.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 54.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-08",
    "mensual": 3.95,
    "interanual": 54.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 54.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-09",
    "mensual": 5.89,
    "interanual": 53.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 53.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-10",
    "mensual": 3.29,
    "interanual": 50.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 50.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-11",
    "mensual": 4.25,
    "interanual": 52.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 52.1,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2019-12",
    "mensual": 3.74,
    "interanual": 53.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 53.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-01",
    "mensual": 2.25,
    "interanual": 52.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 52.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-02",
    "mensual": 2.01,
    "interanual": 50.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 50.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-03",
    "mensual": 3.34,
    "interanual": 48.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 48.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-04",
    "mensual": 1.5,
    "interanual": 45.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 45.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-05",
    "mensual": 1.54,
    "interanual": 43.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 43.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-06",
    "mensual": 2.24,
    "interanual": 42.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 42.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-07",
    "mensual": 1.93,
    "interanual": 42.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 42.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-08",
    "mensual": 2.7,
    "interanual": 40.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 40.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-09",
    "mensual": 2.84,
    "interanual": 36.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 36.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-10",
    "mensual": 3.76,
    "interanual": 37.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 37.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-11",
    "mensual": 3.16,
    "interanual": 35.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 35.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2020-12",
    "mensual": 4.01,
    "interanual": 36.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 36.1,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-01",
    "mensual": 4.05,
    "interanual": 38.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 38.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-02",
    "mensual": 3.57,
    "interanual": 40.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 40.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-03",
    "mensual": 4.81,
    "interanual": 42.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 42.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-04",
    "mensual": 4.08,
    "interanual": 46.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 46.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-05",
    "mensual": 3.32,
    "interanual": 48.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 48.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-06",
    "mensual": 3.17,
    "interanual": 50.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 50.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-07",
    "mensual": 3.0,
    "interanual": 51.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 51.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-08",
    "mensual": 2.47,
    "interanual": 51.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 51.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-09",
    "mensual": 3.55,
    "interanual": 52.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 52.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-10",
    "mensual": 3.52,
    "interanual": 52.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 52.1,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-11",
    "mensual": 2.53,
    "interanual": 51.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 51.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2021-12",
    "mensual": 3.84,
    "interanual": 50.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 50.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-01",
    "mensual": 3.88,
    "interanual": 50.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 50.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-02",
    "mensual": 4.69,
    "interanual": 52.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 52.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-03",
    "mensual": 6.73,
    "interanual": 55.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 55.1,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-04",
    "mensual": 6.05,
    "interanual": 58.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 58.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-05",
    "mensual": 5.05,
    "interanual": 60.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 60.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-06",
    "mensual": 5.3,
    "interanual": 64.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 64.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-07",
    "mensual": 7.41,
    "interanual": 71.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 71.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-08",
    "mensual": 6.97,
    "interanual": 78.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 78.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-09",
    "mensual": 6.17,
    "interanual": 83.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 83.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-10",
    "mensual": 6.35,
    "interanual": 88.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 88.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-11",
    "mensual": 4.92,
    "interanual": 92.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 92.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2022-12",
    "mensual": 5.12,
    "interanual": 94.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 94.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-01",
    "mensual": 6.03,
    "interanual": 98.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 98.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-02",
    "mensual": 6.63,
    "interanual": 102.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 102.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-03",
    "mensual": 7.68,
    "interanual": 104.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 104.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-04",
    "mensual": 8.4,
    "interanual": 108.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 108.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-05",
    "mensual": 7.77,
    "interanual": 114.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 114.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-06",
    "mensual": 5.95,
    "interanual": 115.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 115.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-07",
    "mensual": 6.34,
    "interanual": 113.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 113.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-08",
    "mensual": 12.44,
    "interanual": 124.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 124.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-09",
    "mensual": 12.75,
    "interanual": 138.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 138.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-10",
    "mensual": 8.3,
    "interanual": 142.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 142.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-11",
    "mensual": 12.81,
    "interanual": 160.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 160.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2023-12",
    "mensual": 25.47,
    "interanual": 211.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 211.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-01",
    "mensual": 20.61,
    "interanual": 254.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 254.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-02",
    "mensual": 13.24,
    "interanual": 276.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 276.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-03",
    "mensual": 11.01,
    "interanual": 287.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 287.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-04",
    "mensual": 8.83,
    "interanual": 289.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 289.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-05",
    "mensual": 4.18,
    "interanual": 276.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 276.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-06",
    "mensual": 4.58,
    "interanual": 271.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 271.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-07",
    "mensual": 4.03,
    "interanual": 263.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 263.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-08",
    "mensual": 4.17,
    "interanual": 236.7,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 236.7,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-09",
    "mensual": 3.47,
    "interanual": 209.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 209.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-10",
    "mensual": 2.69,
    "interanual": 193.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 193.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-11",
    "mensual": 2.43,
    "interanual": 166.0,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 166.0,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2024-12",
    "mensual": 2.7,
    "interanual": 117.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 117.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-01",
    "mensual": 2.21,
    "interanual": 84.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 84.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-02",
    "mensual": 2.4,
    "interanual": 66.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 66.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-03",
    "mensual": 3.73,
    "interanual": 55.9,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 55.9,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-04",
    "mensual": 2.78,
    "interanual": 47.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 47.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-05",
    "mensual": 1.5,
    "interanual": 43.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 43.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-06",
    "mensual": 1.62,
    "interanual": 39.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 39.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-07",
    "mensual": 1.9,
    "interanual": 36.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 36.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-08",
    "mensual": 1.88,
    "interanual": 33.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-09",
    "mensual": 2.08,
    "interanual": 31.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 31.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-10",
    "mensual": 2.34,
    "interanual": 31.3,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 31.3,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-11",
    "mensual": 2.47,
    "interanual": 31.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 31.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2025-12",
    "mensual": 2.85,
    "interanual": 31.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 31.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-01",
    "mensual": 2.88,
    "interanual": 32.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 32.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-02",
    "mensual": 2.9,
    "interanual": 33.1,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.1,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-03",
    "mensual": 3.38,
    "interanual": 32.6,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 32.6,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-04",
    "mensual": 2.58,
    "interanual": 32.4,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 32.4,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-05",
    "mensual": 2.15,
    "interanual": 33.2,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.2,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-06",
    "mensual": 1.89,
    "interanual": 33.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-07",
    "mensual": 2.11,
    "interanual": 33.8,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.8,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   },
   {
    "fecha": "2026-08",
    "mensual": 1.66,
    "interanual": 33.5,
-   "fuente": "INDEC (Nacional)"
+   "fuente": "INDEC (Nacional)",
+   "indec": 33.5,
+   "indec_serie": "IPC Nacional",
+   "cifra": null
   }
  ],
  "anual": [
@@ -2461,6 +3313,10 @@
    "difiere": false
   }
  ],
+ "lineas": {
+  "indec": "INDEC: IPC GBA hasta dic-2013, IPC Nacional urbano (IPCNu) de ene-2014 a oct-2015 e IPC Nacional desde dic-2016. Entre nov-2015 y nov-2017 no hay interanual oficial nacional.",
+  "cifra": "CIFRA-CTA: IPC Provincias, ene-2007 a dic-2018 (el interanual arranca en ene-2008)."
+ },
  "empalme": [
   {
    "desde": "2002-01",
