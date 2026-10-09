@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-08T16:04+00:00",
+ "actualizado": "2026-10-09T13:45+00:00",
  "ultimo_mes": "2026-08",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -311,6 +311,681 @@
    "relativo": 19.7
   }
  ],
+ "reponderado": {
+  "resumen": {
+   "mensual": {
+    "oficial": 1.7,
+    "reponderado": 1.7
+   },
+   "interanual": {
+    "oficial": 33.5,
+    "reponderado": 34.2
+   },
+   "acum_anio": {
+    "oficial": 21.3,
+    "reponderado": 21.6
+   },
+   "acum_gobierno": {
+    "oficial": 336.0,
+    "reponderado": 342.4
+   }
+  },
+  "anios": {
+   "2017": {
+    "oficial": 24.8,
+    "reponderado": 25.4
+   },
+   "2018": {
+    "oficial": 47.6,
+    "reponderado": 48.8
+   },
+   "2019": {
+    "oficial": 53.8,
+    "reponderado": 53.3
+   },
+   "2020": {
+    "oficial": 36.1,
+    "reponderado": 35.3
+   },
+   "2021": {
+    "oficial": 50.9,
+    "reponderado": 49.7
+   },
+   "2022": {
+    "oficial": 94.8,
+    "reponderado": 93.1
+   },
+   "2023": {
+    "oficial": 211.4,
+    "reponderado": 209.6
+   },
+   "2024": {
+    "oficial": 117.8,
+    "reponderado": 120.5
+   },
+   "2025": {
+    "oficial": 31.5,
+    "reponderado": 31.6
+   }
+  },
+  "otras": [
+   {
+    "fuente": "Di Tella (González Rozada)",
+    "detalle": "Inflación 2024 con ponderaciones ENGHo 2017/18",
+    "desde": "2023-12",
+    "hasta": "2024-12",
+    "tipo": "anual",
+    "oficial": 117.8,
+    "reponderado": 133.6,
+    "publicado": "2025-01",
+    "link": "https://www.utdt.edu/ver_nota_prensa.php?id_nota_prensa=22547&id_item_menu=6",
+    "mecopol": 120.5,
+    "oficial_mecopol": 117.8
+   },
+   {
+    "fuente": "CEPA",
+    "detalle": "Acumulada nov-23 a nov-25 reponderando por capítulos",
+    "desde": "2023-11",
+    "hasta": "2025-11",
+    "tipo": "acumulada",
+    "oficial": 249.5,
+    "reponderado": 288.2,
+    "publicado": "2025-12",
+    "link": "https://centrocepa.com.ar/documentos/informes/733-controversias-y-cuestionamientos-metodologicos-en-el-indec-bajo-la-presidencia-de-javier-milei",
+    "mecopol": 253.6,
+    "oficial_mecopol": 249.5
+   },
+   {
+    "fuente": "Gobierno (Ministerio de Economía)",
+    "detalle": "Diciembre 2025 con la metodología nueva",
+    "desde": "2025-11",
+    "hasta": "2025-12",
+    "tipo": "mensual",
+    "oficial": 2.8,
+    "reponderado": 2.9,
+    "publicado": "2026-02",
+    "link": "https://www.iprofesional.com/economia/447499-ipc-e-inflacion-economia-frena-nueva-base-del-indec-y-evalua-una-nueva-encuesta-de-gastos",
+    "mecopol": 2.91,
+    "oficial_mecopol": 2.85
+   },
+   {
+    "fuente": "Equilibra",
+    "detalle": "Enero 2026 con ponderaciones 2017/18",
+    "desde": "2025-12",
+    "hasta": "2026-01",
+    "tipo": "mensual",
+    "oficial": 2.9,
+    "reponderado": 2.8,
+    "publicado": "2026-02",
+    "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
+    "mecopol": 2.84,
+    "oficial_mecopol": 2.88
+   },
+   {
+    "fuente": "LCG",
+    "detalle": "Enero 2026 con ponderaciones 2017/18",
+    "desde": "2025-12",
+    "hasta": "2026-01",
+    "tipo": "mensual",
+    "oficial": 2.9,
+    "reponderado": 2.8,
+    "publicado": "2026-02",
+    "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
+    "mecopol": 2.84,
+    "oficial_mecopol": 2.88
+   },
+   {
+    "fuente": "Econviews",
+    "detalle": "Enero 2026 con ponderaciones 2017/18",
+    "desde": "2025-12",
+    "hasta": "2026-01",
+    "tipo": "mensual",
+    "oficial": 2.9,
+    "reponderado": 2.7,
+    "publicado": "2026-02",
+    "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
+    "mecopol": 2.84,
+    "oficial_mecopol": 2.88
+   },
+   {
+    "fuente": "Romano Group",
+    "detalle": "Enero 2026 con ponderaciones 2017/18",
+    "desde": "2025-12",
+    "hasta": "2026-01",
+    "tipo": "mensual",
+    "oficial": 2.9,
+    "reponderado": 2.8,
+    "publicado": "2026-02",
+    "link": "https://www.diariodecuyo.com.ar/argentina/tras-la-polemica-del-indec-de-cuanto-habria-sido-la-inflacion-de-enero-con-la-formula-que-no-se-aplico-1831379.html",
+    "mecopol": 2.84,
+    "oficial_mecopol": 2.88
+   },
+   {
+    "fuente": "Qualy",
+    "detalle": "Acumulada desde la asunción con ponderaciones 2017/18",
+    "desde": "2023-11",
+    "hasta": "2026-07",
+    "tipo": "acumulada",
+    "oficial": 328.8,
+    "reponderado": 344.3,
+    "publicado": "2026-08",
+    "link": "https://www.conclusion.com.ar/politica/economia/la-inflacion-acumulada-seria-15-puntos-mayor-si-el-gobierno-hubiera-aplicado-la-nueva-medicion-prevista-para-principios-de-ano/08/2026/",
+    "mecopol": 335.2,
+    "oficial_mecopol": 328.8
+   },
+   {
+    "fuente": "Qualy",
+    "detalle": "Julio 2026 con ponderaciones 2017/18",
+    "desde": "2026-06",
+    "hasta": "2026-07",
+    "tipo": "mensual",
+    "oficial": 2.11,
+    "reponderado": 2.14,
+    "publicado": "2026-08",
+    "link": "https://www.conclusion.com.ar/politica/economia/la-inflacion-acumulada-seria-15-puntos-mayor-si-el-gobierno-hubiera-aplicado-la-nueva-medicion-prevista-para-principios-de-ano/08/2026/",
+    "mecopol": 2.13,
+    "oficial_mecopol": 2.11
+   }
+  ],
+  "serie": [
+   {
+    "fecha": "2023-12",
+    "oficial": {
+     "mensual": 25.5,
+     "interanual": 211.4,
+     "acumulada": 25.5
+    },
+    "reponderado": {
+     "mensual": 25.4,
+     "interanual": 209.6,
+     "acumulada": 25.4
+    }
+   },
+   {
+    "fecha": "2024-01",
+    "oficial": {
+     "mensual": 20.6,
+     "interanual": 254.2,
+     "acumulada": 51.3
+    },
+    "reponderado": {
+     "mensual": 21.1,
+     "interanual": 253.2,
+     "acumulada": 51.9
+    }
+   },
+   {
+    "fecha": "2024-02",
+    "oficial": {
+     "mensual": 13.2,
+     "interanual": 276.2,
+     "acumulada": 71.4
+    },
+    "reponderado": {
+     "mensual": 13.7,
+     "interanual": 276.9,
+     "acumulada": 72.8
+    }
+   },
+   {
+    "fecha": "2024-03",
+    "oficial": {
+     "mensual": 11.0,
+     "interanual": 287.9,
+     "acumulada": 90.2
+    },
+    "reponderado": {
+     "mensual": 11.2,
+     "interanual": 289.9,
+     "acumulada": 92.2
+    }
+   },
+   {
+    "fecha": "2024-04",
+    "oficial": {
+     "mensual": 8.8,
+     "interanual": 289.4,
+     "acumulada": 107.0
+    },
+    "reponderado": {
+     "mensual": 9.1,
+     "interanual": 293.0,
+     "acumulada": 109.7
+    }
+   },
+   {
+    "fecha": "2024-05",
+    "oficial": {
+     "mensual": 4.2,
+     "interanual": 276.4,
+     "acumulada": 115.7
+    },
+    "reponderado": {
+     "mensual": 4.3,
+     "interanual": 280.4,
+     "acumulada": 118.6
+    }
+   },
+   {
+    "fecha": "2024-06",
+    "oficial": {
+     "mensual": 4.6,
+     "interanual": 271.5,
+     "acumulada": 125.6
+    },
+    "reponderado": {
+     "mensual": 4.7,
+     "interanual": 275.5,
+     "acumulada": 128.8
+    }
+   },
+   {
+    "fecha": "2024-07",
+    "oficial": {
+     "mensual": 4.0,
+     "interanual": 263.4,
+     "acumulada": 134.6
+    },
+    "reponderado": {
+     "mensual": 3.9,
+     "interanual": 266.9,
+     "acumulada": 137.6
+    }
+   },
+   {
+    "fecha": "2024-08",
+    "oficial": {
+     "mensual": 4.2,
+     "interanual": 236.7,
+     "acumulada": 144.4
+    },
+    "reponderado": {
+     "mensual": 4.2,
+     "interanual": 240.8,
+     "acumulada": 147.7
+    }
+   },
+   {
+    "fecha": "2024-09",
+    "oficial": {
+     "mensual": 3.5,
+     "interanual": 209.0,
+     "acumulada": 152.9
+    },
+    "reponderado": {
+     "mensual": 3.5,
+     "interanual": 213.0,
+     "acumulada": 156.3
+    }
+   },
+   {
+    "fecha": "2024-10",
+    "oficial": {
+     "mensual": 2.7,
+     "interanual": 193.0,
+     "acumulada": 159.7
+    },
+    "reponderado": {
+     "mensual": 2.6,
+     "interanual": 196.3,
+     "acumulada": 162.9
+    }
+   },
+   {
+    "fecha": "2024-11",
+    "oficial": {
+     "mensual": 2.4,
+     "interanual": 166.0,
+     "acumulada": 166.0
+    },
+    "reponderado": {
+     "mensual": 2.4,
+     "interanual": 169.2,
+     "acumulada": 169.2
+    }
+   },
+   {
+    "fecha": "2024-12",
+    "oficial": {
+     "mensual": 2.7,
+     "interanual": 117.8,
+     "acumulada": 173.2
+    },
+    "reponderado": {
+     "mensual": 2.7,
+     "interanual": 120.5,
+     "acumulada": 176.5
+    }
+   },
+   {
+    "fecha": "2025-01",
+    "oficial": {
+     "mensual": 2.2,
+     "interanual": 84.5,
+     "acumulada": 179.3
+    },
+    "reponderado": {
+     "mensual": 2.1,
+     "interanual": 85.8,
+     "acumulada": 182.3
+    }
+   },
+   {
+    "fecha": "2025-02",
+    "oficial": {
+     "mensual": 2.4,
+     "interanual": 66.9,
+     "acumulada": 186.0
+    },
+    "reponderado": {
+     "mensual": 2.5,
+     "interanual": 67.4,
+     "acumulada": 189.3
+    }
+   },
+   {
+    "fecha": "2025-03",
+    "oficial": {
+     "mensual": 3.7,
+     "interanual": 55.9,
+     "acumulada": 196.6
+    },
+    "reponderado": {
+     "mensual": 3.7,
+     "interanual": 56.0,
+     "acumulada": 199.9
+    }
+   },
+   {
+    "fecha": "2025-04",
+    "oficial": {
+     "mensual": 2.8,
+     "interanual": 47.3,
+     "acumulada": 204.9
+    },
+    "reponderado": {
+     "mensual": 2.7,
+     "interanual": 46.9,
+     "acumulada": 208.0
+    }
+   },
+   {
+    "fecha": "2025-05",
+    "oficial": {
+     "mensual": 1.5,
+     "interanual": 43.5,
+     "acumulada": 209.5
+    },
+    "reponderado": {
+     "mensual": 1.5,
+     "interanual": 42.9,
+     "acumulada": 212.4
+    }
+   },
+   {
+    "fecha": "2025-06",
+    "oficial": {
+     "mensual": 1.6,
+     "interanual": 39.4,
+     "acumulada": 214.5
+    },
+    "reponderado": {
+     "mensual": 1.6,
+     "interanual": 38.8,
+     "acumulada": 217.5
+    }
+   },
+   {
+    "fecha": "2025-07",
+    "oficial": {
+     "mensual": 1.9,
+     "interanual": 36.6,
+     "acumulada": 220.4
+    },
+    "reponderado": {
+     "mensual": 2.0,
+     "interanual": 36.2,
+     "acumulada": 223.7
+    }
+   },
+   {
+    "fecha": "2025-08",
+    "oficial": {
+     "mensual": 1.9,
+     "interanual": 33.6,
+     "acumulada": 226.5
+    },
+    "reponderado": {
+     "mensual": 1.9,
+     "interanual": 33.1,
+     "acumulada": 229.7
+    }
+   },
+   {
+    "fecha": "2025-09",
+    "oficial": {
+     "mensual": 2.1,
+     "interanual": 31.8,
+     "acumulada": 233.2
+    },
+    "reponderado": {
+     "mensual": 2.2,
+     "interanual": 31.4,
+     "acumulada": 236.8
+    }
+   },
+   {
+    "fecha": "2025-10",
+    "oficial": {
+     "mensual": 2.3,
+     "interanual": 31.3,
+     "acumulada": 241.0
+    },
+    "reponderado": {
+     "mensual": 2.4,
+     "interanual": 31.2,
+     "acumulada": 244.9
+    }
+   },
+   {
+    "fecha": "2025-11",
+    "oficial": {
+     "mensual": 2.5,
+     "interanual": 31.4,
+     "acumulada": 249.5
+    },
+    "reponderado": {
+     "mensual": 2.5,
+     "interanual": 31.4,
+     "acumulada": 253.6
+    }
+   },
+   {
+    "fecha": "2025-12",
+    "oficial": {
+     "mensual": 2.8,
+     "interanual": 31.5,
+     "acumulada": 259.4
+    },
+    "reponderado": {
+     "mensual": 2.9,
+     "interanual": 31.6,
+     "acumulada": 263.9
+    }
+   },
+   {
+    "fecha": "2026-01",
+    "oficial": {
+     "mensual": 2.9,
+     "interanual": 32.4,
+     "acumulada": 269.8
+    },
+    "reponderado": {
+     "mensual": 2.8,
+     "interanual": 32.6,
+     "acumulada": 274.3
+    }
+   },
+   {
+    "fecha": "2026-02",
+    "oficial": {
+     "mensual": 2.9,
+     "interanual": 33.1,
+     "acumulada": 280.5
+    },
+    "reponderado": {
+     "mensual": 3.0,
+     "interanual": 33.2,
+     "acumulada": 285.3
+    }
+   },
+   {
+    "fecha": "2026-03",
+    "oficial": {
+     "mensual": 3.4,
+     "interanual": 32.6,
+     "acumulada": 293.4
+    },
+    "reponderado": {
+     "mensual": 3.4,
+     "interanual": 32.9,
+     "acumulada": 298.5
+    }
+   },
+   {
+    "fecha": "2026-04",
+    "oficial": {
+     "mensual": 2.6,
+     "interanual": 32.4,
+     "acumulada": 303.5
+    },
+    "reponderado": {
+     "mensual": 2.7,
+     "interanual": 32.8,
+     "acumulada": 309.1
+    }
+   },
+   {
+    "fecha": "2026-05",
+    "oficial": {
+     "mensual": 2.1,
+     "interanual": 33.2,
+     "acumulada": 312.2
+    },
+    "reponderado": {
+     "mensual": 2.2,
+     "interanual": 33.8,
+     "acumulada": 318.1
+    }
+   },
+   {
+    "fecha": "2026-06",
+    "oficial": {
+     "mensual": 1.9,
+     "interanual": 33.5,
+     "acumulada": 320.0
+    },
+    "reponderado": {
+     "mensual": 1.9,
+     "interanual": 34.2,
+     "acumulada": 326.1
+    }
+   },
+   {
+    "fecha": "2026-07",
+    "oficial": {
+     "mensual": 2.1,
+     "interanual": 33.8,
+     "acumulada": 328.8
+    },
+    "reponderado": {
+     "mensual": 2.1,
+     "interanual": 34.4,
+     "acumulada": 335.2
+    }
+   },
+   {
+    "fecha": "2026-08",
+    "oficial": {
+     "mensual": 1.7,
+     "interanual": 33.5,
+     "acumulada": 336.0
+    },
+    "reponderado": {
+     "mensual": 1.7,
+     "interanual": 34.2,
+     "acumulada": 342.4
+    }
+   }
+  ],
+  "ponderaciones": [
+   {
+    "rubro": "Alimentos y bebidas no alcohólicas",
+    "vigente": 23.4,
+    "engho_2017_18": 22.7
+   },
+   {
+    "rubro": "Bebidas alcohólicas y tabaco",
+    "vigente": 3.3,
+    "engho_2017_18": 1.9
+   },
+   {
+    "rubro": "Prendas de vestir y calzado",
+    "vigente": 8.5,
+    "engho_2017_18": 6.8
+   },
+   {
+    "rubro": "Vivienda, agua, electricidad, gas y otros combustibles",
+    "vigente": 10.5,
+    "engho_2017_18": 14.5
+   },
+   {
+    "rubro": "Equipamiento y mantenimiento del hogar",
+    "vigente": 6.3,
+    "engho_2017_18": 5.4
+   },
+   {
+    "rubro": "Salud",
+    "vigente": 8.8,
+    "engho_2017_18": 6.4
+   },
+   {
+    "rubro": "Transporte",
+    "vigente": 11.6,
+    "engho_2017_18": 14.3
+   },
+   {
+    "rubro": "Comunicación",
+    "vigente": 2.8,
+    "engho_2017_18": 5.2
+   },
+   {
+    "rubro": "Recreación y cultura",
+    "vigente": 7.5,
+    "engho_2017_18": 8.6
+   },
+   {
+    "rubro": "Educación",
+    "vigente": 3.0,
+    "engho_2017_18": 3.1
+   },
+   {
+    "rubro": "Restaurantes y hoteles",
+    "vigente": 10.8,
+    "engho_2017_18": 6.6
+   },
+   {
+    "rubro": "Bienes y servicios varios",
+    "vigente": 3.6,
+    "engho_2017_18": 4.3
+   }
+  ],
+  "control_error_pct": 1.99,
+  "periodo_encuesta": [
+   "2017-11",
+   "2018-11"
+  ]
+ },
  "fuentes": {
   "nivel_general": "148.3_INIVELNAL_DICI_M_26",
   "divisiones": {
