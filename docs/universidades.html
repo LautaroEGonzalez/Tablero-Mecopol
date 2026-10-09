@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Universidades MECOPOL</title>
+<meta name="description" content="Financiamiento universitario y Ley 27.795: cuánto cambió en términos reales con cada gobierno, salarios, presupuesto de la UNAJ y estado de la ley. Borrador. Mesa de Economía Política UNLa.">
+<link rel="icon" type="image/png" href="img/icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: misma columna de lectura que la portada. Banner bordó, tarjetas por gobierno,
+   después la serie larga, los años y la tabla de mandatos. Tema oscuro único. */
+:root {
+  color-scheme: dark;
+  --bg:       #0e1014;
+  --panel:    #14171c;
+  --panel-hi: #1b1f26;
+  --line:     #23272f;
+  --grid:     #1f232a;
+  --fg:       #e3e5ea;
+  --fg-2:     #a3a9b6;
+  --fg-3:     #6f7685;
+  --marca:    #950b32;
+  --warn:     #e0a33a;
+  --font-ui:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 6px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--font-ui); padding-inline: 16px; padding-block: 0 48px; }
+a { color: var(--fg); text-underline-offset: 2px; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; padding-top: 28px; }
+
+/* ---- banner ---- */
+.banda { margin-inline: -16px; padding: 24px 16px 22px; background: var(--marca); color: #fff; border-bottom: 3px solid #6e0824; }
+.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 22px; }
+.marca { flex: none; display: block; background: #fff; border-radius: 10px; padding: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+.marca img { display: block; width: 92px; height: auto; }
+.banda-txt { flex: 1; min-width: 0; display: grid; gap: 10px; }
+.eyebrow { font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.78); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.borrador { padding: 1px 8px; border: 1px solid rgba(255,255,255,.55); border-radius: 3px; color: #fff; letter-spacing: .1em; }
+h1 { margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em; color: #fff; font-size: clamp(26px, 4vw, 42px); line-height: 1.08; text-wrap: balance; }
+.bajada { margin: 0; color: rgba(255,255,255,.82); max-width: 62ch; font-size: 15px; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { font-size: 13px; text-decoration: none; color: rgba(255,255,255,.8); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,.25); }
+.nav a[aria-current="page"] { background: rgba(0,0,0,.25); color: #fff; border-color: transparent; }
+.nav a:hover { color: #fff; border-color: rgba(255,255,255,.6); }
+@media (max-width: 560px) { .banda-in { flex-direction: column; align-items: flex-start; gap: 14px; } .marca img { width: 72px; } }
+
+/* ---- tarjetas por gobierno ---- */
+.gobs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.gob { padding: 18px 16px 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.gob + .gob { border-left: 1px solid var(--line); }
+.gob h2 { margin: 0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.gob h2 i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.gob .per { font: 12px var(--font-num); color: var(--fg-3); }
+.gob .valor { font: 600 30px/1.1 var(--font-num); letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-top: 8px; }
+.gob .valor small { font-size: 15px; color: var(--fg-3); margin-left: 1px; }
+.gob .lbl { font-size: 12px; color: var(--fg-2); }
+.gob .sec2 { font-size: 12px; color: var(--fg-3); margin-top: 6px; }
+.gob .sec2 b { font-family: var(--font-num); color: var(--fg-2); font-weight: 500; }
+.chip { display: inline-block; padding: 0 6px; border-radius: 3px; font: 500 11px var(--font-num); border: 1px solid currentColor; color: var(--warn); }
+@media (max-width: 1100px) {
+  .gobs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gob:nth-child(4) { border-left: 0; } .gob:nth-child(n+4) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .gobs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gob:nth-child(n) { border-left: 0; border-top: 1px solid var(--line); }
+  .gob:nth-child(2n) { border-left: 1px solid var(--line); }
+  .gob:nth-child(-n+2) { border-top: 0; }
+}
+
+/* ---- secciones ---- */
+.sec { display: grid; gap: 14px; }
+.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; }
+.sec-cab > div { flex: 1 1 320px; min-width: 0; }
+.sec h2 { margin: 0; font-size: 20px; font-weight: 600; font-stretch: 90%; text-wrap: balance; }
+.sec p.sub { margin: 4px 0 0; color: var(--fg-2); font-size: 14px; max-width: 70ch; }
+.caja { background: var(--panel); border-radius: var(--r); padding: 16px; min-width: 0; }
+.chart { width: 100%; height: 380px; }
+@media (max-width: 560px) { .chart { height: 320px; } }
+.seg { display: inline-flex; background: var(--panel); border-radius: var(--r); padding: 3px; gap: 2px; }
+.seg button { font: 500 13px var(--font-ui); color: var(--fg-2); background: transparent; border: 0; padding: 5px 12px; border-radius: 4px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--panel-hi); color: var(--fg); }
+.seg button:hover { color: var(--fg); }
+.lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 74ch; }
+.lectura b { color: var(--fg); font-weight: 600; }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
+.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.leyenda i.raya { background: repeating-linear-gradient(45deg, #8a909c 0 2px, transparent 2px 5px); border: 1px solid #8a909c; }
+
+/* ---- tablas ---- */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+th, td { padding: 9px 10px; text-align: right; white-space: nowrap; }
+th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--line); vertical-align: bottom; }
+td { font-family: var(--font-num); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; }
+td:first-child { font-family: var(--font-ui); }
+tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--panel-hi); }
+.nom { display: inline-flex; align-items: center; gap: 8px; }
+.nom i { width: 10px; height: 10px; border-radius: 2px; }
+td.dif { color: var(--warn); }
+td .mute { color: var(--fg-3); }
+.tabla-chica table { min-width: 520px; }
+@media (max-width: 700px) {
+  table { min-width: 0; font-size: 13px; }
+  th, td { padding: 8px 6px; }
+  .solo-ancho { display: none; }
+  .tabla-chica table { min-width: 0; }
+  .nom { gap: 6px; }
+}
+
+/* ---- notas ---- */
+.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
+.notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.notas p { margin: 0; font-size: 13px; color: var(--fg-2); max-width: 62ch; }
+.notas a { color: var(--fg-2); }
+.estado { padding: 60px 0; color: var(--fg-2); }
+.aviso { padding: 9px 13px; border-radius: var(--r); font-size: 13px; background: #221d10; color: #e9cf8f; border: 1px solid #4d3f19; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---- página de universidades ---- */
+:root { --congreso: #2fb27f; --ejecutivo: #e5534b; --justicia: #e0a33a; --ley: #3fbf86; }
+
+/* contador */
+.contador { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 10px; }
+@media (max-width: 900px) { .contador { grid-template-columns: 1fr; } }
+.cont-main { display: grid; gap: 6px; align-content: start; }
+.cont-main .eti { font: 600 12px var(--font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
+.cont-main .dias { font: 600 clamp(64px, 11vw, 104px)/1 var(--font-num); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.cont-main .dias small { font-size: .28em; letter-spacing: 0; color: var(--fg-3); margin-left: 6px; }
+.cont-main p { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 46ch; }
+.estado-chip { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 4px 10px; border-radius: 4px;
+  font: 600 12px var(--font-ui); letter-spacing: .04em; color: #ffd7d4; background: #3a1715; border: 1px solid #6b2622; }
+.estado-chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--ejecutivo); }
+.estado-det { font-size: 13px; color: var(--fg-3); }
+.cont-der { display: grid; gap: 14px; align-content: start; }
+.subconts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .subconts { grid-template-columns: 1fr; } }
+.subcont { background: var(--panel-hi); border-radius: var(--r); padding: 12px; display: grid; gap: 2px; min-width: 0; }
+.subcont .n { font: 600 26px/1.1 var(--font-num); font-variant-numeric: tabular-nums; }
+.subcont .n small { font-size: 12px; color: var(--fg-3); margin-left: 4px; }
+.subcont .t { font-size: 12px; color: var(--fg-2); }
+.subcont .f { font: 11px var(--font-num); color: var(--fg-3); }
+.linea { position: relative; height: 70px; margin: 6px 6px 0; }
+.linea .barra { position: absolute; left: 0; right: 0; top: 30px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #5a1f1d, var(--ejecutivo)); }
+.linea .m { position: absolute; top: 22px; transform: translateX(-50%); display: grid; justify-items: center; }
+.linea .m i { width: 2px; height: 22px; background: var(--fg); border-radius: 1px; }
+.linea .m span { font: 11px/1.25 var(--font-num); color: var(--fg-2); white-space: nowrap; margin-top: 4px; text-align: center; }
+.linea .m.arriba { top: 0; } .linea .m.arriba span { order: -1; margin: 0 0 4px; }
+.linea .m.arriba i { height: 22px; margin-top: 0; }
+.linea .m.punta span { color: var(--fg); font-weight: 600; }
+.linea .m.ini { transform: none; justify-items: start; } .linea .m.fin { transform: translateX(-100%); justify-items: end; }
+.linea .m.ini span, .linea .m.ini { text-align: left; } .linea .m.fin span { text-align: right; }
+
+/* tarjetas por gobierno: tres */
+.gobs.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .gobs.tres .gob:nth-child(n) { border-top: 0; } .gobs.tres .gob + .gob { border-left: 1px solid var(--line); } }
+@media (max-width: 560px) {
+  .gobs.tres { grid-template-columns: 1fr; }
+  .gobs.tres .gob + .gob { border-left: 0; border-top: 1px solid var(--line); }
+}
+.gob .valor.neg { color: #ff8f88; } .gob .valor.pos { color: #7fd6ac; } .gob .valor.nd { color: var(--fg-3); font-size: 20px; }
+
+/* cifras clave */
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 1000px) { .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .cifras { grid-template-columns: 1fr; } }
+.cifra { background: var(--panel); border-radius: var(--r); padding: 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.cifra .v { font: 600 32px/1.05 var(--font-num); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cifra .tx { font-size: 13px; color: var(--fg-2); }
+.cifra .fu { font: 11px var(--font-num); color: var(--fg-3); }
+.cifra .fu a { color: var(--fg-3); }
+.cifra .ant { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--fg-3); display: grid; gap: 3px; }
+.cifra .ant b { font-family: var(--font-num); color: var(--fg-2); font-weight: 500; }
+
+/* UNAJ */
+.unaj { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 10px; }
+@media (max-width: 800px) { .unaj { grid-template-columns: 1fr; } }
+.unaj .tot { display: grid; gap: 6px; align-content: start; }
+.unaj .tot .v { font: 600 clamp(28px, 4vw, 36px)/1.05 var(--font-num); letter-spacing: -.03em; overflow-wrap: anywhere; }
+.unaj .tot p { margin: 0; font-size: 13px; color: var(--fg-2); }
+.unaj table { min-width: 0; }
+.barrita { display: inline-block; height: 6px; border-radius: 3px; background: var(--marca); vertical-align: 1px; margin-right: 8px; }
+.solo-angosto { display: none; }
+@media (max-width: 700px) { .solo-angosto { display: inline; } }
+
+/* cronología */
+.crono { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.crono li { display: grid; grid-template-columns: 110px 16px minmax(0, 1fr); gap: 12px; position: relative; padding: 0 0 16px; }
+.crono li::before { content: ""; position: absolute; left: 129px; top: 14px; bottom: -2px; width: 1px; background: var(--line); }
+.crono li:last-child::before { display: none; }
+.crono .fe { font: 12px/1.4 var(--font-num); color: var(--fg-3); text-align: right; padding-top: 2px; }
+.crono .pt { width: 12px; height: 12px; border-radius: 50%; margin-top: 4px; position: relative; z-index: 1; border: 2px solid var(--panel); }
+.crono .tx { font-size: 14px; color: var(--fg); }
+.crono .tx a { font-size: 12px; color: var(--fg-3); margin-left: 6px; }
+.crono .ac { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); display: block; margin-bottom: 1px; }
+@media (max-width: 560px) {
+  .crono li { grid-template-columns: 12px minmax(0, 1fr); gap: 10px; }
+  .crono li::before { left: 5px; }
+  .crono .fe { grid-column: 2; grid-row: 1; text-align: left; padding: 0; }
+  .crono .pt { grid-column: 1; grid-row: 1 / span 2; }
+  .crono .tx { grid-column: 2; }
+}
+.leyenda i.hueca { background: transparent; border: 1px dashed #8a909c; }
+.leyenda i.lin { height: 2px; width: 16px; vertical-align: 3px; border-radius: 1px; }
+.notas ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--fg-2); display: grid; gap: 3px; }
+</style>
+</head>
+<body>
+<header class="banda">
+  <div class="banda-in">
+    <a class="marca" href="https://mecopolunla.wixsite.com/mecopol" target="_blank" rel="noopener">
+      <img src="img/logo-mecopol.png" width="320" height="316" alt="MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús">
+    </a>
+    <div class="banda-txt">
+      <div class="eyebrow"><span>Universidades</span><span class="borrador">Borrador</span><span>Mesa de Economía Política UNLa</span></div>
+      <h1>Universidades y Ley 27.795</h1>
+      <p class="bajada">Qué manda la Ley de Financiamiento Universitario, en qué está su aplicación y cuánto cambió en términos reales lo que reciben las universidades nacionales.</p>
+      <nav class="nav" aria-label="Páginas del tablero"><a href="./">Gobierno actual</a><a href="historia.html">Mirada larga 2003–hoy</a><a href="universidades.html" aria-current="page">Universidades y Ley 27.795</a></nav>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="app"><div class="estado">Cargando los datos de universidades…</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+(() => {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
+    panel: css('--panel'), num: css('--font-num'), ui: css('--font-ui'), ley: css('--ley') };
+  const ACTOR = { congreso: ['Congreso', css('--congreso')], ejecutivo: ['Poder Ejecutivo', css('--ejecutivo')], justicia: ['Justicia', css('--justicia')] };
+  const TIPO = { ejecutado: 'Ejecutado (devengado)', vigente: 'Crédito vigente, no es ejecución', proyecto: 'Proyecto de Presupuesto, no es ejecución' };
+  const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pct = (v, d = 1, signo = false) => v == null ? '—' : (signo && v > 0 ? '+' : '') + nf(v, d) + '%';
+  const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const fecha = f => { if (!f) return 's/f'; const [a, m, d] = f.split('-'); return d ? `${+d} ${MES[+m - 1]} ${a}` : m ? `${MES[+m - 1]} ${a}` : a; };
+  const etq = ym => { const [a, m] = ym.split('-'); return `${MES[+m - 1]}-${a.slice(2)}`; };
+  const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+  const tip = (extra = {}) => Object.assign({ trigger: 'axis', confine: true, backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
+    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:6px;max-width:300px;white-space:normal;',
+    axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } } }, extra);
+  const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true }, splitLine: { show: false } }, extra);
+  const ejeY = extra => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11 }, splitLine: { lineStyle: { color: T.grid, width: 1 } } }, extra);
+  const nuevo = (el, opt) => { const c = echarts.init(el);
+    c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: T.ui, color: T.fg2 }, animationDuration: 500 }, opt));
+    new ResizeObserver(() => c.resize()).observe(el); return c; };
+  const seg = (id, ops) => `<div class="seg" role="group" id="${id}">${ops.map(([v, t], i) =>
+    `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`;
+  const angosto = () => window.innerWidth < 700;
+  const seguir = (id, fn) => document.getElementById(id).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
+  const fuente = (f, l) => !f ? '' : l ? `<a href="${l}" target="_blank" rel="noopener">${f}</a>` : f;
+
+  // fecha de hoy en Buenos Aires (AAAA-MM-DD) y días entre fechas
+  const hoyBA = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Argentina/Buenos_Aires', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const utc = f => { const [a, m, d] = f.split('-').map(Number); return Date.UTC(a, m - 1, d || 1); };
+  const dias = (desde, hasta) => Math.round((utc(hasta) - utc(desde)) / 864e5);
+
+  // patrón rayado (crédito vigente y proyecto)
+  function rayas(color) {
+    const c = document.createElement('canvas'); c.width = c.height = 6;
+    const x = c.getContext('2d'); x.strokeStyle = color; x.lineWidth = 1.5; x.beginPath();
+    x.moveTo(0, 6); x.lineTo(6, 0); x.moveTo(-1, 1); x.lineTo(1, -1); x.moveTo(5, 7); x.lineTo(7, 5); x.stroke();
+    return c;
+  }
+
+  function render(d) {
+    const G = Object.fromEntries(d.gobiernos.map(g => [g.id, g]));
+    const colG = id => (G[id] || {}).color || T.fg3;
+    const H = d.hitos, hoy = hoyBA();
+    const app = document.getElementById('app');
+    const C = d.cifras;
+    const ult = arr => arr[arr.length - 1];
+
+    // ---------- 1. contador ----------
+    const dDec = dias(H.decreto.fecha, hoy);
+    const subc = [['senado', 'desde que el Senado insistió con la ley'], ['corte', 'desde que la Corte dejó firme la cautelar'], ['cormick', 'desde el fallo que declaró inconstitucional el decreto']]
+      .filter(([k]) => H[k]);
+    const total = Math.max(1, dDec);
+    const marca = (f, txt, cls = '') => { const p = Math.min(100, Math.max(0, dias(H.decreto.fecha, f) / total * 100));
+      cls += p < 12 ? ' ini' : p > 88 ? ' fin' : '';
+      return `<div class="m ${cls}" style="left:${p.toFixed(2)}%"><i></i><span>${txt}</span></div>`; };
+    const fCorta = f => angosto() ? fecha(f).split(' ').slice(0, 2).join(' ') : fecha(f);
+    const marcas = [['camara', 'Cámara'], ['corte', 'Corte'], ['cormick', 'Cormick']].filter(([k]) => H[k] && H[k].fecha <= hoy);
+
+    // ---------- 2. tarjetas ----------
+    const tarj = d.tarjetas.map(t => {
+      const cls = t.variacion == null ? 'nd' : t.variacion < 0 ? 'neg' : 'pos';
+      return `<div class="gob">
+        <h2><i style="background:${t.color}"></i>${t.corto}</h2>
+        <div class="per">${t.desde} → ${t.hasta}${t.id === 'milei' ? ' (ejecutado)' : ''}</div>
+        <div class="valor ${cls}">${t.variacion == null ? 'sin dato' : (t.variacion > 0 ? '+' : '') + nf(t.variacion, 1) + '<small>%</small>'}</div>
+        <div class="lbl">variación real del financiamiento${t.aproximado ? ' <span class="chip">aprox.</span>' : ''}</div>
+        ${t.variacion == null ? `<div class="sec2">No hay cifra recopilada para ${t.desde}. Sale con la serie propia de Presupuesto Abierto.</div>` : ''}
+        ${t.vigente_2026 != null ? `<div class="sec2">Con el crédito vigente 2026: <b>${pct(t.vigente_2026, 1, true)}</b> vs. 2023</div>` : ''}
+        ${t.variacion != null && t.fuentes.length ? `<div class="sec2">${t.fuentes.join(' · ')}</div>` : ''}
+      </div>`; }).join('');
+
+    // ---------- 5. cifras clave ----------
+    const tarjetaCifra = (clave, valorTxt) => { const c = C[clave]; if (!c || !c.actual) return '';
+      return `<div class="cifra"><div class="v">${valorTxt(c.actual.valor)}</div><div class="tx">${c.actual.texto}</div>
+        <div class="fu">${fuente(c.actual.fuente, c.actual.link)} · ${fecha(c.actual.fecha)}</div>
+        ${c.anterior ? `<div class="ant"><span>${c.anterior.texto}</span><span>${fuente(c.anterior.fuente, c.anterior.link)} · ${fecha(c.anterior.fecha)}</span></div>` : ''}</div>`; };
+
+    // ---------- 6. UNAJ ----------
+    const U = d.unaj.presupuesto_2026 || {};
+    const tot = U.total ? U.total.valor : null, sis = U.sistema ? U.sistema.valor : null;
+    const millones = v => '$' + nf(v / 1e6, 0) + ' M';
+    const partidas = ['educacion_cultura', 'salud', 'ciencia_tecnologia'].filter(k => U[k]);
+
+    app.innerHTML = `
+      <section class="sec" aria-labelledby="t-cont">
+        <div class="sec-cab"><div><h2 id="t-cont">Contador de incumplimiento</h2>
+          <p class="sub">La ley está promulgada desde el 21 de octubre de 2025, pero el decreto 759/2025 suspendió su ejecución hasta que el Presupuesto incluya las partidas. Se cuenta en vivo, con la fecha de hoy en Buenos Aires.</p></div></div>
+        <div class="contador">
+          <div class="caja cont-main">
+            <span class="eti">Días desde el decreto 759/2025</span>
+            <div class="dias" id="dias">${nf(dDec, 0)}<small>días</small></div>
+            ${d.estado ? `<span class="estado-chip"><i></i>${d.estado.texto}</span><span class="estado-det">${d.estado.detalle}</span>` : ''}
+          </div>
+          <div class="caja cont-der">
+            <div class="subconts">${subc.map(([k, t]) => `<div class="subcont"><div class="n">${nf(dias(H[k].fecha, hoy), 0)}<small>días</small></div>
+              <div class="t">${t}</div><div class="f">${fecha(H[k].fecha)}</div></div>`).join('')}</div>
+            <div class="linea" role="img" aria-label="Línea de tiempo desde el decreto 759/2025 hasta hoy, con la Cámara, la Corte y el fallo Cormick">
+              <div class="barra"></div>
+              ${marca(H.decreto.fecha, `Decreto<br>${fCorta(H.decreto.fecha)}`, 'punta arriba')}
+              ${marcas.map(([k, t], i) => marca(H[k].fecha, `${t}<br>${fCorta(H[k].fecha)}`, i % 2 ? 'arriba' : '')).join('')}
+              ${marca(hoy, `Hoy<br>${fCorta(hoy)}`, 'punta arriba')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="t-gob">
+        <div class="sec-cab"><div><h2 id="t-gob">Financiamiento universitario por gobierno</h2>
+          <p class="sub">Variación real entre el último año del gobierno anterior y el último año del propio. ${d.modo === 'propia' ? 'Serie propia: devengado de Presupuesto Abierto deflactado con el IPC del tablero.' : 'Con cifras recopiladas de distintas fuentes; las marcadas "aprox." encadenan variaciones de más de una fuente.'}</p></div></div>
+        <div class="gobs tres">${tarj}</div>
+      </section>
+
+      <section class="sec" aria-labelledby="t-ind">
+        <div class="sec-cab"><div><h2 id="t-ind">Financiamiento real de las universidades</h2>
+          <p class="sub" id="sub-ind"></p></div>
+          ${seg('sel-ind', [['indice', 'Índice real'], ['pbi', '% del PBI']])}</div>
+        <div class="caja"><div class="chart" id="ch-ind" role="img" aria-label="Financiamiento universitario por año"></div></div>
+        <div class="leyenda" id="ley-ind"></div>
+      </section>
+
+      <section class="sec" aria-labelledby="t-sal">
+        <div class="sec-cab"><div><h2 id="t-sal">Salario universitario real</h2>
+          <p class="sub">Noviembre de 2023 = 100. Cada punto es una medición publicada. No es una serie continua: cada fuente usa cargos y deflactores distintos, así que los puntos no se unen.</p></div></div>
+        <div class="caja"><div class="chart" id="ch-sal" role="img" aria-label="Mediciones del salario universitario real"></div></div>
+        <div class="leyenda"><span><i class="lin" style="background:${T.ley}"></i>Lo que manda la ley: el art. 5 actualiza los salarios por inflación desde diciembre de 2023</span></div>
+      </section>
+
+      <section class="sec" aria-labelledby="t-cif">
+        <div class="sec-cab"><div><h2 id="t-cif">Cifras clave</h2>
+          <p class="sub">El dato más reciente de cada tema y, abajo, el anterior como contexto. Todas son de terceros, con su fuente y fecha.</p></div></div>
+        <div class="cifras">
+          ${tarjetaCifra('presupuesto', v => pct(v, 1, true))}
+          ${tarjetaCifra('salario', v => '≈ ' + pct(v, 0, true))}
+          ${tarjetaCifra('peso_salarios', v => pct(v, 1))}
+          ${tarjetaCifra('ley_aplicada', v => pct(v, 1, true))}
+        </div>
+      </section>
+
+      ${tot ? `<section class="sec" aria-labelledby="t-unaj">
+        <div class="sec-cab"><div><h2 id="t-unaj">La UNAJ en el Presupuesto 2026</h2>
+          <p class="sub">Universidad Nacional Arturo Jauretche (Florencio Varela). Crédito asignado en el Presupuesto 2026, no ejecución.${d.unaj.indice.length ? ' Su índice real está en el gráfico de arriba.' : ''}</p></div></div>
+        <div class="unaj">
+          <div class="caja tot"><span class="mute" style="font-size:12px;color:var(--fg-3)">Total asignado</span>
+            <div class="v">${millones(tot)}</div>
+            <p>≈ ${millones(tot / 12)} por mes${sis ? ` · ≈ ${nf(tot / sis * 100, 1)}% de los $${nf(sis / 1e12, 2)} billones del sistema` : ''}</p>
+            <p style="color:var(--fg-3);font-size:12px">${fuente(d.unaj.fuente, d.unaj.link)}</p></div>
+          <div class="caja"><div class="tabla-wrap"><table>
+            <thead><tr><th>Finalidad</th><th>Pesos</th><th>% del total</th></tr></thead>
+            <tbody>${partidas.map(k => `<tr><td>${U[k].texto}</td><td class="monto"><span class="solo-ancho">${'$' + nf(U[k].valor, 0)}</span><span class="solo-angosto">${millones(U[k].valor)}</span></td>
+              <td><span class="barrita solo-ancho" style="width:${Math.max(2, U[k].valor / tot * 60).toFixed(0)}px"></span>${nf(U[k].valor / tot * 100, 1)}%</td></tr>`).join('')}
+              <tr><td><b>Total</b></td><td class="monto"><b><span class="solo-ancho">${'$' + nf(tot, 0)}</span><span class="solo-angosto">${millones(tot)}</span></b></td><td>100,0%</td></tr></tbody></table></div></div>
+        </div>
+      </section>` : ''}
+
+      <section class="sec" aria-labelledby="t-cro">
+        <div class="sec-cab"><div><h2 id="t-cro">Cronología de la ley</h2>
+          <p class="sub">${Object.values(ACTOR).map(([n, c]) => `<span style="white-space:nowrap"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c};margin-right:5px"></i>${n}</span>`).join(' &nbsp; ')}</p></div></div>
+        <div class="caja"><ol class="crono">${d.cronologia.map(c => `<li>
+          <span class="fe">${c.fecha ? fecha(c.fecha) : 'sin fecha'}</span>
+          <span class="pt" style="background:${(ACTOR[c.actor] || ['', T.fg3])[1]}"></span>
+          <span class="tx"><span class="ac">${(ACTOR[c.actor] || [c.actor])[0]}</span>${c.texto}${c.link ? `<a href="${c.link}" target="_blank" rel="noopener">fuente</a>` : ''}</span></li>`).join('')}</ol></div>
+      </section>
+
+      <footer class="notas">
+        <div><h3>Método del índice</h3><p>${d.modo === 'propia'
+          ? 'Años ejecutados: devengado del programa "Desarrollo de la Educación Superior" (transferencias a universidades nacionales) en Presupuesto Abierto, deflactado con el IPC promedio anual de la serie oficial que usa este tablero, con 2023 = 100. Los años que la serie propia todavía no tiene usan la cifra recopilada (ver tooltip). 2026 (crédito vigente) y 2027 (proyecto) son de CEPA y no son ejecución.'
+          : 'Por ahora el índice usa cifras recopiladas: cada año sale de una fuente distinta (ver tooltip) y algunos se arman encadenando variaciones anuales, por eso son aproximados. El script del tablero intenta calcular una serie propia con el devengado de Presupuesto Abierto y el IPC del tablero; cuando la baja y da parecido a estas cifras, la reemplaza sola.'}
+          Ejecutado es lo devengado en el año; crédito vigente es lo autorizado a la fecha; proyecto es lo que propone el Poder Ejecutivo.</p></div>
+        <div><h3>Lo que dice el Gobierno</h3><p>Que la ley no prevé de dónde salen los fondos, como exige el art. 5 de la Ley 24.629, y por eso suspendió su ejecución; que prioriza el equilibrio fiscal; que pidió auditar a las universidades; y envió un proyecto para reemplazar la ley con un aumento de 12,3% en tres cuotas.</p></div>
+        <div><h3>Fuentes</h3><ul>${[...[...d.indice, ...d.salario, ...d.pbi, ...Object.values(C).flatMap(c => Object.values(c)), d.unaj, ...d.cronologia]
+          .filter(x => x && x.link).reduce((m, x) => { const n = x.fuente || (x.texto ? x.texto.split(':')[0].slice(0, 60) : 'Nota');
+            const s = m.get(x.link) || new Set(); n.replace(/,\s*[a-z]{3}-\d{4}$/, '').split(/\s*[,+]\s*(?=[A-ZÁÉÍÓÚ])/).forEach(p => s.add(p.trim())); m.set(x.link, s); return m; }, new Map()).entries()]
+          .map(([l, s]) => [l, [...s].filter(n => n !== 'IPC del tablero').join(', ')])
+          .map(([l, f]) => `<li><a href="${l}" target="_blank" rel="noopener">${f}</a> <span style="color:var(--fg-3)">· ${new URL(l).hostname.replace('www.', '')}</span></li>`).join('')}</ul></div>
+        <div><h3>Borrador</h3><p>Análisis en construcción. Las cifras de terceros se muestran como las publicó cada fuente; no todas usan el mismo deflactor ni el mismo recorte del presupuesto. Las cifras están en <code>fuentes/universidades_fuentes.csv</code>.</p></div>
+      </footer>`;
+
+    // ---------- 3. índice real / % del PBI ----------
+    const chI = nuevo(document.getElementById('ch-ind'), {});
+    const UN = d.unaj.indice || [];
+    const dibI = modo => {
+      const filas = modo === 'pbi' ? d.pbi : d.indice;
+      const a0 = Math.min(...filas.map(x => x.anio)), a1 = Math.max(...filas.map(x => x.anio));
+      const anios = Array.from({ length: a1 - a0 + 1 }, (_, i) => a0 + i);
+      const por = Object.fromEntries(filas.map(x => [x.anio, x]));
+      const gobDe = a => por[a] ? por[a].gobierno : (d.indice.find(x => x.anio === a) || {}).gobierno;
+      // franjas de mandato
+      const bandas = [];
+      anios.forEach(a => { const g = gobDe(a); if (!g) return;
+        const b = bandas[bandas.length - 1];
+        if (b && b.g === g) b.hasta = a; else bandas.push({ g, desde: a, hasta: a }); });
+      const barra = x => { if (!x) return null; const c = colG(x.gobierno), ej = x.tipo === 'ejecutado';
+        return { value: x.valor, itemStyle: ej ? { color: c, borderRadius: [3, 3, 0, 0] }
+          : { color: { image: rayas(c), repeat: 'repeat' }, borderColor: c, borderWidth: 1, borderType: 'dashed', borderRadius: [3, 3, 0, 0] } }; };
+      const series = [{ name: modo === 'pbi' ? '% del PBI' : 'Índice real', type: 'bar', barMaxWidth: 34, stack: 'x',
+        data: anios.map(a => barra(por[a])),
+        label: { show: true, position: 'top', fontFamily: T.num, fontSize: angosto() ? 9 : 10, color: T.fg2,
+          formatter: p => { const x = por[anios[p.dataIndex]]; if (!x) return '';
+            return modo === 'pbi' ? (x.max ? '' : nf(x.valor, 2)) : nf(x.valor, angosto() ? 0 : 1); } },
+        markArea: { silent: true, data: bandas.map(b => [{ name: (G[b.g] || {}).corto, xAxis: String(b.desde), itemStyle: { color: hexA(colG(b.g), .08) },
+          label: { show: !angosto(), color: colG(b.g), fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: String(b.hasta) }]) },
+        markLine: modo === 'pbi' ? undefined : { silent: true, symbol: 'none', lineStyle: { color: T.fg2, type: 'dashed', width: 1 },
+          label: { formatter: '2023 = 100', color: T.fg3, fontFamily: T.num, fontSize: 10, position: 'insideEndTop' }, data: [{ yAxis: 100 }] } }];
+      if (modo === 'pbi') {   // rango cuando las fuentes difieren
+        series.push({ name: 'rango', type: 'bar', stack: 'x', barMaxWidth: 34, silent: true,
+          data: anios.map(a => por[a] && por[a].max ? { value: r2(por[a].max - por[a].valor), itemStyle: { color: hexA(colG(por[a].gobierno), .35), borderRadius: [3, 3, 0, 0] } } : null),
+          label: { show: true, position: 'top', fontFamily: T.num, fontSize: angosto() ? 9 : 10, color: T.fg2,
+            formatter: p => { const x = por[anios[p.dataIndex]]; return x && x.max ? `${nf(x.valor, 2)}–${nf(x.max, 2)}` : ''; } } });
+      }
+      if (modo === 'indice' && UN.length) series.push({ name: 'UNAJ', type: 'line', symbol: 'circle', symbolSize: 6, z: 5,
+        data: anios.map(a => (UN.find(u => u.anio === a) || {}).valor ?? null), lineStyle: { color: T.fg, width: 2 }, itemStyle: { color: T.fg } });
+      chI.setOption({
+        grid: { left: 4, right: 12, top: 30, bottom: 4, containLabel: true },
+        tooltip: tip({ formatter: p => { const a = anios[p[0].dataIndex], x = por[a];
+          if (!x) return `<b>${a}</b><br><span style="color:${T.fg3}">Sin dato publicado</span>`;
+          const val = modo === 'pbi' ? (x.max ? `${nf(x.valor, 2)}% a ${nf(x.max, 2)}%` : nf(x.valor, 2) + '%') : nf(x.valor, 1);
+          const un = modo === 'indice' && UN.find(u => u.anio === a);
+          return `<b>${a}</b> · ${(G[x.gobierno] || {}).corto || ''}<br>${modo === 'pbi' ? '% del PBI' : 'Índice real (2023 = 100)'}: <b>${val}</b><br>` +
+            `<span style="color:${T.fg3}">${TIPO[x.tipo] || x.tipo}</span>` +
+            (x.como && x.como !== 'base' ? `<br><span style="color:${T.fg3}">${x.como}</span>` : '') + (x.nota ? `<br><span style="color:${T.fg3}">${x.nota}</span>` : '') +
+            (x.recopilada != null ? `<br><span style="color:${T.fg3}">Cifra recopilada: ${nf(x.recopilada, 1)}</span>` : '') +
+            (un ? `<br>UNAJ: <b>${nf(un.valor, 1)}</b>` : '') +
+            (x.fuente ? `<br>Fuente: ${x.fuente}` : ''); } }),
+        xAxis: ejeX({ type: 'category', data: anios.map(String) }),
+        yAxis: modo === 'pbi' ? ejeY({ min: 0, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 1) + '%' } })
+                              : ejeY({ min: 0, max: v => Math.max(110, Math.ceil(v.max / 10) * 10) }),
+        series,
+      }, { replaceMerge: ['series', 'yAxis', 'xAxis'] });
+      document.getElementById('sub-ind').textContent = modo === 'pbi'
+        ? 'Financiamiento universitario como % del PBI, con los valores publicados. Donde las fuentes difieren se muestra el rango. Los años sin dato quedan vacíos.'
+        : `Índice real con 2023 = 100: cuánto compra lo que reciben las universidades comparado con 2023. Las barras rayadas no son ejecución: 2026 es crédito vigente y 2027, el proyecto de Presupuesto.${d.modo === 'propia' ? '' : ' Cifras recopiladas de distintas fuentes, ver tooltip.'}`;
+      const usados = [...new Set(filas.map(x => x.gobierno))];
+      document.getElementById('ley-ind').innerHTML = usados.map(g => `<span><i style="background:${colG(g)}"></i>${(G[g] || {}).corto || g}</span>`).join('') +
+        (filas.some(x => x.tipo !== 'ejecutado') ? `<span><i class="raya"></i>Crédito vigente o proyecto (no es ejecución)</span>` : '') +
+        (modo === 'indice' && UN.length ? `<span><i class="lin" style="background:${T.fg}"></i>UNAJ</span>` : '');
+    };
+    const r2 = v => Math.round(v * 100) / 100;
+    dibI('indice'); seguir('sel-ind', dibI);
+
+    // ---------- 4. salario real ----------
+    const S = d.salario;
+    const pts = [{ fecha: '2023-11', valor: 100, fuente: 'base', base: true }, ...S];
+    const tiempo = f => utc(f + (f.length === 7 ? '-15' : ''));
+    nuevo(document.getElementById('ch-sal'), {
+      grid: { left: 4, right: 16, top: 26, bottom: 4, containLabel: true },
+      tooltip: { trigger: 'item', confine: true, backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12 },
+        extraCssText: 'border-radius:6px;max-width:280px;white-space:normal;',
+        formatter: p => { const x = pts[p.dataIndex]; return x.base ? `<b>nov-23</b><br>Base = 100`
+          : `<b>${etq(x.fecha)}</b><br>Salario real: <b>${nf(x.valor, 1)}</b> (${pct(x.valor - 100, 1, true)})${x.nota ? `<br><span style="color:${T.fg3}">${x.nota}</span>` : ''}<br>Fuente: ${x.fuente}`; } },
+      xAxis: ejeX({ type: 'time', min: utc('2023-10-01'), max: utc(hoy.slice(0, 7) + '-28'),
+        axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => { const dt = new Date(v); return `${MES[dt.getUTCMonth()]}-${String(dt.getUTCFullYear()).slice(2)}`; } },
+        splitNumber: angosto() ? 3 : 6 }),
+      yAxis: ejeY({ min: 50, max: 110 }),
+      series: [{ type: 'scatter', symbolSize: p => 11,
+        data: pts.map((x, i) => ({ value: [tiempo(x.fecha), x.valor], label: { position: i % 2 ? 'bottom' : 'top' }, itemStyle: x.base ? { color: 'transparent', borderColor: T.fg2, borderWidth: 1.5 } : { color: '#d55181' } })),
+        label: { show: true, position: 'bottom', distance: 6, fontFamily: T.num, fontSize: 10, color: T.fg2,
+          formatter: p => { const x = pts[p.dataIndex]; return x.base ? '' : angosto() ? nf(x.valor, 0) : `${nf(x.valor, 1)}\n${x.fuente}`; } },
+        markLine: { silent: true, symbol: 'none', lineStyle: { color: T.ley, width: 2, type: 'solid' }, data: [{ yAxis: 100 }],
+          label: { formatter: 'Lo que manda la ley', color: T.ley, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideStartTop' } } }],
+    });
+  }
+
+  fetch('data/universidades.json', { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(e => { document.getElementById('app').innerHTML = '<div class="estado">No se pudieron cargar los datos (data/universidades.json). Revisá que la Action haya corrido.</div>'; console.error(e); });
+})();
+</script>
+</body>
+</html>

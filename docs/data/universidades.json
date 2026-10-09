@@ -1,0 +1,491 @@
+{
+ "actualizado": "2026-10-09T18:20+00:00",
+ "modo": "recopilada",
+ "hitos": {
+  "senado": {
+   "fecha": "2025-10-02",
+   "texto": "El Senado insiste con la ley",
+   "link": ""
+  },
+  "decreto": {
+   "fecha": "2025-10-21",
+   "texto": "Decreto 759/2025: promulga la ley y suspende su ejecución hasta que el Presupuesto incluya las partidas (art. 5 de la Ley 24.629)",
+   "link": ""
+  },
+  "camara": {
+   "fecha": "2026-03-31",
+   "texto": "La Cámara confirma la cautelar",
+   "link": ""
+  },
+  "corte": {
+   "fecha": "2026-06-25",
+   "texto": "La Corte deja firme la cautelar",
+   "link": "https://www.diariouno.com.ar/politica/la-corte-mantuvo-la-medida-que-obliga-milei-cumplir-la-ley-financiamiento-universitario-n1569475"
+  },
+  "cormick": {
+   "fecha": "2026-10-06",
+   "texto": "El juez Cormick declara inconstitucional el decreto 759/2025",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/7040/La-Justicia-declaro-inconstitucional-el-decreto-que-freno-la-Ley-de-Financiamiento-Universitario-y-ordeno-aplicarla-de-inmediato"
+  }
+ },
+ "estado": {
+  "texto": "Sin aplicación plena",
+  "detalle": "El Gobierno cumple parcialmente, \"por goteo\""
+ },
+ "tarjetas": [
+  {
+   "id": "macri",
+   "corto": "Macri",
+   "nombre": "Mauricio Macri",
+   "color": "#c98500",
+   "desde": 2015,
+   "hasta": 2019,
+   "variacion": null,
+   "aproximado": false,
+   "fuentes": []
+  },
+  {
+   "id": "af",
+   "corto": "Fernández",
+   "nombre": "Alberto Fernández",
+   "color": "#3987e5",
+   "desde": 2019,
+   "hasta": 2023,
+   "variacion": 6.7,
+   "aproximado": true,
+   "fuentes": [
+    "Chequeado / Reverso",
+    "Chequeado, dic-2022",
+    "Curcio y Leone (Forbes)"
+   ]
+  },
+  {
+   "id": "milei",
+   "corto": "Milei",
+   "nombre": "Javier Milei",
+   "color": "#d55181",
+   "desde": 2023,
+   "hasta": 2025,
+   "variacion": -35.4,
+   "aproximado": false,
+   "fuentes": [
+    "CEPA, sep-2026"
+   ],
+   "vigente_2026": -25.4
+  }
+ ],
+ "indice": [
+  {
+   "anio": 2019,
+   "valor": 93.7,
+   "tipo": "ejecutado",
+   "como": "2020 fue −2,17% vs. 2019",
+   "fuente": "Chequeado / Reverso",
+   "link": "https://www.ambito.com/politica/es-falso-que-la-gestion-la-libertad-avanza-es-la-que-mas-dinero-giro-las-universidades-como-senalan-posteos-que-compartio-milei-x-n6192289/amp",
+   "origen": "recopilada",
+   "gobierno": "macri"
+  },
+  {
+   "anio": 2020,
+   "valor": 91.7,
+   "tipo": "ejecutado",
+   "como": "2021 fue +5,3% vs. 2020",
+   "fuente": "Chequeado, dic-2022",
+   "link": "",
+   "origen": "recopilada",
+   "gobierno": "af"
+  },
+  {
+   "anio": 2021,
+   "valor": 96.5,
+   "tipo": "ejecutado",
+   "como": "2022 fue −1,7% vs. 2021",
+   "fuente": "Chequeado, dic-2022",
+   "link": "",
+   "origen": "recopilada",
+   "gobierno": "af"
+  },
+  {
+   "anio": 2022,
+   "valor": 94.9,
+   "tipo": "ejecutado",
+   "como": "2023 fue +5,4% vs. 2022",
+   "fuente": "Curcio y Leone (Forbes)",
+   "link": "https://www.forbesargentina.com/money/cuanto-cayo-financiamiento-universitario-durante-ultimos-anos-n51480",
+   "origen": "recopilada",
+   "gobierno": "af"
+  },
+  {
+   "anio": 2023,
+   "valor": 100.0,
+   "tipo": "ejecutado",
+   "como": "base",
+   "fuente": "",
+   "link": "",
+   "origen": "recopilada",
+   "gobierno": "af"
+  },
+  {
+   "anio": 2024,
+   "valor": 75.0,
+   "tipo": "ejecutado",
+   "como": "−24,97% vs. 2023",
+   "fuente": "Chequeado + OPC",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "origen": "recopilada",
+   "gobierno": "milei"
+  },
+  {
+   "anio": 2025,
+   "valor": 64.6,
+   "tipo": "ejecutado",
+   "como": "−35,4% vs. 2023",
+   "fuente": "CEPA, sep-2026",
+   "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391",
+   "origen": "recopilada",
+   "gobierno": "milei"
+  },
+  {
+   "anio": 2026,
+   "valor": 74.6,
+   "tipo": "vigente",
+   "como": "−25,4% vs. 2023, crédito vigente",
+   "fuente": "CEPA, sep-2026",
+   "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391",
+   "origen": "recopilada",
+   "gobierno": "milei"
+  },
+  {
+   "anio": 2027,
+   "valor": 74.8,
+   "tipo": "proyecto",
+   "como": "−25,2% vs. 2023, proyecto de Presupuesto",
+   "fuente": "CEPA, sep-2026",
+   "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391",
+   "origen": "recopilada",
+   "gobierno": "milei"
+  }
+ ],
+ "pbi": [
+  {
+   "anio": 2017,
+   "valor": 0.82,
+   "max": null,
+   "tipo": "ejecutado",
+   "nota": "",
+   "fuente": "Chequeado, Equilibra, ACIJ, FEDUN",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "gobierno": "macri"
+  },
+  {
+   "anio": 2019,
+   "valor": 0.68,
+   "max": 0.69,
+   "tipo": "ejecutado",
+   "nota": "según la fuente, 0,68% o 0,69%",
+   "fuente": "Chequeado, Equilibra, ACIJ, FEDUN",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "gobierno": "macri"
+  },
+  {
+   "anio": 2023,
+   "valor": 0.72,
+   "max": null,
+   "tipo": "ejecutado",
+   "nota": "",
+   "fuente": "Chequeado, Equilibra, ACIJ, FEDUN",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "gobierno": "af"
+  },
+  {
+   "anio": 2025,
+   "valor": 0.43,
+   "max": 0.5,
+   "tipo": "ejecutado",
+   "nota": "aproximado: entre 0,43% y 0,50% según la fuente",
+   "fuente": "Chequeado, Equilibra, ACIJ, FEDUN",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "gobierno": "milei"
+  },
+  {
+   "anio": 2026,
+   "valor": 0.46,
+   "max": null,
+   "tipo": "proyecto",
+   "nota": "proyectado",
+   "fuente": "Chequeado, Equilibra, ACIJ, FEDUN",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "gobierno": "milei"
+  }
+ ],
+ "salario": [
+  {
+   "fecha": "2025-08",
+   "valor": 70.9,
+   "fuente": "Chequeado",
+   "link": "https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/",
+   "nota": ""
+  },
+  {
+   "fecha": "2025-10",
+   "valor": 69.4,
+   "fuente": "FEDUN-CIICTI",
+   "link": "https://periferia.com.ar/wp-content/uploads/2025/11/Quinto-Infome-de-Situacion-sobre-el-Sistema-Universitario.pdf",
+   "nota": ""
+  },
+  {
+   "fecha": "2026-01",
+   "valor": 66.0,
+   "fuente": "CEPA",
+   "link": "https://www.baenegocios.com/amp/el-presupuesto-universitario-marca-una-caida-real-del-45-respecto-de-2023/",
+   "nota": ""
+  },
+  {
+   "fecha": "2026-02",
+   "valor": 68.0,
+   "fuente": "CIN",
+   "link": "https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf",
+   "nota": ""
+  },
+  {
+   "fecha": "2026-05",
+   "valor": 65.8,
+   "fuente": "Chequeado",
+   "link": "https://chequeado.com/el-explicador/marcha-federal-universitaria-del-12-de-mayo-de-2026-5-datos-clave-sobre-el-financiamiento-y-los-salarios-docentes/",
+   "nota": ""
+  },
+  {
+   "fecha": "2026-08",
+   "valor": 75.0,
+   "fuente": "CEPA",
+   "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391",
+   "nota": "aproximado (cerca de −25%)"
+  }
+ ],
+ "cifras": {
+  "presupuesto": {
+   "actual": {
+    "valor": -25.4,
+    "texto": "Presupuesto universitario 2026 vs. 2023, en términos reales",
+    "fecha": "2026-09",
+    "fuente": "CEPA",
+    "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391"
+   },
+   "anterior": {
+    "valor": -45.6,
+    "texto": "En marzo era −45,6%",
+    "fecha": "2026-03",
+    "fuente": "CIN",
+    "link": "https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf"
+   }
+  },
+  "salario": {
+   "actual": {
+    "valor": -25.0,
+    "texto": "Salario universitario vs. nov-2023, cerca de −25% a agosto de 2026",
+    "fecha": "2026-08",
+    "fuente": "CEPA",
+    "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391"
+   },
+   "anterior": {
+    "valor": -32.0,
+    "texto": "En febrero era −32%: 7,3 sueldos perdidos, y hacía falta un +47,3% para recuperarlo",
+    "fecha": "2026-02",
+    "fuente": "CIN",
+    "link": "https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf"
+   }
+  },
+  "peso_salarios": {
+   "actual": {
+    "valor": 86.9,
+    "texto": "Parte del presupuesto universitario que son salarios",
+    "fecha": "2026-09",
+    "fuente": "CEPA",
+    "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391"
+   }
+  },
+  "ley_aplicada": {
+   "actual": {
+    "valor": 35.1,
+    "texto": "Con la ley aplicada: +35,1% real vs. 2025, y quedaría 3,6% debajo de 2023",
+    "fecha": "2026-09",
+    "fuente": "CEPA",
+    "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391"
+   },
+   "anterior": {
+    "valor": 9.74,
+    "texto": "Para 2027 la ley exigiría $9,74 billones, 29,8% más que el proyecto",
+    "fecha": "2026-09",
+    "fuente": "CEPA",
+    "link": "https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391"
+   }
+  }
+ },
+ "unaj": {
+  "presupuesto_2026": {
+   "total": {
+    "valor": 37960774692.0,
+    "texto": "Total UNAJ"
+   },
+   "educacion_cultura": {
+    "valor": 37880239456.0,
+    "texto": "Educación y Cultura"
+   },
+   "salud": {
+    "valor": 51337760.0,
+    "texto": "Salud"
+   },
+   "ciencia_tecnologia": {
+    "valor": 29197476.0,
+    "texto": "Ciencia y Tecnología"
+   },
+   "sistema": {
+    "valor": 4780000000000.0,
+    "texto": "Total del sistema universitario (≈ $4,78 billones)"
+   }
+  },
+  "fuente": "Presupuesto 2026, anexo de universidades",
+  "link": "https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf",
+  "indice": []
+ },
+ "cronologia": [
+  {
+   "fecha": "2025-08-22",
+   "actor": "congreso",
+   "texto": "El Congreso sanciona la Ley de Financiamiento Universitario",
+   "link": ""
+  },
+  {
+   "fecha": "2025-09-11",
+   "actor": "ejecutivo",
+   "texto": "Veto total del Poder Ejecutivo",
+   "link": ""
+  },
+  {
+   "fecha": "2025-09-17",
+   "actor": "congreso",
+   "texto": "Diputados rechaza el veto (174 votos)",
+   "link": ""
+  },
+  {
+   "fecha": "2025-10-02",
+   "actor": "congreso",
+   "texto": "El Senado insiste: la ley queda firme",
+   "link": ""
+  },
+  {
+   "fecha": "2025-10-21",
+   "actor": "ejecutivo",
+   "texto": "Decreto 759/2025: promulga la ley y suspende su ejecución hasta que el Presupuesto incluya las partidas",
+   "link": ""
+  },
+  {
+   "fecha": "",
+   "actor": "justicia",
+   "texto": "Amparo del CIN y cautelar en primera instancia",
+   "link": ""
+  },
+  {
+   "fecha": "2026-02",
+   "actor": "ejecutivo",
+   "texto": "El Gobierno envía un proyecto para modificar la ley (aumento de 12,3% en tres cuotas)",
+   "link": ""
+  },
+  {
+   "fecha": "2026-03-31",
+   "actor": "justicia",
+   "texto": "La Cámara confirma la cautelar",
+   "link": ""
+  },
+  {
+   "fecha": "2026-06-25",
+   "actor": "justicia",
+   "texto": "La Corte deja firme la cautelar: arts. 5 y 6 (salarios y becas). Quedan afuera la recomposición global de 2024 y 2025",
+   "link": "https://www.diariouno.com.ar/politica/la-corte-mantuvo-la-medida-que-obliga-milei-cumplir-la-ley-financiamiento-universitario-n1569475"
+  },
+  {
+   "fecha": "2026-06",
+   "actor": "ejecutivo",
+   "texto": "Aumento oficial de 24,33% (21,33% + 3%), entre junio y octubre",
+   "link": ""
+  },
+  {
+   "fecha": "2026-10-06",
+   "actor": "justicia",
+   "texto": "El juez Cormick declara inconstitucional el decreto 759/2025 y ordena aplicar la ley",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/7040/La-Justicia-declaro-inconstitucional-el-decreto-que-freno-la-Ley-de-Financiamiento-Universitario-y-ordeno-aplicarla-de-inmediato"
+  }
+ ],
+ "gobiernos": [
+  {
+   "id": "nk",
+   "nombre": "Néstor Kirchner",
+   "corto": "Kirchner",
+   "color": "#199e70",
+   "base": "2003-04",
+   "fin": "2007-11"
+  },
+  {
+   "id": "cfk1",
+   "nombre": "Cristina Fernández I",
+   "corto": "CFK I",
+   "color": "#d95926",
+   "base": "2007-11",
+   "fin": "2011-11"
+  },
+  {
+   "id": "cfk2",
+   "nombre": "Cristina Fernández II",
+   "corto": "CFK II",
+   "color": "#9085e9",
+   "base": "2011-11",
+   "fin": "2015-11"
+  },
+  {
+   "id": "macri",
+   "nombre": "Mauricio Macri",
+   "corto": "Macri",
+   "color": "#c98500",
+   "base": "2015-11",
+   "fin": "2019-11"
+  },
+  {
+   "id": "af",
+   "nombre": "Alberto Fernández",
+   "corto": "Fernández",
+   "color": "#3987e5",
+   "base": "2019-11",
+   "fin": "2023-11"
+  },
+  {
+   "id": "milei",
+   "nombre": "Javier Milei",
+   "corto": "Milei",
+   "color": "#d55181",
+   "base": "2023-11",
+   "fin": "2026-08"
+  }
+ ],
+ "ipc_promedio": {
+  "2015": 339.68,
+  "2016": 466.61,
+  "2017": 586.24,
+  "2018": 787.2,
+  "2019": 1208.71,
+  "2020": 1716.29,
+  "2021": 2547.07,
+  "2022": 4392.59,
+  "2023": 10256.81,
+  "2024": 32808.74,
+  "2025": 46561.17
+ },
+ "serie_propia": {
+  "indice": {},
+  "control": [],
+  "tolerancia": 8.0,
+  "errores": [
+   "Todavía no corrió en la Action: la primera corrida baja Presupuesto Abierto"
+  ]
+ },
+ "presupuesto_abierto": {}
+}

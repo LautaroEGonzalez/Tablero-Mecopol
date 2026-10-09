@@ -1,0 +1,50 @@
+seccion,clave,fecha,valor,valor_max,tipo,texto,fuente,link
+hito,senado,2025-10-02,,,,El Senado insiste con la ley,,
+hito,decreto,2025-10-21,,,,Decreto 759/2025: promulga la ley y suspende su ejecución hasta que el Presupuesto incluya las partidas (art. 5 de la Ley 24.629),,
+hito,camara,2026-03-31,,,,La Cámara confirma la cautelar,,
+hito,corte,2026-06-25,,,,La Corte deja firme la cautelar,,https://www.diariouno.com.ar/politica/la-corte-mantuvo-la-medida-que-obliga-milei-cumplir-la-ley-financiamiento-universitario-n1569475
+hito,cormick,2026-10-06,,,,El juez Cormick declara inconstitucional el decreto 759/2025,,https://www.palabrasdelderecho.com.ar/articulo/7040/La-Justicia-declaro-inconstitucional-el-decreto-que-freno-la-Ley-de-Financiamiento-Universitario-y-ordeno-aplicarla-de-inmediato
+estado,estado,,,,"El Gobierno cumple parcialmente, ""por goteo""",Sin aplicación plena,,
+indice,,2019,93.7,,ejecutado,"2020 fue −2,17% vs. 2019",Chequeado / Reverso,https://www.ambito.com/politica/es-falso-que-la-gestion-la-libertad-avanza-es-la-que-mas-dinero-giro-las-universidades-como-senalan-posteos-que-compartio-milei-x-n6192289/amp
+indice,,2020,91.7,,ejecutado,"2021 fue +5,3% vs. 2020","Chequeado, dic-2022",
+indice,,2021,96.5,,ejecutado,"2022 fue −1,7% vs. 2021","Chequeado, dic-2022",
+indice,,2022,94.9,,ejecutado,"2023 fue +5,4% vs. 2022",Curcio y Leone (Forbes),https://www.forbesargentina.com/money/cuanto-cayo-financiamiento-universitario-durante-ultimos-anos-n51480
+indice,,2023,100,,ejecutado,base,,
+indice,,2024,75.0,,ejecutado,"−24,97% vs. 2023",Chequeado + OPC,https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+indice,,2025,64.6,,ejecutado,"−35,4% vs. 2023","CEPA, sep-2026",https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+indice,,2026,74.6,,vigente,"−25,4% vs. 2023, crédito vigente","CEPA, sep-2026",https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+indice,,2027,74.8,,proyecto,"−25,2% vs. 2023, proyecto de Presupuesto","CEPA, sep-2026",https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+pbi,,2017,0.82,,ejecutado,,"Chequeado, Equilibra, ACIJ, FEDUN",https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+pbi,,2019,0.68,0.69,ejecutado,"según la fuente, 0,68% o 0,69%","Chequeado, Equilibra, ACIJ, FEDUN",https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+pbi,,2023,0.72,,ejecutado,,"Chequeado, Equilibra, ACIJ, FEDUN",https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+pbi,,2025,0.43,0.5,ejecutado,"aproximado: entre 0,43% y 0,50% según la fuente","Chequeado, Equilibra, ACIJ, FEDUN",https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+pbi,,2026,0.46,,proyecto,proyectado,"Chequeado, Equilibra, ACIJ, FEDUN",https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+salario,,2025-08,70.9,,,,Chequeado,https://chequeado.com/el-explicador/el-veto-al-financiamiento-universitario-el-presupuesto-y-los-salarios-de-los-docentes-cayeron-un-30-desde-2023/
+salario,,2025-10,69.4,,,,FEDUN-CIICTI,https://periferia.com.ar/wp-content/uploads/2025/11/Quinto-Infome-de-Situacion-sobre-el-Sistema-Universitario.pdf
+salario,,2026-01,66,,,,CEPA,https://www.baenegocios.com/amp/el-presupuesto-universitario-marca-una-caida-real-del-45-respecto-de-2023/
+salario,,2026-02,68,,,,CIN,https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf
+salario,,2026-05,65.8,,,,Chequeado,https://chequeado.com/el-explicador/marcha-federal-universitaria-del-12-de-mayo-de-2026-5-datos-clave-sobre-el-financiamiento-y-los-salarios-docentes/
+salario,,2026-08,75,,,aproximado (cerca de −25%),CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+cifra,presupuesto,2026-09,-25.4,,actual,"Presupuesto universitario 2026 vs. 2023, en términos reales",CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+cifra,presupuesto,2026-03,-45.6,,anterior,"En marzo era −45,6%",CIN,https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf
+cifra,salario,2026-08,-25,,actual,"Salario universitario vs. nov-2023, cerca de −25% a agosto de 2026",CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+cifra,salario,2026-02,-32,,anterior,"En febrero era −32%: 7,3 sueldos perdidos, y hacía falta un +47,3% para recuperarlo",CIN,https://www.unrn.edu.ar/archivos/noticia/5022/Declaracion%20del%20CIN.pdf
+cifra,peso_salarios,2026-09,86.9,,actual,Parte del presupuesto universitario que son salarios,CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+cifra,ley_aplicada,2026-09,35.1,,actual,"Con la ley aplicada: +35,1% real vs. 2025, y quedaría 3,6% debajo de 2023",CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+cifra,ley_aplicada,2026-09,9.74,,anterior,"Para 2027 la ley exigiría $9,74 billones, 29,8% más que el proyecto",CEPA,https://www.sitioandino.com.ar/economia/presupuesto-2027-las-universidades-recibirian-un-252-menos-que-2023-terminos-reales-n5730391
+unaj,total,2026,37960774692,,presupuesto,Total UNAJ,"Presupuesto 2026, anexo de universidades",https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf
+unaj,educacion_cultura,2026,37880239456,,presupuesto,Educación y Cultura,"Presupuesto 2026, anexo de universidades",https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf
+unaj,salud,2026,51337760,,presupuesto,Salud,"Presupuesto 2026, anexo de universidades",https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf
+unaj,ciencia_tecnologia,2026,29197476,,presupuesto,Ciencia y Tecnología,"Presupuesto 2026, anexo de universidades",https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf
+unaj,sistema,2026,4780000000000.0,,presupuesto,"Total del sistema universitario (≈ $4,78 billones)","Presupuesto 2026, anexo de universidades",https://www.unt.edu.ar/wp-content/uploads/2026/03/ANEXO-UNIVERSIDADES.pdf
+crono,,2025-08-22,,,congreso,El Congreso sanciona la Ley de Financiamiento Universitario,,
+crono,,2025-09-11,,,ejecutivo,Veto total del Poder Ejecutivo,,
+crono,,2025-09-17,,,congreso,Diputados rechaza el veto (174 votos),,
+crono,,2025-10-02,,,congreso,El Senado insiste: la ley queda firme,,
+crono,,2025-10-21,,,ejecutivo,Decreto 759/2025: promulga la ley y suspende su ejecución hasta que el Presupuesto incluya las partidas,,
+crono,,,,,justicia,Amparo del CIN y cautelar en primera instancia,,
+crono,,2026-02,,,ejecutivo,"El Gobierno envía un proyecto para modificar la ley (aumento de 12,3% en tres cuotas)",,
+crono,,2026-03-31,,,justicia,La Cámara confirma la cautelar,,
+crono,,2026-06-25,,,justicia,La Corte deja firme la cautelar: arts. 5 y 6 (salarios y becas). Quedan afuera la recomposición global de 2024 y 2025,,https://www.diariouno.com.ar/politica/la-corte-mantuvo-la-medida-que-obliga-milei-cumplir-la-ley-financiamiento-universitario-n1569475
+crono,,2026-06,,,ejecutivo,"Aumento oficial de 24,33% (21,33% + 3%), entre junio y octubre",,
+crono,,2026-10-06,,,justicia,El juez Cormick declara inconstitucional el decreto 759/2025 y ordena aplicar la ley,,https://www.palabrasdelderecho.com.ar/articulo/7040/La-Justicia-declaro-inconstitucional-el-decreto-que-freno-la-Ley-de-Financiamiento-Universitario-y-ordeno-aplicarla-de-inmediato

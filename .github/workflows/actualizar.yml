@@ -25,7 +25,7 @@ concurrency:
 jobs:
   actualizar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
 
@@ -44,6 +44,12 @@ jobs:
         # si falla, la portada se actualiza igual y la página histórica queda con sus últimos datos
         continue-on-error: true
         run: python scripts/historia.py
+
+      - name: Universidades y Ley 27.795
+        # baja Presupuesto Abierto (solo años que faltan); si falla, la página queda con sus últimos datos
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python scripts/universidades.py
 
       - name: Guardar cambios (solo si hay datos nuevos)
         run: |

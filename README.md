@@ -11,6 +11,8 @@ Versión enfocada en el gobierno de Milei:
 
 Y una segunda página, **Mirada larga** (`docs/historia.html`, borrador), con la inflación por gobierno desde 2003: Kirchner, CFK I y II, Macri, Alberto Fernández y Milei.
 
+Y una tercera, **Universidades y Ley 27.795** (`docs/universidades.html`, borrador): contador desde el decreto 759/2025, financiamiento universitario real por gobierno, salarios, cifras clave, la UNAJ en el Presupuesto 2026 y cronología de la ley.
+
 ## Ramas
 
 | Rama | Qué tiene |
@@ -31,6 +33,7 @@ API de datos.gob.ar ──► scripts/actualizar.py ──► docs/data/dashboar
 |---|---|
 | `scripts/actualizar.py` | Baja las series del IPC, calcula todo y escribe el JSON |
 | `scripts/historia.py` | Arma la serie larga 2002–hoy y escribe `docs/data/historia.json` |
+| `scripts/universidades.py` | Arma `docs/data/universidades.json` con las cifras de `fuentes/universidades_fuentes.csv` y, si puede, la serie propia de Presupuesto Abierto |
 | `fuentes/` | Series que no están en la API: IPCNu 2014–2015, nov-2015 a dic-2016, el IPC oficial anual 2007–2015 con sus links y el IPC Provincias de CIFRA-CTA (estimación alternativa) |
 | `config.json` | Lo que se edita a mano: fechas del mandato e ids de rubros |
 | `docs/index.html` | El tablero. Lee el JSON y dibuja los gráficos |
