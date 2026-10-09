@@ -1,0 +1,15 @@
+fecha,variacion_mensual,serie,fuente
+2015-11-01,1.954,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2016/01/ir_2015_958.pdf (cuadro 5, índice 261,43)"
+2015-12-01,3.917,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2016/01/ir_2015_958.pdf (cuadro 5, índice 271,67)"
+2016-01-01,4.137,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2017/01/ir_2017_1101.pdf (cuadro 5, índice 282,91)"
+2016-02-01,3.969,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2017/01/ir_2017_1101.pdf (cuadro 5, índice 294,14)"
+2016-03-01,3.318,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2017/01/ir_2017_1101.pdf (cuadro 5, índice 303,9)"
+2016-04-01,6.545,IPCBA (Ciudad de Buenos Aires),"https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2017/01/ir_2017_1101.pdf (cuadro 5, índice 323,79)"
+2016-05-01,4.2,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_06_16.pdf
+2016-06-01,3.1,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_07_16.pdf
+2016-07-01,2.0,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_08_16.pdf
+2016-08-01,0.2,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_09_16.pdf
+2016-09-01,1.1,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_10_16.pdf
+2016-10-01,2.4,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_11_16.pdf
+2016-11-01,1.6,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_12_16.pdf
+2016-12-01,1.2,INDEC IPC GBA (base abril 2016),https://www.indec.gob.ar/uploads/informesdeprensa/ipc_01_17.pdf

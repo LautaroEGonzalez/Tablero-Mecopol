@@ -31,7 +31,7 @@ API de datos.gob.ar ──► scripts/actualizar.py ──► docs/data/dashboar
 |---|---|
 | `scripts/actualizar.py` | Baja las series del IPC, calcula todo y escribe el JSON |
 | `scripts/historia.py` | Arma la serie larga 2002–hoy y escribe `docs/data/historia.json` |
-| `fuentes/` | Series que no están en la API: IPC Provincias de CIFRA-CTA y el IPC oficial anual 2007–2015 con sus links |
+| `fuentes/` | Series que no están en la API: IPCNu 2014–2015, nov-2015 a dic-2016, el IPC oficial anual 2007–2015 con sus links y el IPC Provincias de CIFRA-CTA (estimación alternativa) |
 | `config.json` | Lo que se edita a mano: fechas del mandato e ids de rubros |
 | `docs/index.html` | El tablero. Lee el JSON y dibuja los gráficos |
 | `docs/data/dashboard.json` | Los datos procesados. Lo escribe la Action, no se toca a mano |
@@ -76,4 +76,4 @@ En Wix o Google Sites se puede incrustar con un iframe apuntando a la URL de Pag
 
 - IPC Nacional, INDEC, base diciembre 2016 = 100, vía la [API de Series de Tiempo](https://datos.gob.ar/series).
 - Base: noviembre de 2023, último mes completo antes de la asunción del 10 de diciembre.
-- Mirada larga: INDEC IPC GBA hasta dic-2006, IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) de 2007 a 2016 (entre 2007 y 2015 el IPC oficial quedó muy por debajo de los índices provinciales y en 2016 no hubo índice nacional) e INDEC IPC Nacional desde 2017. El gráfico interanual muestra dos líneas en todo el período, la del INDEC y la de CIFRA-CTA (2008–2018), para ver cuánto difieren.
+- Mirada larga: serie oficial del INDEC (IPC GBA hasta 2013, IPCNu 2014–oct 2015, IPC GBA may–dic 2016, IPC Nacional desde 2017; de nov-2015 a abr-2016, sin IPC del INDEC, el IPC de la Ciudad de Buenos Aires). Para comparar, la estimación alternativa del IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) entre 2007 y 2016. Detalle en `fuentes/LEEME.md`.

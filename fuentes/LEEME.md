@@ -8,21 +8,29 @@
 | `ponderaciones_regionales.csv` | Peso de cada rubro en la canasta de cada región del IPC y peso de cada región en el total nacional (fila `_peso_region`) | [IPC dic-2025, cuadros 17 y 18](https://www.indec.gob.ar/uploads/informesdeprensa/ipc_01_266741F036E8.pdf) |
 | `estimaciones_reponderadas.csv` | Lo que publicaron otros (Di Tella, CEPA, consultoras, el Gobierno) con las ponderaciones 2017/18, para comparar con la estimación propia | Link en la columna `link` |
 | `indec_ipcnu_2014_2015.csv` | Variación mensual del IPC Nacional urbano (IPCNu) del INDEC, ene-2014 a oct-2015. Sale de los índices de cada informe de prensa; donde solo se tiene la variación publicada (redondeada a un decimal), se usa esa. Encadenada da 23,8% en 2014 (publicado: 23,9%) y 11,9% en ene-oct 2015 | Informes de prensa IPCNu del INDEC, link en la columna `fuente` |
+| `ipc_2015_2016_sin_indice_nacional.csv` | Variación mensual de nov-2015 a dic-2016: IPC de la Ciudad de Buenos Aires (nov-2015 a abr-2016, calculada con los índices del cuadro 5 de los informes de la Dirección de Estadística porteña) e IPC GBA del INDEC (may a dic-2016, la publicada en cada informe) | Link en la columna `fuente` |
 | `indec_oficial_2007_2015.csv` | Inflación anual que publicó el INDEC entre 2007 y 2015, con el link a la nota de cada año | Diarios de la época, ver columna `fuente` |
 
-## Por qué CIFRA-CTA entre 2007 y 2016
+## Cómo se arma la serie larga (Mirada larga)
 
-En 2007 cambiaron la conducción y la metodología del IPC del INDEC, y hasta 2015 el índice oficial quedó muy por debajo de los provinciales. En 2016 no hubo índice nacional. El IPC Provincias de CIFRA (centro de estudios de la CTA) promedia los índices de diez provincias con ponderaciones de la ENGHo. Metodología: [nota de CIFRA](https://centrocifra.org.ar/wp-content/uploads/2023/08/Nota-metodologica-IPC-Provincias.pdf).
+La serie principal es la **oficial**. Se encadenan variaciones mensuales:
+
+| Período | Serie | De dónde sale |
+|---|---|---|
+| 2002 a dic-2006 | INDEC, IPC GBA histórico | API, `178.1_NL_GENERAL_0_0_13` |
+| ene-2007 a dic-2013 | INDEC, IPC GBA base abril 2008 | API, `96.3_ING_2008_M_19` |
+| ene-2014 a oct-2015 | INDEC, IPC Nacional urbano (IPCNu) | `indec_ipcnu_2014_2015.csv` |
+| nov-2015 a abr-2016 | IPC de la Ciudad de Buenos Aires (IPCBA). En esos meses el INDEC no publicó índice de precios (emergencia del sistema estadístico, decreto 55/2016) y mencionó como referencias los índices de la Ciudad y de San Luis | `ipc_2015_2016_sin_indice_nacional.csv` |
+| may-2016 a dic-2016 | INDEC, IPC GBA base abril 2016 | mismo archivo, un informe de prensa por mes |
+| desde ene-2017 | INDEC, IPC Nacional | API |
+
+Control: año por año, de 2007 a 2014, la serie tiene que dar lo que publicó el INDEC (`indec_oficial_2007_2015.csv`, tolerancia 0,35 puntos). Si no da, `scripts/historia.py` corta con error.
+
+## Estimación alternativa: CIFRA-CTA
+
+Entre 2007 y 2016 hubo mediciones distintas de la oficial (institutos provinciales, consultoras, centros de estudio) que dieron valores más altos. Para comparar, la página muestra el IPC Provincias de CIFRA, centro de estudios de la CTA, que promedia índices de diez provincias con ponderaciones de la ENGHo ([nota metodológica](https://centrocifra.org.ar/wp-content/uploads/2023/08/Nota-metodologica-IPC-Provincias.pdf)). Aparece siempre como alternativa: rayada en las barras anuales, línea naranja en el interanual y columna aparte en los cuadros. La serie alternativa es igual a la oficial salvo de feb-2007 a dic-2016.
 
 Control: la variación promedio de 2018 da 34,1%, igual a la que informa la nota metodológica.
-
-## Cómo se arma la serie larga
-
-Se encadenan variaciones mensuales: INDEC IPC GBA hasta enero de 2007 (la serie de CIFRA empieza ese mes), CIFRA de febrero de 2007 a diciembre de 2016 e INDEC IPC Nacional desde enero de 2017.
-
-## Las dos líneas del gráfico interanual
-
-En "Mirada larga" el interanual mes a mes se dibuja con dos líneas en todo el período, sin elegir una: la del INDEC (IPC GBA histórico hasta 2006, IPC GBA base abril 2008 `96.3_ING_2008_M_19` de 2007 a 2013, IPCNu de 2014 a octubre de 2015 e IPC Nacional desde diciembre de 2017) y la de CIFRA-CTA (2008 a 2018). Entre noviembre de 2015 y noviembre de 2017 no hay interanual oficial nacional. `scripts/historia.py` controla que la serie oficial mensual dé, año por año, lo que publicó el INDEC (tolerancia 0,35 puntos).
 
 ## IPC con la canasta 2017/18 (estimación MECOPOL)
 

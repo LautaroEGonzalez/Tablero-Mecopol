@@ -154,7 +154,7 @@ td .mute { color: var(--fg-3); }
 <script>
 (() => {
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const COL = { indec: '#e6e8ec', cifra: '#f2a93b' };
+  const COL = { indec: '#e6e8ec', cifra: '#f2a93b' };   // serie oficial y estimación alternativa
   const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
     panel: css('--panel'), num: css('--font-num'), ui: css('--font-ui') };
   const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -165,7 +165,7 @@ td .mute { color: var(--fg-3); }
   const largo = ym => { const [a, m] = ym.split('-'); return `${MESL[+m - 1]} de ${a}`; };
   const sig = ym => { const [a, m] = ym.split('-').map(Number); return m === 12 ? `${a + 1}-01` : `${a}-${String(m + 1).padStart(2, '0')}`; };
   const hexA = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
-  const tip = () => ({ trigger: 'axis', backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
+  const tip = () => ({ trigger: 'axis', confine: true, backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
     textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:6px;',
     axisPointer: { type: 'line', lineStyle: { color: T.fg3, width: 1 } } });
   const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
@@ -185,15 +185,20 @@ td .mute { color: var(--fg-3); }
     e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v); });
 
   function render(d) {
+    if (!d.serie.some(x => 'organismo' in x)) {   // JSON de la versión anterior: esperar a que corra la Action
+      document.getElementById('app').innerHTML = '<div class="estado">La serie histórica se está recalculando con la versión nueva. Volvé a cargar en unos minutos.</div>';
+      return;
+    }
     const G = d.gobiernos, byId = Object.fromEntries(G.map(g => [g.id, g]));
     const cal = Object.fromEntries((d.calendario || []).map(c => [c.id, c]));
     const app = document.getElementById('app');
     const ord = [...G].sort((a, b) => a.promedio_anual - b.promedio_anual);
     const minG = ord[0], maxG = ord[ord.length - 1];
-    const difs = (d.calendario || []).filter(c => c.difiere);
+    const conAlt = G.filter(g => g.alternativa && Math.abs(g.alternativa.promedio_anual - g.promedio_anual) >= 0.5);
+    const nuevoFormato = d.serie.some(x => 'organismo' in x);
 
     app.innerHTML = `
-      ${d.simulado ? '<div class="aviso">Vista previa: los tramos 2007–2016 (CIFRA-CTA) y desde nov-2023 son reales, pero 2002–2006 y 2017–2023 son aproximados. En GitHub Pages se reemplazan solos por las series reales del INDEC.</div>' : ''}
+      ${d.simulado ? '<div class="aviso">Vista previa: 2007–2016 y desde nov-2023 son datos reales, pero 2002–2006 y 2017–2023 son aproximados. En GitHub Pages se reemplazan solos por las series reales del INDEC.</div>' : ''}
 
       <section class="gobs" aria-label="Promedio anual de inflación por gobierno">
         ${G.map(g => `<div class="gob">
@@ -202,34 +207,35 @@ td .mute { color: var(--fg-3); }
           <div class="valor">${nf(g.promedio_anual, 1)}<small>%</small></div>
           <div class="lbl">promedio anual${g.en_curso ? ' <span class="chip">en curso</span>' : ''}</div>
           <div class="sec2">Acumulada <b>${pct(g.acumulada, 0)}</b> en ${g.meses} meses</div>
-          ${cal[g.id] && cal[g.id].difiere ? `<div class="sec2">INDEC oficial <b>${pct(cal[g.id].oficial, 1)}</b>/año</div>` : ''}
+          ${g.alternativa && Math.abs(g.alternativa.promedio_anual - g.promedio_anual) >= 0.5 ? `<div class="sec2">Con CIFRA-CTA <b>${pct(g.alternativa.promedio_anual, 1)}</b>/año</div>` : ''}
         </div>`).join('')}
       </section>
 
       <p class="lectura">El promedio anual más bajo fue el de <b>${minG.nombre}</b> (${pct(minG.promedio_anual, 1)}) y el más alto, el de <b>${maxG.nombre}</b> (${pct(maxG.promedio_anual, 1)}).
-        ${difs.length ? `Entre 2007 y 2015 el IPC oficial dio muy por debajo de las mediciones provinciales: con la serie oficial, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
+        Todas las cifras principales son de la serie oficial.
+        ${conAlt.length ? `Con la estimación alternativa de CIFRA-CTA para 2007–2016, el promedio daría ${conAlt.map(g => `${pct(g.alternativa.promedio_anual, 1)} para ${g.corto}`).join(', ')}.` : ''}</p>
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Inflación interanual, mes a mes</h2>
-          <p class="sub">Cuánto subieron los precios respecto del mismo mes del año anterior, con las dos mediciones: la que publicó el INDEC y la de CIFRA-CTA, que existe de 2008 a 2018. Donde se superponen se ve cuánto difieren. Las franjas marcan cada gobierno.</p></div>
+          <p class="sub">Cuánto subieron los precios respecto del mismo mes del año anterior, con la serie oficial y, para comparar, la estimación de CIFRA-CTA, que existe de 2008 a 2018. Las franjas marcan cada gobierno.</p></div>
           ${seg('sel-escala', [['lin', 'Escala lineal'], ['log', 'Logarítmica']])}</div>
         <div class="caja"><div class="chart" id="ch-serie"></div>
           <div class="dos-lineas">
-            <span><i style="background:${COL.indec}"></i><b>INDEC</b> · IPC GBA hasta 2013, IPCNu 2014–oct 2015, IPC Nacional desde 2017</span>
-            <span><i style="background:${COL.cifra}"></i><b>CIFRA-CTA</b> · IPC Provincias, 2008–2018</span>
+            <span><i style="background:${COL.indec}"></i><b>Serie oficial</b> · INDEC: IPC GBA hasta 2013, IPCNu 2014–oct 2015, IPC GBA may–dic 2016, IPC Nacional desde 2017. Nov-2015 a abr-2016, sin IPC del INDEC: IPC de la Ciudad de Buenos Aires</span>
+            <span><i style="background:${COL.cifra}"></i><b>CIFRA-CTA</b> · estimación alternativa, IPC Provincias, 2008–2018</span>
           </div></div>
       </section>
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Inflación de cada año</h2>
-          <p class="sub">De diciembre a diciembre. Entre 2007 y 2015 se muestran las dos mediciones: la serie de provincias de CIFRA-CTA y lo que publicó el INDEC.</p></div></div>
+          <p class="sub">De diciembre a diciembre, con la serie oficial. Entre 2007 y 2016 se suma, rayada, la estimación alternativa de CIFRA-CTA.</p></div></div>
         <div class="caja"><div class="chart" id="ch-anual"></div></div>
-        <div class="leyenda">${G.map(g => `<span><i style="background:${g.color}"></i>${g.corto}</span>`).join('')}<span><i class="raya"></i>INDEC oficial 2007–2015</span></div>
+        <div class="leyenda">${G.map(g => `<span><i style="background:${g.color}"></i>${g.corto}</span>`).join('')}<span><i class="raya"></i>CIFRA-CTA 2007–2016 (estimación alternativa)</span></div>
       </section>
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Mandato por mandato</h2>
-          <p class="sub">Cómo recibió cada gobierno la inflación, cómo la dejó y cuánto subieron los precios en el medio. El mes base es el último mes completo del gobierno anterior.</p></div></div>
+          <p class="sub">Cómo recibió cada gobierno la inflación, cómo la dejó y cuánto subieron los precios en el medio, con la serie oficial. El mes base es el último mes completo del gobierno anterior.</p></div></div>
         <div class="caja"><div class="tabla-wrap"><table>
           <thead><tr><th>Gobierno</th><th class="solo-ancho">Período</th><th>Heredada<br>(interanual)</th><th>Promedio<br>anual</th><th class="solo-ancho">Acumulada</th><th>Entregada<br>(interanual)</th><th class="solo-ancho">Mes más alto</th><th class="solo-ancho">Mes más bajo</th></tr></thead>
           <tbody>${G.map(g => `<tr><td><span class="nom"><i style="background:${g.color}"></i>${g.nombre}</span></td>
@@ -241,12 +247,12 @@ td .mute { color: var(--fg-3); }
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Las dos series, lado a lado</h2>
-          <p class="sub">Promedio anual de cada gobierno contando años calendario completos, con la serie de CIFRA-CTA y con la oficial del INDEC. Solo cambian los años 2007 a 2015. Con este método, el diciembre de cada cambio de gobierno (y enero a mayo de 2003) queda en el año del gobierno anterior, por eso las cifras difieren de las de las tarjetas.</p></div></div>
+          <p class="sub">Promedio anual de cada gobierno contando años calendario completos, con la serie oficial y con la estimación alternativa de CIFRA-CTA. Solo cambian los años 2007 a 2016. Con este método, el diciembre de cada cambio de gobierno (y enero a mayo de 2003) queda en el año del gobierno anterior, por eso las cifras difieren de las de las tarjetas.</p></div></div>
         <div class="caja tabla-chica"><div class="tabla-wrap"><table>
-          <thead><tr><th>Gobierno</th><th>Años</th><th>CIFRA-CTA</th><th>INDEC oficial</th><th>Diferencia</th></tr></thead>
+          <thead><tr><th>Gobierno</th><th>Años</th><th>Serie oficial</th><th>CIFRA-CTA</th><th>Diferencia</th></tr></thead>
           <tbody>${(d.calendario || []).map(c => `<tr><td><span class="nom"><i style="background:${byId[c.id].color}"></i>${byId[c.id].nombre}</span></td>
-            <td>${c.anios}</td><td>${pct(c.alternativa, 1)}</td><td>${pct(c.oficial, 1)}</td>
-            <td class="${c.difiere ? 'dif' : ''}">${c.difiere ? nf(c.oficial - c.alternativa, 1) + ' pp' : '<span class="mute">igual</span>'}</td></tr>`).join('')}
+            <td>${c.anios}</td><td>${pct(c.oficial, 1)}</td><td>${c.difiere ? pct(c.alternativa, 1) : '<span class="mute">—</span>'}</td>
+            <td class="${c.difiere ? 'dif' : ''}">${c.difiere ? (c.alternativa - c.oficial >= 0 ? '+' : '') + nf(c.alternativa - c.oficial, 1) + ' pp' : '<span class="mute">igual</span>'}</td></tr>`).join('')}
           </tbody></table></div></div>
       </section>
 
@@ -258,41 +264,41 @@ td .mute { color: var(--fg-3); }
       </section>
 
       <footer class="notas">
-        <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Se encadenan las variaciones mensuales de cada fuente.</p></div>
-        <div><h3>Por qué CIFRA-CTA</h3><p>En 2007 cambiaron la conducción y la metodología del IPC del INDEC, y hasta 2015 el índice oficial quedó muy por debajo de los índices provinciales, de las mediciones de las centrales sindicales y de las paritarias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
-        <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>. La línea mensual del INDEC usa el IPC GBA (base abril 2008) hasta 2013, el IPCNu de 2014 a octubre de 2015 (<code>fuentes/indec_ipcnu_2014_2015.csv</code>) y el IPC Nacional desde 2017. Las tarjetas y el cuadro por mandato usan la serie encadenada con CIFRA-CTA entre 2007 y 2016; el cuadro "Las dos series, lado a lado" muestra cómo dan con la oficial.</p></div>
+        <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Entre noviembre de 2015 y abril de 2016 el INDEC no publicó índice de precios (emergencia del sistema estadístico, decreto 55/2016); para esos meses se usa el IPC de la Ciudad de Buenos Aires, una de las referencias que mencionó el propio INDEC. Se encadenan las variaciones mensuales de cada fuente.</p></div>
+        <div><h3>Serie oficial</h3><p>Año por año, la serie reproduce lo que publicó el INDEC entre 2007 y 2015 (links en <code>fuentes/indec_oficial_2007_2015.csv</code>). El dato publicado de 2015 cubre enero a octubre; en el gráfico anual, 2015 suma noviembre y diciembre con el IPC de la Ciudad.</p></div>
+        <div><h3>Estimación alternativa</h3><p>Entre 2007 y 2016 hubo mediciones distintas de la oficial (institutos de estadística provinciales, consultoras, centros de estudio), que dieron valores más altos. Para comparar se muestra el IPC Provincias de CIFRA-CTA, centro de estudios de la CTA, que promedia índices de diez provincias con ponderaciones de la ENGHo. Es una estimación de un centro de estudios, no un dato oficial. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Serie y metodología</a>.</p></div>
         <div><h3>Borrador</h3><p>Análisis en construcción. La inflación es una sola dimensión: falta sumar salarios, empleo, consumo y actividad para evaluar cada gobierno.</p></div>
       </footer>`;
 
-    // ---------- serie interanual: INDEC y CIFRA-CTA ----------
-    // si el JSON es de antes de separar las series, se muestra la encadenada como estaba
-    const S = (d.serie.some(x => 'indec' in x) ? d.serie : d.serie.map(x => ({ ...x, indec: x.interanual, cifra: null })))
-      .filter(x => x.indec != null || x.cifra != null || x.interanual != null);
+    // ---------- serie interanual: oficial y CIFRA-CTA ----------
+    // con un JSON viejo (antes de la Action) se muestra solo la serie que tenga
+    const S = d.serie.map(x => nuevoFormato ? x : { ...x, interanual: 'indec' in x ? x.indec : x.interanual, cifra: x.cifra ?? null, serie: x.indec_serie || x.fuente })
+      .filter(x => x.interanual != null || x.cifra != null);
     const xs = S.map(x => x.fecha);
     const bandas = G.map(g => {
       const a = xs.find(f => f >= sig(g.base)), b = [...xs].reverse().find(f => f <= g.fin);
       return a && b ? [{ name: g.corto, xAxis: a, itemStyle: { color: hexA(g.color, .10) },
         label: { show: !angosto(), color: g.color, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: b }] : null;
     }).filter(Boolean);
-    // tramo sin interanual oficial nacional (nov-2015 a nov-2017)
-    const sinOfi = S.filter(x => x.indec == null && x.fecha > '2015').map(x => x.fecha);
-    const hueco = sinOfi.length ? [[{ xAxis: sinOfi[0], label: { show: !angosto(), position: 'insideBottom', color: T.fg3, fontFamily: T.ui, fontSize: 10,
-      formatter: angosto() ? 'sin IPC\nnacional' : 'sin IPC nacional\noficial' } }, { xAxis: sinOfi[sinOfi.length - 1] }]] : [];
+    // meses sin IPC del INDEC (se usa el de la Ciudad)
+    const sinIndec = S.filter(x => x.organismo && x.organismo !== 'INDEC').map(x => x.fecha);
+    const hueco = sinIndec.length ? [[{ xAxis: sinIndec[0], itemStyle: { color: 'rgba(255,255,255,.06)' }, label: { show: !angosto(), position: 'insideBottom', color: T.fg3, fontFamily: T.ui, fontSize: 10,
+      formatter: 'IPC CABA' } }, { xAxis: sinIndec[sinIndec.length - 1] }]] : [];
     const chS = nuevo(document.getElementById('ch-serie'), {});
     const dibS = esc => chS.setOption({
       grid: { left: 4, right: 24, top: 30, bottom: 4, containLabel: true },
       tooltip: Object.assign(tip(), { formatter: p => { const x = S[p[0].dataIndex];
         const fila = (c, n, v, extra) => `<span style="display:inline-block;width:10px;height:3px;background:${c};vertical-align:3px;margin-right:6px"></span>${n}: <b>${v == null ? '—' : pct(v, 1)}</b>${extra ? ` <span style="color:${T.fg3}">${extra}</span>` : ''}`;
-        const dif = x.indec != null && x.cifra != null ? `<br>Diferencia: <b>${nf(x.cifra - x.indec, 1)} pp</b>` : '';
-        return `${largo(x.fecha)}<br>${fila(COL.indec, 'INDEC', x.indec, x.indec_serie || (x.fecha >= '2015-11' && x.fecha <= '2017-11' ? 'sin índice nacional' : ''))}` +
-          `<br>${fila(COL.cifra, 'CIFRA-CTA', x.cifra, x.cifra == null ? 'sin dato' : '')}${dif}`; } }),
+        const dif = x.interanual != null && x.cifra != null ? `<br>CIFRA-CTA − oficial: <b>${(x.cifra - x.interanual >= 0 ? '+' : '') + nf(x.cifra - x.interanual, 1)} pp</b>` : '';
+        return `${largo(x.fecha)}<br>${fila(COL.indec, 'Serie oficial', x.interanual, x.organismo ? `${x.organismo}, ${x.serie}` : x.serie)}` +
+          (x.cifra != null ? `<br>${fila(COL.cifra, 'CIFRA-CTA', x.cifra, '')}${dif}` : ''); } }),
       xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => v.slice(0, 4), interval: (i, v) => v.endsWith('-01') && +v.slice(0, 4) % (angosto() ? 4 : 2) === 0 } }),
       yAxis: esc === 'log' ? ejeY({ type: 'log', logBase: 10, min: 1 }) : ejeY({ min: 0 }),
       series: [
-        { name: 'INDEC', type: 'line', data: S.map(x => x.indec), symbol: 'none', connectNulls: false, lineStyle: { width: 2, color: COL.indec }, itemStyle: { color: COL.indec },
+        { name: 'Serie oficial', type: 'line', data: S.map(x => x.interanual), symbol: 'none', connectNulls: false, lineStyle: { width: 2, color: COL.indec }, itemStyle: { color: COL.indec },
           markArea: { silent: true, data: bandas } },
         { name: 'CIFRA-CTA', type: 'line', data: S.map(x => x.cifra), symbol: 'none', connectNulls: false, lineStyle: { width: 2, color: COL.cifra }, itemStyle: { color: COL.cifra },
-          markArea: { silent: true, itemStyle: { color: 'rgba(0,0,0,0)' }, data: hueco } }],
+          markArea: { silent: true, data: hueco } }],
     }, { replaceMerge: ['series', 'yAxis'] });
     dibS('lin'); seguir('sel-escala', dibS);
 
@@ -302,16 +308,20 @@ td .mute { color: var(--fg-3); }
       grid: { left: 4, right: 16, top: 24, bottom: 4, containLabel: true },
       tooltip: Object.assign(tip(), { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } },
         formatter: p => { const a = A[p[0].dataIndex];
-          return `<b>${a.anio}</b>${a.parcial ? ` (hasta ${etq(a.hasta)})` : ''} · ${byId[a.gobierno].corto}<br>${a.fuente === 'CIFRA-CTA' ? 'CIFRA-CTA' : 'INDEC'}: <b>${pct(a.variacion, 1)}</b>` +
-            (a.oficial ? `<br>INDEC oficial: <b>${pct(a.oficial.variacion, 1)}</b>${a.oficial.meses < 12 ? ` (${a.oficial.meses} meses)` : ''}` : ''); } }),
+          const alt = a.alternativa || (!nuevoFormato && a.oficial ? { variacion: a.variacion } : null);
+          const ofi = nuevoFormato ? a.variacion : (a.oficial ? a.oficial.variacion : a.variacion);
+          const pub = a.publicado && Math.abs(a.publicado.variacion - ofi) >= 0.2 ? `<br><span style="color:${T.fg3}">Publicado por el INDEC: ${pct(a.publicado.variacion, 1)}${a.publicado.meses < 12 ? ` (${a.publicado.meses} meses)` : ''}</span>` : '';
+          return `<b>${a.anio}</b>${a.parcial ? ` (hasta ${etq(a.hasta)})` : ''} · ${byId[a.gobierno].corto}<br>Serie oficial: <b>${pct(ofi, 1)}</b>` +
+            (a.series ? `<br><span style="color:${T.fg3}">${a.series.join(' + ')}</span>` : '') + pub +
+            (alt ? `<br>CIFRA-CTA (alternativa): <b>${pct(alt.variacion, 1)}</b>` : ''); } }),
       xAxis: ejeX({ type: 'category', data: A.map(a => a.parcial ? `${a.anio}*` : String(a.anio)), axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true } }),
       yAxis: ejeY({}),
       series: [
-        { name: 'Serie principal', type: 'bar', barGap: '8%', barMaxWidth: 26,
-          data: A.map(a => ({ value: a.variacion, itemStyle: { color: colA(a), opacity: a.parcial ? .55 : 1, borderRadius: [3, 3, 0, 0] } })),
+        { name: 'Serie oficial', type: 'bar', barGap: '8%', barMaxWidth: 26,
+          data: A.map(a => ({ value: nuevoFormato ? a.variacion : (a.oficial ? a.oficial.variacion : a.variacion), itemStyle: { color: colA(a), opacity: a.parcial ? .55 : 1, borderRadius: [3, 3, 0, 0] } })),
           label: { show: !angosto(), position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg2, formatter: p => nf(p.value, 0) } },
-        { name: 'INDEC oficial', type: 'bar', barMaxWidth: 26,
-          data: A.map(a => a.oficial ? { value: a.oficial.variacion, itemStyle: { color: { image: rayas(colA(a)), repeat: 'repeat' }, borderColor: colA(a), borderWidth: 1, borderRadius: [3, 3, 0, 0] } } : null),
+        { name: 'CIFRA-CTA', type: 'bar', barMaxWidth: 26,
+          data: A.map(a => (nuevoFormato ? a.alternativa : (a.oficial ? { variacion: a.variacion } : null)) ? { value: nuevoFormato ? a.alternativa.variacion : a.variacion, itemStyle: { color: { image: rayas(colA(a)), repeat: 'repeat' }, borderColor: colA(a), borderWidth: 1, borderRadius: [3, 3, 0, 0] } } : null),
           label: { show: !angosto(), position: 'top', fontFamily: T.num, fontSize: 10, color: T.fg3, formatter: p => p.value == null ? '' : nf(p.value, 0) } },
       ],
     });
@@ -335,7 +345,7 @@ td .mute { color: var(--fg-3); }
     dibT('log'); seguir('sel-tray', dibT);
   }
 
-  // patrón rayado para las barras "INDEC oficial"
+  // patrón rayado para las barras de la estimación alternativa (CIFRA-CTA)
   function rayas(color) {
     const c = document.createElement('canvas'); c.width = c.height = 6;
     const x = c.getContext('2d'); x.fillStyle = 'rgba(0,0,0,0)'; x.fillRect(0, 0, 6, 6);
