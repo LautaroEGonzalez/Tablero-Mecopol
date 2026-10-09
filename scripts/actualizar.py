@@ -128,6 +128,80 @@ def var(s, a, b):
 
 
 # ------------------------------------------------------------------
+# IPC reponderado
+# ------------------------------------------------------------------
+PONDERACIONES = RAIZ / "fuentes" / "ponderaciones_ipc.csv"
+ENCUESTA = ("2017-11-01", "2018-11-01")   # período de relevamiento de la ENGHo 2017/18
+
+
+def reponderar(ids_div, nac_corta, inicio, mes):
+    un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
+    pond = pd.read_csv(PONDERACIONES).set_index("division")
+    div = traer(list(ids_div.values()), "2016-12-01", ym(mes) + "-01")
+    div.columns = list(ids_div)
+    nac = traer([IPC_NAC], "2016-12-01", ym(mes) + "-01")[IPC_NAC]
+    div, nac = div.loc[:mes], nac.loc[:mes]
+
+    w_vig = pond.loc[div.columns, "pond_ipc_vigente"]
+    w_new = pond.loc[div.columns, "pond_engho_2017_18"]
+    w_vig, w_new = w_vig / w_vig.sum(), w_new / w_new.sum()
+
+    # Control: con las ponderaciones vigentes (precios de dic-2016) se tiene que
+    # reproducir el nivel general oficial.
+    control = (div.div(div.loc["2016-12-01"]) * w_vig).sum(axis=1) * 100
+    # Reponderado: canasta de la ENGHo 2017/18 valuada a los precios de cada mes.
+    precios_encuesta = div.loc[ENCUESTA[0]:ENCUESTA[1]].mean()
+    rep = (div.div(precios_encuesta) * w_new).sum(axis=1)
+    rep = rep / rep.iloc[0] * 100
+    # Agregar por divisiones nacionales no reproduce exacto el nivel general (el INDEC
+    # agrega por regiones). Para no arrastrar ese desvío, se aplica al índice oficial
+    # solo el efecto del cambio de ponderaciones: oficial × (reponderado / control).
+    rep = nac * rep / control
+
+    def v(s, a, b):
+        return r((s[b] / s[a] - 1) * 100, 1)
+
+    err = (control[mes] / control[inicio]) / (nac[mes] / nac[inicio]) - 1
+    print(f"   control reponderación: con las ponderaciones vigentes la acumulada da "
+          f"{v(control, inicio, mes)}% vs. {v(nac, inicio, mes)}% oficial ({err * 100:+.2f}%)")
+    dic = pd.Timestamp(mes.year - 1, 12, 1)
+    resumen = {
+        "mensual": {"oficial": v(nac, mes - un_mes, mes), "reponderado": v(rep, mes - un_mes, mes)},
+        "interanual": {"oficial": v(nac, mes - un_anio, mes), "reponderado": v(rep, mes - un_anio, mes)},
+        "acum_anio": {"oficial": v(nac, dic, mes), "reponderado": v(rep, dic, mes)},
+        "acum_gobierno": {"oficial": v(nac, inicio, mes), "reponderado": v(rep, inicio, mes)},
+    }
+    anios = {str(a): {"oficial": v(nac, pd.Timestamp(a - 1, 12, 1), pd.Timestamp(a, 12, 1)),
+                      "reponderado": v(rep, pd.Timestamp(a - 1, 12, 1), pd.Timestamp(a, 12, 1))}
+             for a in range(2017, mes.year) if pd.Timestamp(a, 12, 1) <= mes}
+    print(f"   reponderado: acumulada {resumen['acum_gobierno']['reponderado']}% vs. "
+          f"{resumen['acum_gobierno']['oficial']}% oficial · 2024: {anios.get('2024')}")
+    serie = [{"fecha": ym(f),
+              "oficial": {"mensual": v(nac, f - un_mes, f), "interanual": v(nac, f - un_anio, f), "acumulada": v(nac, inicio, f)},
+              "reponderado": {"mensual": v(rep, f - un_mes, f), "interanual": v(rep, f - un_anio, f), "acumulada": v(rep, inicio, f)}}
+             for f in rep.index if f > inicio]
+    # Las mismas cuentas que publicaron otros, con esta estimación
+    otras = []
+    for _, e in pd.read_csv(RAIZ / "fuentes" / "estimaciones_reponderadas.csv").iterrows():
+        a, b = pd.Timestamp(e["desde"] + "-01"), pd.Timestamp(e["hasta"] + "-01")
+        dec = 2 if e["tipo"] == "mensual" else 1
+        propia = r((rep[b] / rep[a] - 1) * 100, dec) if a in rep.index and b in rep.index else None
+        oficial_aca = r((nac[b] / nac[a] - 1) * 100, dec) if a in nac.index and b in nac.index else None
+        otras.append({k: (None if pd.isna(e[k]) else e[k]) for k in e.index} |
+                     {"mecopol": propia, "oficial_mecopol": oficial_aca})
+    return {
+        "resumen": resumen,
+        "anios": anios,
+        "otras": otras,
+        "serie": serie,
+        "ponderaciones": [{"rubro": n, "vigente": r(w_vig[n] * 100, 1), "engho_2017_18": r(w_new[n] * 100, 1)}
+                          for n in div.columns],
+        "control_error_pct": r(err * 100, 2),
+        "periodo_encuesta": [ym(pd.Timestamp(ENCUESTA[0])), ym(pd.Timestamp(ENCUESTA[1]))],
+    }
+
+
+# ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
 def main():
@@ -193,7 +267,13 @@ def main():
             "relativo": r(((1 + acum / 100) / (1 + acum_gob / 100) - 1) * 100, 1),
         })
 
-    # 3. Controles de calidad -------------------------------------------
+    # 3. IPC reponderado con la ENGHo 2017/18 (estimación propia) --------
+    # El IPC oficial pondera los rubros con la encuesta de gastos 2004/05
+    # (actualizada por precios a dic-2016). Acá se recalcula con la canasta de
+    # la ENGHo 2017/18: costo de esa canasta fija en cada mes, por divisiones.
+    reponderado = reponderar(ids_div, nac, inicio, mes)
+
+    # 4. Controles de calidad -------------------------------------------
     assert serie and kpis["mensual"] is not None, "Serie vacía"
     assert all(x["relativo"] is not None for x in rubros), "Rubros incompletos"
 
@@ -213,6 +293,7 @@ def main():
             "meses_resto": K - 5,
         },
         "rubros": rubros,
+        "reponderado": reponderado,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
     }
 

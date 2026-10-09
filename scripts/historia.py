@@ -10,7 +10,12 @@ y calcula la inflación de cada gobierno. Escribe docs/data/historia.json.
   desde ene-2017   INDEC, IPC Nacional (API de Series de Tiempo)
 
 Por qué CIFRA entre 2007 y 2016: el IPC del INDEC de esos años está
+<<<<<<< HEAD
 intervenido (2007-2015) o no existe con cobertura nacional (2016). El
+=======
+muy inferior a los índices provinciales (2007-2015) o no existe con
+cobertura nacional (2016). El
+>>>>>>> b7c17c1 (nueva presentacion del proyecto)
 IPC Provincias promedia los índices de diez provincias con ponderaciones
 de la ENGHo. La serie de CIFRA empieza en enero de 2007, así que la
 variación de ese mes sale del INDEC. Ver fuentes/LEEME.md.
@@ -32,7 +37,11 @@ from actualizar import pedir, API, IPC_NAC, etiqueta, ym, r  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[1]
 SALIDA = RAIZ / "docs" / "data" / "historia.json"
 CIFRA = RAIZ / "fuentes" / "ipc_provincias_cifra.csv"
+<<<<<<< HEAD
 OFICIAL = RAIZ / "fuentes" / "indec_oficial_2007_2015.csv"   # lo que publicó el INDEC intervenido
+=======
+OFICIAL = RAIZ / "fuentes" / "indec_oficial_2007_2015.csv"   # lo que publicó el INDEC en esos años
+>>>>>>> b7c17c1 (nueva presentacion del proyecto)
 CONFIG = json.loads((RAIZ / "config.json").read_text(encoding="utf-8"))
 HIST = CONFIG.get("historia", {})
 

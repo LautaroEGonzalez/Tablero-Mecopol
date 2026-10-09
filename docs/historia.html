@@ -198,7 +198,11 @@ td .mute { color: var(--fg-3); }
       </section>
 
       <p class="lectura">El promedio anual más bajo fue el de <b>${minG.nombre}</b> (${pct(minG.promedio_anual, 1)}) y el más alto, el de <b>${maxG.nombre}</b> (${pct(maxG.promedio_anual, 1)}).
+<<<<<<< HEAD
         ${difs.length ? `Entre 2007 y 2015 el INDEC estuvo intervenido: con la serie oficial de esos años, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
+=======
+        ${difs.length ? `Entre 2007 y 2015 el IPC oficial dio muy por debajo de las mediciones provinciales: con la serie oficial, el promedio de ${difs.map(c => `${byId[c.id].corto} baja de ${pct(c.alternativa, 1)} a ${pct(c.oficial, 1)}`).join(', ')}.` : ''}</p>
+>>>>>>> b7c17c1 (nueva presentacion del proyecto)
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Inflación interanual, mes a mes</h2>
@@ -247,7 +251,11 @@ td .mute { color: var(--fg-3); }
 
       <footer class="notas">
         <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Se encadenan las variaciones mensuales de cada fuente.</p></div>
+<<<<<<< HEAD
         <div><h3>Por qué CIFRA-CTA</h3><p>Entre 2007 y 2015 el INDEC estuvo intervenido y sus cifras quedaron muy por debajo de las de las provincias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
+=======
+        <div><h3>Por qué CIFRA-CTA</h3><p>En 2007 cambiaron la conducción y la metodología del IPC del INDEC, y hasta 2015 el índice oficial quedó muy por debajo de los índices provinciales, de las mediciones de las centrales sindicales y de las paritarias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
+>>>>>>> b7c17c1 (nueva presentacion del proyecto)
         <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>.</p></div>
         <div><h3>Borrador</h3><p>Análisis en construcción. La inflación es una sola dimensión: falta sumar salarios, empleo, consumo y actividad para evaluar cada gobierno.</p></div>
       </footer>`;

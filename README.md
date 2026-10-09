@@ -6,6 +6,9 @@ Versión enfocada en el gobierno de Milei:
 
 - Inflación mensual, interanual y acumulada desde diciembre de 2023
 - Precios relativos y variación por rubro
+- IPC recalculado con la canasta de la ENGHo 2017/18 (estimación propia)
+
+Y una segunda página, **Mirada larga** (`docs/historia.html`, borrador), con la inflación por gobierno desde 2003: Kirchner, CFK I y II, Macri, Alberto Fernández y Milei.
 
 Y una segunda página, **Mirada larga** (`docs/historia.html`, borrador), con la inflación por gobierno desde 2003: Kirchner, CFK I y II, Macri, Alberto Fernández y Milei.
 
@@ -74,4 +77,8 @@ En Wix o Google Sites se puede incrustar con un iframe apuntando a la URL de Pag
 
 - IPC Nacional, INDEC, base diciembre 2016 = 100, vía la [API de Series de Tiempo](https://datos.gob.ar/series).
 - Base: noviembre de 2023, último mes completo antes de la asunción del 10 de diciembre.
+<<<<<<< HEAD
 - Mirada larga: INDEC IPC GBA hasta dic-2006, IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) de 2007 a 2016 (el INDEC estuvo intervenido entre 2007 y 2015 y en 2016 no hubo índice nacional) e INDEC IPC Nacional desde 2017. La serie oficial 2007–2015 se muestra al lado para comparar.
+=======
+- Mirada larga: INDEC IPC GBA hasta dic-2006, IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) de 2007 a 2016 (entre 2007 y 2015 el IPC oficial quedó muy por debajo de los índices provinciales y en 2016 no hubo índice nacional) e INDEC IPC Nacional desde 2017. La serie oficial 2007–2015 se muestra al lado para comparar.
+>>>>>>> b7c17c1 (nueva presentacion del proyecto)
