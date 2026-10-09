@@ -226,6 +226,26 @@ def buscar_region(region):
     return None
 
 
+def buscar_rubro_region(nombre, clave, region):
+    """Serie mensual, en nivel, de una división del IPC en una región."""
+    reg = region.lower()
+    otras = [x.lower() for x in REGIONES_IPC if x != region] + ["nacional"]
+    for pagina in range(2):
+        j = pedir(SEARCH, {"q": f"IPC {nombre} {region} Base dic 2016 Mensual",
+                           "limit": 100, "start": pagina * 100})
+        for x in j.get("data", []):
+            f, d = x.get("field", {}), x.get("dataset", {})
+            desc = (f.get("description") or "").lower()
+            dset = (d.get("title") or "").lower()
+            if (f.get("frequency") == "R/P1M" and "diciembre 2016" in dset
+                    and clave in desc and reg in desc
+                    and not any(o in desc for o in otras)
+                    and not any(p in desc for p in ["variaci", "tasa", "incidencia"])):
+                return f.get("id")
+        time.sleep(0.2)
+    return None
+
+
 def regiones(inicio, mes):
     un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
     ids = {}
@@ -246,9 +266,32 @@ def regiones(inicio, mes):
     def v(s, a, b, n=1):
         return r((s[b] / s[a] - 1) * 100, n)
 
+    # Rubros por región: los ids encontrados se guardan en el JSON y se reutilizan
+    previo = {}
+    if SALIDA.exists():
+        previo = (json.loads(SALIDA.read_text(encoding="utf-8")).get("regiones") or {}).get("ids_rubros", {})
+    ids_rub = {}
+    for reg in REGIONES_IPC:
+        for nombre, clave in DIVISIONES.items():
+            k = f"{reg}|{nombre}"
+            fid = CONFIG.get("ids_rubros_region", {}).get(k) or previo.get(k) or buscar_rubro_region(nombre, clave, reg)
+            if fid:
+                ids_rub[k] = fid
+    print(f"   rubros por región: {len(ids_rub)} de {len(REGIONES_IPC) * len(DIVISIONES)} series")
+    rub = traer(list(ids_rub.values()), ym(inicio - un_anio) + "-01", ym(mes) + "-01") if ids_rub else pd.DataFrame()
+    if ids_rub:
+        rub.columns = list(ids_rub)
+
     salida = []
     for reg in REGIONES_IPC:
         s = df[reg]
+        rubros_reg = {}
+        for nombre in DIVISIONES:
+            k = f"{reg}|{nombre}"
+            if k in rub.columns and rub[k].notna().all():
+                x = rub[k]
+                rubros_reg[nombre] = {"mensual": v(x, mes - un_mes, mes, 2), "interanual": v(x, mes - un_anio, mes),
+                                      "acum_gobierno": v(x, inicio, mes)}
         salida.append({
             "region": reg,
             "peso": float(pesos_region[reg]),
@@ -258,8 +301,9 @@ def regiones(inicio, mes):
             "acum_gobierno": v(s, inicio, mes),
             "serie_mensual": [{"fecha": ym(f), "valor": v(s, f - un_mes, f, 2)} for f in s.index if f > inicio],
             "ponderaciones": {d: float(pond.loc[d, reg]) for d in pond.index},
+            "rubros": rubros_reg,
         })
-    return {"ids": ids, "regiones": salida}
+    return {"ids": ids, "ids_rubros": ids_rub, "regiones": salida}
 
 
 # ------------------------------------------------------------------

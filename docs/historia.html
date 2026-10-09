@@ -91,10 +91,10 @@ h1 { margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em; col
 .lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 74ch; }
 .lectura b { color: var(--fg); font-weight: 600; }
 
-/* franja de fuentes bajo la serie */
-.fuentes-tira { display: flex; height: 22px; border-radius: 3px; overflow: hidden; font: 11px/22px var(--font-num); color: var(--fg); margin-top: 8px; }
-.fuentes-tira span { padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fuentes-tira .indec { background: #262b33; } .fuentes-tira .cifra { background: #3a2f1a; color: #f0d79a; }
+/* leyenda de las dos líneas */
+.dos-lineas { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 10px; font-size: 12px; color: var(--fg-3); }
+.dos-lineas b { color: var(--fg); font-weight: 600; }
+.dos-lineas i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: 7px; vertical-align: 3px; }
 
 .leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
 .leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
@@ -154,6 +154,7 @@ td .mute { color: var(--fg-3); }
 <script>
 (() => {
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const COL = { indec: '#e6e8ec', cifra: '#f2a93b' };
   const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
     panel: css('--panel'), num: css('--font-num'), ui: css('--font-ui') };
   const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -210,10 +211,13 @@ td .mute { color: var(--fg-3); }
 
       <section class="sec">
         <div class="sec-cab"><div><h2>Inflación interanual, mes a mes</h2>
-          <p class="sub">Cuánto subieron los precios respecto del mismo mes del año anterior. Las franjas marcan cada gobierno.</p></div>
+          <p class="sub">Cuánto subieron los precios respecto del mismo mes del año anterior, con las dos mediciones: la que publicó el INDEC y la de CIFRA-CTA, que existe de 2008 a 2018. Donde se superponen se ve cuánto difieren. Las franjas marcan cada gobierno.</p></div>
           ${seg('sel-escala', [['lin', 'Escala lineal'], ['log', 'Logarítmica']])}</div>
         <div class="caja"><div class="chart" id="ch-serie"></div>
-          <div class="fuentes-tira" id="tira" aria-label="Fuente de cada tramo de la serie"></div></div>
+          <div class="dos-lineas">
+            <span><i style="background:${COL.indec}"></i><b>INDEC</b> · IPC GBA hasta 2013, IPCNu 2014–oct 2015, IPC Nacional desde 2017</span>
+            <span><i style="background:${COL.cifra}"></i><b>CIFRA-CTA</b> · IPC Provincias, 2008–2018</span>
+          </div></div>
       </section>
 
       <section class="sec">
@@ -256,34 +260,41 @@ td .mute { color: var(--fg-3); }
       <footer class="notas">
         <div><h3>Fuentes</h3><p>${d.empalme.map(e => `${etq(e.desde)} a ${etq(e.hasta)}: ${e.fuente}, ${e.serie}.`).join(' ')} Se encadenan las variaciones mensuales de cada fuente.</p></div>
         <div><h3>Por qué CIFRA-CTA</h3><p>En 2007 cambiaron la conducción y la metodología del IPC del INDEC, y hasta 2015 el índice oficial quedó muy por debajo de los índices provinciales, de las mediciones de las centrales sindicales y de las paritarias. En 2016 no hubo índice nacional. El IPC Provincias del centro de estudios de la CTA promedia los índices de diez provincias con ponderaciones de la ENGHo. <a href="https://centrocifra.org.ar/estadisticas/ipc-provincias/" target="_blank" rel="noopener">Ver serie y metodología</a>.</p></div>
-        <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>.</p></div>
+        <div><h3>Serie oficial</h3><p>Las cifras anuales del INDEC de 2007 a 2015 son las que publicó el organismo en su momento. 2015 cubre enero a octubre: después el índice se suspendió. Los links a cada dato están en <code>fuentes/indec_oficial_2007_2015.csv</code>. La línea mensual del INDEC usa el IPC GBA (base abril 2008) hasta 2013, el IPCNu de 2014 a octubre de 2015 (<code>fuentes/indec_ipcnu_2014_2015.csv</code>) y el IPC Nacional desde 2017. Las tarjetas y el cuadro por mandato usan la serie encadenada con CIFRA-CTA entre 2007 y 2016; el cuadro "Las dos series, lado a lado" muestra cómo dan con la oficial.</p></div>
         <div><h3>Borrador</h3><p>Análisis en construcción. La inflación es una sola dimensión: falta sumar salarios, empleo, consumo y actividad para evaluar cada gobierno.</p></div>
       </footer>`;
 
-    // ---------- serie interanual ----------
-    const S = d.serie.filter(x => x.interanual != null);
+    // ---------- serie interanual: INDEC y CIFRA-CTA ----------
+    // si el JSON es de antes de separar las series, se muestra la encadenada como estaba
+    const S = (d.serie.some(x => 'indec' in x) ? d.serie : d.serie.map(x => ({ ...x, indec: x.interanual, cifra: null })))
+      .filter(x => x.indec != null || x.cifra != null || x.interanual != null);
     const xs = S.map(x => x.fecha);
     const bandas = G.map(g => {
       const a = xs.find(f => f >= sig(g.base)), b = [...xs].reverse().find(f => f <= g.fin);
       return a && b ? [{ name: g.corto, xAxis: a, itemStyle: { color: hexA(g.color, .10) },
         label: { show: !angosto(), color: g.color, fontFamily: T.ui, fontWeight: 600, fontSize: 11, position: 'insideTop' } }, { xAxis: b }] : null;
     }).filter(Boolean);
+    // tramo sin interanual oficial nacional (nov-2015 a nov-2017)
+    const sinOfi = S.filter(x => x.indec == null && x.fecha > '2015').map(x => x.fecha);
+    const hueco = sinOfi.length ? [[{ xAxis: sinOfi[0], label: { show: !angosto(), position: 'insideBottom', color: T.fg3, fontFamily: T.ui, fontSize: 10,
+      formatter: angosto() ? 'sin IPC\nnacional' : 'sin IPC nacional\noficial' } }, { xAxis: sinOfi[sinOfi.length - 1] }]] : [];
     const chS = nuevo(document.getElementById('ch-serie'), {});
     const dibS = esc => chS.setOption({
       grid: { left: 4, right: 24, top: 30, bottom: 4, containLabel: true },
       tooltip: Object.assign(tip(), { formatter: p => { const x = S[p[0].dataIndex];
-        return `${largo(x.fecha)}<br>Interanual: <b>${pct(x.interanual, 1)}</b><br><span style="color:${T.fg3}">${x.fuente}</span>`; } }),
+        const fila = (c, n, v, extra) => `<span style="display:inline-block;width:10px;height:3px;background:${c};vertical-align:3px;margin-right:6px"></span>${n}: <b>${v == null ? '—' : pct(v, 1)}</b>${extra ? ` <span style="color:${T.fg3}">${extra}</span>` : ''}`;
+        const dif = x.indec != null && x.cifra != null ? `<br>Diferencia: <b>${nf(x.cifra - x.indec, 1)} pp</b>` : '';
+        return `${largo(x.fecha)}<br>${fila(COL.indec, 'INDEC', x.indec, x.indec_serie || (x.fecha >= '2015-11' && x.fecha <= '2017-11' ? 'sin índice nacional' : ''))}` +
+          `<br>${fila(COL.cifra, 'CIFRA-CTA', x.cifra, x.cifra == null ? 'sin dato' : '')}${dif}`; } }),
       xAxis: ejeX({ type: 'category', data: xs, boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => v.slice(0, 4), interval: (i, v) => v.endsWith('-01') && +v.slice(0, 4) % (angosto() ? 4 : 2) === 0 } }),
       yAxis: esc === 'log' ? ejeY({ type: 'log', logBase: 10, min: 1 }) : ejeY({ min: 0 }),
-      series: [{ type: 'line', data: S.map(x => x.interanual), symbol: 'none', lineStyle: { width: 2, color: T.fg },
-        markArea: { silent: true, data: bandas } }],
+      series: [
+        { name: 'INDEC', type: 'line', data: S.map(x => x.indec), symbol: 'none', connectNulls: false, lineStyle: { width: 2, color: COL.indec }, itemStyle: { color: COL.indec },
+          markArea: { silent: true, data: bandas } },
+        { name: 'CIFRA-CTA', type: 'line', data: S.map(x => x.cifra), symbol: 'none', connectNulls: false, lineStyle: { width: 2, color: COL.cifra }, itemStyle: { color: COL.cifra },
+          markArea: { silent: true, itemStyle: { color: 'rgba(0,0,0,0)' }, data: hueco } }],
     }, { replaceMerge: ['series', 'yAxis'] });
     dibS('lin'); seguir('sel-escala', dibS);
-    const total = xs.length;
-    document.getElementById('tira').innerHTML = d.empalme.map(e => {
-      const n = xs.filter(f => f >= e.desde && f <= e.hasta).length;
-      return n ? `<span class="${e.fuente === 'CIFRA-CTA' ? 'cifra' : 'indec'}" style="width:${(n / total * 100).toFixed(2)}%" title="${e.fuente}: ${e.serie}">${e.fuente}</span>` : '';
-    }).join('');
 
     // ---------- barras anuales ----------
     const A = d.anual, colA = a => byId[a.gobierno] ? byId[a.gobierno].color : T.fg3;

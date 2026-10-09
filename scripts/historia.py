@@ -18,6 +18,10 @@ variación de ese mes sale del INDEC. Ver fuentes/LEEME.md.
 
 Se encadenan las VARIACIONES MENSUALES de cada fuente, así que las
 distintas bases de los índices no importan.
+
+Además se guardan, mes a mes, los dos interanuales por separado para
+compararlos en todo el período: el que publicó el INDEC (IPC GBA, IPCNu
+e IPC Nacional) y el de CIFRA-CTA (2008-2018).
 """
 
 import json
@@ -34,10 +38,12 @@ RAIZ = Path(__file__).resolve().parents[1]
 SALIDA = RAIZ / "docs" / "data" / "historia.json"
 CIFRA = RAIZ / "fuentes" / "ipc_provincias_cifra.csv"
 OFICIAL = RAIZ / "fuentes" / "indec_oficial_2007_2015.csv"   # lo que publicó el INDEC en esos años
+IPCNU = RAIZ / "fuentes" / "indec_ipcnu_2014_2015.csv"         # IPC Nacional urbano, ene-2014 a oct-2015
 CONFIG = json.loads((RAIZ / "config.json").read_text(encoding="utf-8"))
 HIST = CONFIG.get("historia", {})
 
 IPC_GBA_HISTORICO = HIST.get("id_ipc_historico", "178.1_NL_GENERAL_0_0_13")
+IPC_GBA_2008 = HIST.get("id_ipc_gba_2008", "96.3_ING_2008_M_19")   # IPC GBA base abril 2008, hasta dic-2013
 
 # base = último mes completo del gobierno anterior; fin = último mes completo propio
 GOBIERNOS = HIST.get("gobiernos") or [
@@ -70,6 +76,9 @@ def main():
     cif = pd.read_csv(CIFRA, parse_dates=["fecha"]).set_index("fecha")["indice"].astype(float).sort_index()
     print("📥 INDEC IPC Nacional")
     nac = serie_api(IPC_NAC, "2016-12-01", hoy.strftime("%Y-%m-%d"))
+    print("📥 INDEC IPC GBA base abril 2008 e IPCNu (serie oficial 2007-2015)")
+    gba08 = serie_api(IPC_GBA_2008, "2006-01-01", "2013-12-01")
+    ipcnu = pd.read_csv(IPCNU, parse_dates=["fecha"]).set_index("fecha")["variacion_mensual"].astype(float) / 100
 
     for nombre, s, a, b in [("INDEC histórico", gba, "2002-01-01", "2007-01-01"),
                             ("CIFRA", cif, "2007-01-01", "2016-12-01")]:
@@ -101,13 +110,41 @@ def main():
     ultimo = idx.index.max()
     print(f"   serie {ym(idx.index.min())} → {ym(ultimo)} ({len(idx)} meses)")
 
-    def interanual(f):
+    def interanual(f, s=None):
+        s = idx if s is None else s
         a = f - pd.DateOffset(months=12)
-        return (idx[f] / idx[a] - 1) * 100 if f in idx.index and a in idx.index else None
+        return (s[f] / s[a] - 1) * 100 if f in s.index and a in s.index else None
+
+    # 2b. Las dos mediciones por separado, para el gráfico de dos líneas ---
+    # INDEC: lo que publicó el organismo. GBA hasta 2013, IPCNu 2014-oct 2015,
+    # sin índice nacional hasta dic-2016 (no hay interanual hasta dic-2017).
+    v_ofi = pd.concat([gba.pct_change().loc["2002-01-01":"2006-12-01"],
+                       gba08.pct_change().loc["2007-01-01":"2013-12-01"],
+                       ipcnu.loc["2014-01-01":"2015-10-01"]])
+    ofi = (1 + v_ofi).cumprod() * 100
+    ofi.loc[pd.Timestamp("2001-12-01")] = 100.0
+    ofi = ofi.sort_index()
+    oficial_anual = pd.read_csv(OFICIAL).set_index("anio")
+    for anio in range(2007, 2015):
+        calc = (ofi[pd.Timestamp(anio, 12, 1)] / ofi[pd.Timestamp(anio - 1, 12, 1)] - 1) * 100
+        if abs(calc - oficial_anual.loc[anio, "variacion"]) > 0.35:
+            raise RuntimeError(f"La serie oficial mensual da {calc:.1f}% en {anio} y el INDEC publicó "
+                               f"{oficial_anual.loc[anio, 'variacion']}%. Revisar {IPC_GBA_2008} o {IPCNU.name}")
+    nac_i = nac / nac.iloc[0]
+    tramo_ofi = lambda f: ("IPC GBA" if f < pd.Timestamp("2014-01-01") else
+                           "IPCNu (nacional urbano)" if f <= pd.Timestamp("2015-10-01") else "IPC Nacional")
+    ia_indec = {f: (interanual(f, ofi), tramo_ofi(f)) for f in ofi.index}
+    ia_indec.update({f: (interanual(f, nac_i), "IPC Nacional") for f in nac_i.index})
+    ia_cifra = {f: interanual(f, cif) for f in cif.index}
 
     # 3. Serie mensual para el gráfico -------------------------------------
-    serie = [{"fecha": ym(f), "mensual": r(var[f] * 100), "interanual": r(interanual(f), 1), "fuente": fuente[f]}
-             for f in idx.index if f >= pd.Timestamp("2003-01-01")]
+    serie = []
+    for f in idx.index:
+        if f < pd.Timestamp("2003-01-01"):
+            continue
+        ind, tr = ia_indec.get(f, (None, None))
+        serie.append({"fecha": ym(f), "mensual": r(var[f] * 100), "interanual": r(interanual(f), 1), "fuente": fuente[f],
+                      "indec": r(ind, 1), "indec_serie": tr if ind is not None else None, "cifra": r(ia_cifra.get(f), 1)})
 
     # 4. Inflación anual (dic a dic) ---------------------------------------
     def dueño(anio):
@@ -121,7 +158,7 @@ def main():
                 mejor, n = g["id"], k
         return mejor
 
-    oficial = pd.read_csv(OFICIAL).set_index("anio")
+    oficial = oficial_anual
     anual = []
     for anio in range(2003, ultimo.year + 1):
         dic_ant, fin = pd.Timestamp(anio - 1, 12, 1), min(pd.Timestamp(anio, 12, 1), ultimo)
@@ -184,6 +221,11 @@ def main():
         "anual": anual,
         "gobiernos": gobiernos,
         "calendario": calendario,
+        "lineas": {
+            "indec": "INDEC: IPC GBA hasta dic-2013, IPC Nacional urbano (IPCNu) de ene-2014 a oct-2015 e IPC Nacional desde dic-2016. "
+                     "Entre nov-2015 y nov-2017 no hay interanual oficial nacional.",
+            "cifra": "CIFRA-CTA: IPC Provincias, ene-2007 a dic-2018 (el interanual arranca en ene-2008).",
+        },
         "empalme": [
             {"desde": "2002-01", "hasta": ym(CORTE_1), "fuente": "INDEC", "serie": f"IPC GBA histórico ({IPC_GBA_HISTORICO})"},
             {"desde": ym(CORTE_1 + pd.DateOffset(months=1)), "hasta": ym(CORTE_2), "fuente": "CIFRA-CTA", "serie": "IPC Provincias"},
