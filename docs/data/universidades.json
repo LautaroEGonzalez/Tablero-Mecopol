@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-09T19:32+00:00",
+ "actualizado": "2026-10-10T01:04+00:00",
  "etapa": "solo fuentes oficiales",
  "hitos": {
   "sancion": {
@@ -150,7 +150,7 @@
    "color": "#3987e5",
    "desde": 2019,
    "hasta": 2023,
-   "variacion": null
+   "variacion": 9.2
   },
   {
    "id": "milei",
@@ -163,6 +163,38 @@
   }
  ],
  "indice": [
+  {
+   "anio": 2018,
+   "valor": 112.2,
+   "tipo": "ejecutado",
+   "devengado_millones": 118930.1,
+   "ipc_promedio": 787.2,
+   "gobierno": "macri"
+  },
+  {
+   "anio": 2019,
+   "valor": 91.6,
+   "tipo": "ejecutado",
+   "devengado_millones": 148972.0,
+   "ipc_promedio": 1208.71,
+   "gobierno": "macri"
+  },
+  {
+   "anio": 2020,
+   "valor": 89.6,
+   "tipo": "ejecutado",
+   "devengado_millones": 206973.4,
+   "ipc_promedio": 1716.29,
+   "gobierno": "af"
+  },
+  {
+   "anio": 2021,
+   "valor": 92.7,
+   "tipo": "ejecutado",
+   "devengado_millones": 317898.3,
+   "ipc_promedio": 2547.07,
+   "gobierno": "af"
+  },
   {
    "anio": 2022,
    "valor": 94.5,
@@ -198,6 +230,26 @@
  ],
  "unaj": {
   "indice": [
+   {
+    "anio": 2018,
+    "valor": 82.8,
+    "devengado_millones": 609.9
+   },
+   {
+    "anio": 2019,
+    "valor": 79.4,
+    "devengado_millones": 897.2
+   },
+   {
+    "anio": 2020,
+    "valor": 88.9,
+    "devengado_millones": 1427.9
+   },
+   {
+    "anio": 2021,
+    "valor": 91.3,
+    "devengado_millones": 2175.3
+   },
    {
     "anio": 2022,
     "valor": 91.0,
@@ -288,6 +340,10 @@
   "errores": [],
   "controles": [],
   "anios": [
+   2018,
+   2019,
+   2020,
+   2021,
    2022,
    2023,
    2024,
@@ -335,6 +391,46 @@
    "filas": 1157,
    "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2022/credito-anual-2022.zip",
    "bajado": "2026-10-09"
+  },
+  "2021": {
+   "devengado": 317898.302,
+   "vigente": 317919.202,
+   "devengado_inciso5": 317660.325,
+   "unaj_devengado": 2175.3,
+   "unaj_vigente": 1912.374,
+   "filas": 1144,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2021/credito-anual-2021.zip",
+   "bajado": "2026-10-10"
+  },
+  "2020": {
+   "devengado": 206973.386,
+   "vigente": 206974.353,
+   "devengado_inciso5": 206816.417,
+   "unaj_devengado": 1427.931,
+   "unaj_vigente": 1002.662,
+   "filas": 531,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2020/credito-anual-2020.zip",
+   "bajado": "2026-10-10"
+  },
+  "2019": {
+   "devengado": 148972.008,
+   "vigente": 149246.677,
+   "devengado_inciso5": 148856.364,
+   "unaj_devengado": 897.238,
+   "unaj_vigente": 711.988,
+   "filas": 582,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2019/credito-anual-2019.zip",
+   "bajado": "2026-10-10"
+  },
+  "2018": {
+   "devengado": 118930.087,
+   "vigente": 122969.197,
+   "devengado_inciso5": 118800.493,
+   "unaj_devengado": 609.891,
+   "unaj_vigente": 549.824,
+   "filas": 957,
+   "url": "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/2018/credito-anual-2018.zip",
+   "bajado": "2026-10-10"
   }
  }
 }
