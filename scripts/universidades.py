@@ -1,11 +1,14 @@
 """
-MECOPOL · Universidades y Ley 27.795 — primera etapa, solo fuentes oficiales
-==========================================================================
+MECOPOL · Universidades y Ley 27.795
+====================================
 
 Arma docs/data/universidades.json para docs/universidades.html.
 
-- Hechos (fechas, votaciones, normas, fallos): fuentes/universidades_fuentes.csv.
-  Solo entran datos con fuente oficial (Boletín Oficial, Congreso, Poder Judicial).
+- Hechos (fechas, fallos, apelaciones, cumplimiento por artículo, texto de la ley):
+  fuentes/universidades_fuentes.csv, cada fila con su fuente y link.
+- Salario nodocente: fuentes/salario_nodocente.csv (básico de la categoría 3 según
+  los instructivos oficiales de liquidación). Se compara con el IPC del INDEC de la
+  serie del tablero (docs/data/dashboard.json): índice real con noviembre 2023 = 100.
 - Financiamiento: baja de Presupuesto Abierto (Ministerio de Economía) el crédito
   anual de cada año, suma el DEVENGADO del programa 26 "Desarrollo de la Educación
   Superior" (el que nombra el art. 2 de la Ley 27.795) y lo deflacta con el IPC
@@ -39,6 +42,9 @@ from actualizar import SESION, r  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[1]
 SALIDA = RAIZ / "docs" / "data" / "universidades.json"
 HISTORIA = RAIZ / "docs" / "data" / "historia.json"
+DASHBOARD = RAIZ / "docs" / "data" / "dashboard.json"
+SALARIO = RAIZ / "fuentes" / "salario_nodocente.csv"
+BASE_SALARIO = "2023-11"     # último mes antes del período que nombra el art. 5 (desde el 1/12/2023)
 FUENTES = RAIZ / "fuentes" / "universidades_fuentes.csv"
 
 PA_URL = "https://dgsiaf-repo.mecon.gob.ar/repository/pa/datasets/{anio}/credito-anual-{anio}.zip"
@@ -174,6 +180,84 @@ def gobierno_de(anio, gobs):
 
 
 
+# ------------------------------------------------------------ salario nodocente
+def mes_sig(ym, k=1):
+    a, m = map(int, ym.split("-"))
+    m += k
+    return f"{a + (m - 1) // 12}-{(m - 1) % 12 + 1:02d}"
+
+
+def salario_nodocente():
+    """Índice real del básico nodocente (nov-2023 = 100) contra el IPC del INDEC.
+
+    Cada fila del CSV trae el básico de la categoría 3 (instructivo oficial) o, si
+    no está a mano, el % de aumento del mes. Los meses sin básico se encadenan con
+    el %; hacia atrás desde el primer básico conocido se desarma con los % hasta
+    llegar a noviembre de 2023. Si una fila trae las dos cosas se controla que cierren.
+    """
+    filas = list(csv.DictReader(SALARIO.open(encoding="utf-8")))
+    num = lambda x: float(x) if str(x).strip() else None
+    filas = [dict(f, basico=num(f["basico"]), variacion=num(f["variacion"])) for f in filas]
+    meses = [f["mes"] for f in filas]
+    if meses[0] != mes_sig(BASE_SALARIO) or any(mes_sig(a) != b for a, b in zip(meses, meses[1:])):
+        raise RuntimeError("salario_nodocente.csv: los meses tienen que ser consecutivos desde 2023-12")
+    i0 = next(i for i, f in enumerate(filas) if f["basico"])
+    nivel = {filas[i0]["mes"]: filas[i0]["basico"]}
+    for i in range(i0, -1, -1):                       # hacia atrás hasta nov-2023
+        if filas[i]["variacion"] is None:
+            raise RuntimeError(f"salario_nodocente.csv: falta el % de {filas[i]['mes']} para llegar a nov-2023")
+        ant = BASE_SALARIO if i == 0 else filas[i - 1]["mes"]
+        nivel[ant] = nivel[filas[i]["mes"]] / (1 + filas[i]["variacion"] / 100)
+    for i in range(i0 + 1, len(filas)):               # hacia adelante
+        f, ant = filas[i], nivel[filas[i - 1]["mes"]]
+        if f["basico"]:
+            if f["variacion"] is not None and abs(f["basico"] / ant - 1 - f["variacion"] / 100) > 0.002:
+                raise RuntimeError(f"salario_nodocente.csv: en {f['mes']} el básico y el % no cierran")
+            nivel[f["mes"]] = f["basico"]
+        elif f["variacion"] is not None:
+            nivel[f["mes"]] = ant * (1 + f["variacion"] / 100)
+        else:
+            raise RuntimeError(f"salario_nodocente.csv: {f['mes']} no tiene básico ni %")
+
+    ipc_m = {x["fecha"]: x["mensual"] for x in json.loads(DASHBOARD.read_text(encoding="utf-8"))["serie"]}
+    serie, p = [], 1.0
+    s0 = nivel[BASE_SALARIO]
+    serie.append({"mes": BASE_SALARIO, "basico": r(s0, 2), "aumento": None, "ipc_mes": None, "con_ipc": r(s0, 2), "real": 100.0})
+    for f in filas:
+        m = f["mes"]
+        if m not in ipc_m:
+            break                                       # sin IPC todavía: el mes queda afuera
+        p *= 1 + ipc_m[m] / 100
+        prev = serie[-1]["basico"]
+        serie.append({"mes": m, "basico": r(nivel[m], 2), "aumento": r((nivel[m] / prev - 1) * 100, 2),
+                      "ipc_mes": ipc_m[m], "con_ipc": r(s0 * p, 2), "real": r(nivel[m] / s0 / p * 100, 1),
+                      "fuente": f["fuente"], "link": f["link"]})
+    ult = serie[-1]
+    reales = serie[1:]
+    piso = min(reales, key=lambda x: x["real"])
+    # último mes antes del aumento grande del acta (el mayor aumento mensual del período)
+    grande = max(reales, key=lambda x: x["aumento"] or 0)
+    antes = serie[serie.index(grande) - 1]
+    tramos = [x for x in reales if x["mes"] >= grande["mes"] and (x["aumento"] or 0) > 0]
+    kpis = {
+        "ultimo_mes": ult["mes"],
+        "real": ult["real"],
+        "perdida": r(ult["real"] - 100, 1),
+        "falta_para_recuperar": r((100 / ult["real"] - 1) * 100, 1),
+        "piso": {"mes": piso["mes"], "real": piso["real"]},
+        "antes_acta": {"mes": antes["mes"], "real": antes["real"]},
+        "salto_aumento": {"mes": grande["mes"], "aumento": grande["aumento"], "real": grande["real"],
+                          "puntos": r(grande["real"] - antes["real"], 1)},
+        "recuperado_puntos": r(ult["real"] - antes["real"], 1),
+        "tramos": [{"mes": x["mes"], "aumento": x["aumento"]} for x in tramos],
+        "sueldos_perdidos": r(sum(1 - x["real"] / 100 for x in reales), 1),
+        "meses": len(reales),
+        "aumento_acumulado": r((ult["basico"] / s0 - 1) * 100, 1),
+        "inflacion_acumulada": r((p - 1) * 100, 1),
+    }
+    return {"base": BASE_SALARIO, "categoria": "Categoría 3", "serie": serie, "kpis": kpis}
+
+
 # ----------------------------------------------------------------------- main
 def main():
     previo = json.loads(SALIDA.read_text(encoding="utf-8")) if SALIDA.exists() else {}
@@ -229,14 +313,18 @@ def main():
     def link_de(f):
         return {"fecha": f["fecha"], "texto": f["texto"], "fuente": f["fuente"], "link": f["link"]}
 
+    texto = lambda f: {"texto": f["texto"], "fuente": f["fuente"], "link": f["link"]}
     datos = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
-        "etapa": "solo fuentes oficiales",
         "hitos": {f["clave"]: link_de(f) for f in F.get("hito", [])},
-        "ley": [{"clave": f["clave"], "texto": f["texto"], "fuente": f["fuente"], "link": f["link"]} for f in F.get("ley", [])],
-        "gobierno_dice": [{"texto": f["texto"], "fuente": f["fuente"], "link": f["link"]} for f in F.get("gobierno", [])],
-        "cronologia": [{"actor": f["tipo"], **link_de(f)} for f in F.get("crono", [])],
-        "pendientes": [f["texto"] for f in F.get("pendiente", [])],
+        "situacion": [f["texto"] for f in F.get("situacion", [])],
+        "cronologia": [{"carril": f["clave"], "actor": f["tipo"], "apelacion": f["valor"] == "apelacion", **link_de(f)}
+                       for f in F.get("crono", [])],
+        "articulos": [{"articulo": f["clave"], "exigible_desde": f["fecha"], "orden": f["tipo"], **texto(f)} for f in F.get("articulo", [])],
+        "ley": {f["clave"]: texto(f) for f in F.get("ley", [])},
+        "gobierno_dice": [texto(f) for f in F.get("gobierno", [])],
+        "juez_dice": [texto(f) for f in F.get("juez", [])],
+        "salario": salario_nodocente(),
         "tarjetas": tarjetas,
         "indice": indice,
         "unaj": unaj,
@@ -253,8 +341,9 @@ def main():
             print("✔️ Sin cambios en universidades.")
             return
     SALIDA.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"💾 {SALIDA.relative_to(RAIZ)} · años de Presupuesto Abierto: {datos['presupuesto_abierto_estado']['anios']} · " +
-          " · ".join(f"{t['corto']} {t['variacion']}%" for t in tarjetas))
+    k = datos["salario"]["kpis"]
+    print(f"💾 {SALIDA.relative_to(RAIZ)} · salario nodocente {k['ultimo_mes']}: {k['real']} (nov-23 = 100) · "
+          f"años de Presupuesto Abierto: {datos['presupuesto_abierto_estado']['anios']}")
 
 
 if __name__ == "__main__":

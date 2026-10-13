@@ -1,138 +1,663 @@
 {
- "actualizado": "2026-10-11T00:18+00:00",
- "etapa": "solo fuentes oficiales",
+ "actualizado": "2026-10-13T23:52+00:00",
  "hitos": {
-  "sancion": {
+  "decreto": {
+   "fecha": "2025-10-21",
+   "texto": "Decreto 759/2025: promulga la ley y suspende su ejecución",
+   "fuente": "Boletín Oficial",
+   "link": "https://www.boletinoficial.gob.ar/detalleAviso/primera/333140/20251021"
+  },
+  "cautelar": {
+   "fecha": "2025-12-23",
+   "texto": "Cautelar de primera instancia: cumplir los arts. 5 (salarios) y 6 (becas)",
+   "fuente": "El Cronista",
+   "link": "https://www.elcronista.ar/el-gobierno-recurrio-a-la-corte-para-intentar-evitar-el-pago-a-las-universidades-nacionales"
+  },
+  "camara": {
+   "fecha": "2026-03-31",
+   "texto": "La Cámara confirma la cautelar",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6651/Financiamiento-universitario-confirmaron-la-cautelar-para-actualizar-los-salarios-docentes-y-becas-estudiantiles"
+  },
+  "corte": {
+   "fecha": "2026-06-25",
+   "texto": "La Corte rechaza el recurso del Estado: la cautelar queda firme",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6834/Financiamiento-universitario-la-Corte-dejo-firme-la-cautelar-que-ordeno-actualizar-salarios-docentes-y-becas-estudiantiles"
+  },
+  "intimacion": {
+   "fecha": "2026-09-22",
+   "texto": "El juez intima al Gobierno a cumplir en 5 días, bajo multas",
+   "fuente": "Infobae",
+   "link": "https://www.infobae.com/politica/2026/09/22/conflicto-universitario-la-justicia-intimo-al-gobierno-para-que-cumpla-con-la-ley-de-financiamiento/"
+  },
+  "sentencia": {
+   "fecha": "2026-10-06",
+   "texto": "Sentencia de fondo: el decreto 759/2025 es inconstitucional y la ley se cumple de inmediato",
+   "fuente": "Microjuris",
+   "link": "https://aldiaargentina.microjuris.com/2026/10/08/fallos-se-declara-la-inconstitucionalidad-del-decreto-n-759-2025-que-suspendio-la-ley-n-27-795-de-financiamiento-de-la-educacion-universitaria-y-se-ordena-su-cumplimiento-inmediato/"
+  }
+ },
+ "situacion": [
+  "La ley está vigente y hay dos órdenes judiciales para cumplirla: la cautelar por salarios y becas, firme desde que la Corte rechazó el recurso del Estado (25-jun-2026), y la sentencia de fondo del 6-oct-2026, que declaró inconstitucional el decreto 759/2025.",
+  "El Gobierno apeló la sentencia de fondo; el juez concedió la apelación el 9-oct-2026 y ahora decide la Cámara Contencioso Administrativo Federal. Mientras tanto la cautelar sigue vigente y su ejecución continúa.",
+  "Cumplimiento parcial: aumentos salariales de 21,33% en junio y 3% en septiembre de 2026, +20% en gastos de funcionamiento y +50% en las Becas Manuel Belgrano. La ley exige recomponer todo por la inflación desde diciembre de 2023.",
+  "Próximo paso esperable: si la Cámara confirma la sentencia, el Estado puede llevar el caso otra vez a la Corte Suprema con un recurso extraordinario."
+ ],
+ "cronologia": [
+  {
+   "carril": "ley",
+   "actor": "congreso",
+   "apelacion": false,
    "fecha": "2025-08-21",
    "texto": "El Congreso sanciona la Ley 27.795",
    "fuente": "Ley 27.795, texto oficial",
    "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
   },
-  "senado": {
-   "fecha": "2025-10-02",
-   "texto": "El Senado insiste con la ley",
-   "fuente": "Senado de la Nación",
-   "link": "https://www.senado.gob.ar/prensa/23251/noticias"
-  },
-  "decreto": {
-   "fecha": "2025-10-21",
-   "texto": "Se publican la Ley 27.795 y el Decreto 759/2025, que la promulga \"sin perjuicio\" del art. 5 de la Ley 24.629",
-   "fuente": "Boletín Oficial, Decreto 759/2025",
-   "link": "https://www.boletinoficial.gob.ar/detalleAviso/primera/333140/20251021"
-  },
-  "csjn": {
-   "fecha": "2026-06-04",
-   "texto": "La Corte Suprema desestima una queja del Estado Nacional en la causa del CIN contra el decreto 759/25",
-   "fuente": "Poder Judicial de la Nación",
-   "link": "https://pjn-documento-api.pjn.gov.ar/api/documento/adjunto/212774"
-  }
- },
- "ley": [
   {
-   "clave": "art2",
-   "texto": "Art. 2: fija objetivos para el programa 26 \"Desarrollo de la Educación Superior\": acceso y permanencia de estudiantes, condiciones laborales docentes y no docentes, investigación, extensión, infraestructura y becas.",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  },
-  {
-   "clave": "art3_4",
-   "texto": "Arts. 3 y 4: actualizan los gastos de funcionamiento de las universidades por el IPC: al 1 de enero de 2025 por la inflación de mayo a diciembre de 2024, y de forma bimestral durante 2025.",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  },
-  {
-   "clave": "art5",
-   "texto": "Art. 5: los salarios docentes y no docentes se actualizan por el período del 1/12/2023 a la sanción de la ley, con un porcentaje que \"no puede ser inferior al Índice de Precios al Consumidor (IPC)\".",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  },
-  {
-   "clave": "art6",
-   "texto": "Art. 6: recomposición de todos los programas de becas estudiantiles según el IPC acumulado entre el 10/12/2023 y la sanción de la ley.",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  },
-  {
-   "clave": "art9",
-   "texto": "Art. 9: la ley \"podrá financiarse con los incrementos de ingresos corrientes recaudados por encima de los montos presupuestados\", sin afectar la coparticipación a las provincias.",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  }
- ],
- "gobierno_dice": [
-  {
-   "texto": "Invoca el art. 5 de la Ley 24.629: \"Toda ley que autorice o disponga gastos deberá prever en forma expresa el financiamiento de los mismos\"; si no, su ejecución queda suspendida hasta que el Presupuesto incluya las partidas.",
-   "fuente": "Decreto 759/2025, considerandos",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/decreto-759-2025-419007/texto"
-  },
-  {
-   "texto": "Sostiene que la ley no especifica las fuentes de los recursos, como exige el art. 38 de la Ley 24.156, y que solo habilita reasignar partidas en términos generales.",
-   "fuente": "Decreto 759/2025, considerandos",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/decreto-759-2025-419007/texto"
-  },
-  {
-   "texto": "Concluye que la ley se promulga pero su ejecución queda suspendida hasta que el Congreso determine el financiamiento, y señala como ámbito el proyecto de Presupuesto 2026 enviado el 15 de septiembre de 2025.",
-   "fuente": "Decreto 759/2025, considerandos",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/decreto-759-2025-419007/texto"
-  }
- ],
- "cronologia": [
-  {
-   "actor": "congreso",
-   "fecha": "2025-08-21",
-   "texto": "El Congreso sanciona la Ley de Financiamiento de la Educación Universitaria y Recomposición del Salario Docente (Ley 27.795)",
-   "fuente": "Ley 27.795, texto oficial",
-   "link": "https://www.argentina.gob.ar/normativa/nacional/norma-419006/texto"
-  },
-  {
+   "carril": "ley",
    "actor": "ejecutivo",
+   "apelacion": false,
    "fecha": "2025-09-10",
-   "texto": "Veto total: Decreto 647/2025",
-   "fuente": "Boletín Oficial, Decreto 647/2025",
+   "texto": "Veto total (Decreto 647/2025)",
+   "fuente": "Boletín Oficial",
    "link": "https://www.boletinoficial.gob.ar/detalleAviso/primera/5932589/20250910?suplemento=1"
   },
   {
+   "carril": "ley",
    "actor": "congreso",
+   "apelacion": false,
    "fecha": "2025-09-17",
-   "texto": "Diputados insiste con la ley: 174 votos a favor, 67 en contra y 2 abstenciones",
+   "texto": "Diputados insiste: 174 votos a favor, 67 en contra, 2 abstenciones",
    "fuente": "Cámara de Diputados",
    "link": "https://www.hcdn.gob.ar/prensa/noticia/DIPUTADOS-INSISTIO-CON-LOS-PROYECTOS-DE-EMERGENCIA-EN-SALUD-PEDIATRICA-Y-FINANCIAMIENTO-UNIVERSITARIO"
   },
   {
+   "carril": "ley",
    "actor": "congreso",
+   "apelacion": false,
    "fecha": "2025-10-02",
-   "texto": "El Senado insiste: 58 votos a favor, 7 en contra y 4 abstenciones. La ley queda sancionada",
+   "texto": "El Senado insiste: 58 a favor, 7 en contra, 4 abstenciones. La ley queda firme",
    "fuente": "Senado de la Nación",
    "link": "https://www.senado.gob.ar/prensa/23251/noticias"
   },
   {
+   "carril": "ley",
    "actor": "ejecutivo",
+   "apelacion": false,
    "fecha": "2025-10-21",
-   "texto": "Boletín Oficial: Ley 27.795 y Decreto 759/2025 (fechado el 20-oct), que la promulga y deja su ejecución suspendida hasta que se prevea el financiamiento",
-   "fuente": "Boletín Oficial, Decreto 759/2025",
+   "texto": "Decreto 759/2025: promulga la ley pero suspende su ejecución hasta que el Presupuesto prevea los fondos",
+   "fuente": "Boletín Oficial",
    "link": "https://www.boletinoficial.gob.ar/detalleAviso/primera/333140/20251021"
   },
   {
-   "actor": "justicia",
+   "carril": "fondo",
+   "actor": "universidades",
+   "apelacion": false,
    "fecha": "",
-   "texto": "El Consejo Interuniversitario Nacional y los rectores de 49 universidades nacionales presentan un amparo colectivo contra el decreto 759/25 (tramita en la Cámara Contencioso Administrativo Federal, Sala III)",
+   "texto": "El CIN y 49 rectores presentan un amparo colectivo contra el decreto 759/25 (causa 39.475/2025, Juzgado Contencioso Administrativo Federal N° 11, juez Martín Cormick)",
+   "fuente": "Microjuris (sentencia)",
+   "link": "https://aldiaargentina.microjuris.com/2026/10/08/fallos-se-declara-la-inconstitucionalidad-del-decreto-n-759-2025-que-suspendio-la-ley-n-27-795-de-financiamiento-de-la-educacion-universitaria-y-se-ordena-su-cumplimiento-inmediato/"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2025-12-23",
+   "texto": "Cautelar de primera instancia: el Estado debe cumplir los arts. 5 (salarios docentes y nodocentes) y 6 (becas)",
+   "fuente": "El Cronista",
+   "link": "https://www.elcronista.ar/el-gobierno-recurrio-a-la-corte-para-intentar-evitar-el-pago-a-las-universidades-nacionales"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "ejecutivo",
+   "apelacion": true,
+   "fecha": "",
+   "texto": "El Estado apela la cautelar ante la Cámara",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6651/Financiamiento-universitario-confirmaron-la-cautelar-para-actualizar-los-salarios-docentes-y-becas-estudiantiles"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2026-03-31",
+   "texto": "La Cámara Contencioso Administrativo Federal, Sala III, confirma la cautelar",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6651/Financiamiento-universitario-confirmaron-la-cautelar-para-actualizar-los-salarios-docentes-y-becas-estudiantiles"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "ejecutivo",
+   "apelacion": true,
+   "fecha": "2026-04-17",
+   "texto": "El Estado lleva la cautelar a la Corte con un recurso extraordinario y pide que se aparten tres jueces de la Corte",
+   "fuente": "El Cronista",
+   "link": "https://www.elcronista.ar/el-gobierno-recurrio-a-la-corte-para-intentar-evitar-el-pago-a-las-universidades-nacionales"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2026-06-04",
+   "texto": "La Corte rechaza el pedido de apartar a sus jueces y desestima una queja del Estado en un incidente",
    "fuente": "Poder Judicial de la Nación",
    "link": "https://pjn-documento-api.pjn.gov.ar/api/documento/adjunto/212774"
   },
   {
+   "carril": "cautelar",
+   "actor": "acuerdo",
+   "apelacion": false,
+   "fecha": "2026-06-10",
+   "texto": "Acta acuerdo Gobierno, CIN y gremios: 21,33% de aumento en junio y 3% en octubre, +20% en gastos de funcionamiento, +50% en Becas Belgrano",
+   "fuente": "Ministerio de Capital Humano",
+   "link": "https://www.argentina.gob.ar/noticias/capital-humano-suscribio-un-acta-acuerdo-con-el-cin-y-los-gremios-universitarios"
+  },
+  {
+   "carril": "cautelar",
    "actor": "justicia",
-   "fecha": "2026-06-04",
-   "texto": "La Corte Suprema desestima la queja del Estado Nacional en un incidente de la causa: el recurso no iba contra una sentencia definitiva. También declara improcedente el pedido de que sus jueces se excusen",
-   "fuente": "Poder Judicial de la Nación",
-   "link": "https://pjn-documento-api.pjn.gov.ar/api/documento/adjunto/212774"
+   "apelacion": false,
+   "fecha": "2026-06-25",
+   "texto": "La Corte rechaza el recurso extraordinario del Estado: la cautelar queda firme",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6834/Financiamiento-universitario-la-Corte-dejo-firme-la-cautelar-que-ordeno-actualizar-salarios-docentes-y-becas-estudiantiles"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2026-09-01",
+   "texto": "Cautelar a favor de la UBA, en una causa acumulada",
+   "fuente": "Palabras del Derecho",
+   "link": "https://www.palabrasdelderecho.com.ar/articulo/6953/Financiamiento-Universitario-admitieron-una-cautelar-en-favor-de-la-UBA"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "ejecutivo",
+   "apelacion": false,
+   "fecha": "2026-09-17",
+   "texto": "El Gobierno ofrece 3% en septiembre y 3% en octubre; los gremios lo rechazan",
+   "fuente": "Infobae",
+   "link": "https://www.infobae.com/politica/2026/09/22/conflicto-universitario-la-justicia-intimo-al-gobierno-para-que-cumpla-con-la-ley-de-financiamiento/"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2026-09-22",
+   "texto": "El juez intima al Gobierno a cumplir la cautelar en 5 días, bajo multas diarias",
+   "fuente": "Infobae",
+   "link": "https://www.infobae.com/politica/2026/09/22/conflicto-universitario-la-justicia-intimo-al-gobierno-para-que-cumpla-con-la-ley-de-financiamiento/"
+  },
+  {
+   "carril": "cautelar",
+   "actor": "justicia",
+   "apelacion": true,
+   "fecha": "2026-09-30",
+   "texto": "El juez rechaza la apelación del Gobierno contra la intimación y le da 5 días más",
+   "fuente": "Minuto Uno",
+   "link": "https://www.minutouno.com/politica/el-gobierno-apelara-novena-vez-un-fallo-favor-la-ley-financiamiento-universitario-n6330821"
+  },
+  {
+   "carril": "fondo",
+   "actor": "justicia",
+   "apelacion": false,
+   "fecha": "2026-10-06",
+   "texto": "Sentencia de fondo: el decreto 759/2025 es inconstitucional y la ley debe cumplirse de inmediato",
+   "fuente": "Microjuris",
+   "link": "https://aldiaargentina.microjuris.com/2026/10/08/fallos-se-declara-la-inconstitucionalidad-del-decreto-n-759-2025-que-suspendio-la-ley-n-27-795-de-financiamiento-de-la-educacion-universitaria-y-se-ordena-su-cumplimiento-inmediato/"
+  },
+  {
+   "carril": "fondo",
+   "actor": "ejecutivo",
+   "apelacion": true,
+   "fecha": "2026-10-09",
+   "texto": "El Gobierno apela la sentencia; el juez concede la apelación y mantiene la cautelar. Ahora decide la Cámara",
+   "fuente": "Tiempo Argentino",
+   "link": "https://www.tiempoar.com.ar/ta_article/el-gobierno-apelo-la-orden-judicial-de-aplicar-la-ley-de-financiamiento-universitario-pero-debe-cumplir-la-cautelar-vigente/"
   }
  ],
- "pendientes": [
-  "Fallos posteriores sobre la cautelar (Cámara, mar-2026; Corte, jun-2026) y la sentencia del juez Cormick (oct-2026): falta el texto oficial del Poder Judicial.",
-  "Proyecto del Poder Ejecutivo para modificar la ley (feb-2026) y aumentos salariales otorgados: falta el expediente o la norma.",
-  "Presupuesto 2026 de la UNAJ: se toma de Presupuesto Abierto cuando esté el detalle por universidad, o de la propia UNAJ.",
-  "Salario universitario real y financiamiento como % del PBI: se van a calcular con escalas salariales oficiales y el PBI del INDEC."
+ "articulos": [
+  {
+   "articulo": "Art. 5 · Salarios docentes y nodocentes",
+   "exigible_desde": "2025-12-23",
+   "orden": "cautelar",
+   "texto": "Parcial. Aumentos de 21,33% (junio) y 3% (septiembre de 2026). La ley pide recomponer por la inflación desde diciembre de 2023: ver el gráfico.",
+   "fuente": "Ministerio de Capital Humano",
+   "link": "https://www.argentina.gob.ar/noticias/capital-humano-suscribio-un-acta-acuerdo-con-el-cin-y-los-gremios-universitarios"
+  },
+  {
+   "articulo": "Art. 6 · Becas estudiantiles",
+   "exigible_desde": "2025-12-23",
+   "orden": "cautelar",
+   "texto": "Parcial. Becas Manuel Belgrano +50% desde junio de 2026. La ley pide recomponer todas las becas por la inflación desde el 10 de diciembre de 2023.",
+   "fuente": "Ministerio de Capital Humano",
+   "link": "https://www.argentina.gob.ar/noticias/capital-humano-suscribio-un-acta-acuerdo-con-el-cin-y-los-gremios-universitarios"
+  },
+  {
+   "articulo": "Arts. 3 y 4 · Gastos de funcionamiento",
+   "exigible_desde": "2026-10-06",
+   "orden": "sentencia",
+   "texto": "Parcial. +20% desde junio de 2026. La ley pide actualizarlos por la inflación. La sentencia de fondo que lo ordena está apelada.",
+   "fuente": "Ministerio de Capital Humano",
+   "link": "https://www.argentina.gob.ar/noticias/capital-humano-suscribio-un-acta-acuerdo-con-el-cin-y-los-gremios-universitarios"
+  }
  ],
+ "ley": {
+  "art9": {
+   "texto": "Artículo 9°- Recursos. El Poder Ejecutivo nacional dispondrá –tal como lo establece el artículo 27, inciso 2.c), de la ley 24.156– los créditos presupuestarios para asegurar la continuidad y eficiencia de los servicios y en consecuencia a ello, la adecuación de partidas presupuestarias a fin de actualizar al 1º de enero de 2025 el presupuesto correspondiente a las universidades públicas, sin impactar sobre la distribución de la coparticipación federal de impuestos a las provincias ni a los aportes del Tesoro nacional. Asimismo, la presente ley podrá financiarse con los incrementos de ingresos corrientes recaudados por encima de los montos presupuestados (o prorrogados) como ingresos.",
+   "fuente": "Ley 27.795, texto oficial (InfoLEG)",
+   "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/415000-419999/419006/norma.htm"
+  },
+  "art5": {
+   "texto": "Art. 5: el Poder Ejecutivo \"deberá actualizar los salarios de los docentes y no docentes de las universidades públicas\" por el período del 1/12/2023 a la sanción de la ley, con un porcentaje no inferior al IPC, y convocar a paritarias al menos cada tres meses.",
+   "fuente": "Ley 27.795, texto oficial (InfoLEG)",
+   "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/415000-419999/419006/norma.htm"
+  }
+ },
+ "gobierno_dice": [
+  {
+   "texto": "El decreto 759/2025 sostiene que la ley no especifica las fuentes de los recursos, como exige el art. 38 de la Ley 24.156, y que el art. 27, inc. 2.c), de esa ley trata de cómo se prorroga un presupuesto y no es una fuente de financiamiento. Por eso, invocando el art. 5 de la Ley 24.629, deja la ejecución suspendida hasta que el Congreso prevea los fondos.",
+   "fuente": "Decreto 759/2025, considerandos",
+   "link": "https://www.argentina.gob.ar/normativa/nacional/decreto-759-2025-419007/texto"
+  }
+ ],
+ "juez_dice": [
+  {
+   "texto": "La sentencia del 6-oct-2026 responde que el art. 9 fija cómo se financia la ley, que lo razonable es entender que el Congreso consideró cumplido el art. 5 de la Ley 24.629 con ese artículo, y que suspender una ley insistida por dos tercios funciona como \"una figura de instancia de veto no prevista en la Constitución Nacional\".",
+   "fuente": "Microjuris (sentencia)",
+   "link": "https://aldiaargentina.microjuris.com/2026/10/08/fallos-se-declara-la-inconstitucionalidad-del-decreto-n-759-2025-que-suspendio-la-ley-n-27-795-de-financiamiento-de-la-educacion-universitaria-y-se-ordena-su-cumplimiento-inmediato/"
+  }
+ ],
+ "salario": {
+  "base": "2023-11",
+  "categoria": "Categoría 3",
+  "serie": [
+   {
+    "mes": "2023-11",
+    "basico": 533344.05,
+    "aumento": null,
+    "ipc_mes": null,
+    "con_ipc": 533344.05,
+    "real": 100.0
+   },
+   {
+    "mes": "2023-12",
+    "basico": 562677.97,
+    "aumento": 5.5,
+    "ipc_mes": 25.47,
+    "con_ipc": 669186.78,
+    "real": 84.1,
+    "fuente": "UTN BA, Evolución de los salarios universitarios",
+    "link": "https://frba.utn.edu.ar/evolucion-de-los-salarios-universitarios/"
+   },
+   {
+    "mes": "2024-01",
+    "basico": 562677.97,
+    "aumento": 0.0,
+    "ipc_mes": 20.61,
+    "con_ipc": 807106.18,
+    "real": 69.7,
+    "fuente": "UTN BA, Evolución de los salarios universitarios",
+    "link": "https://frba.utn.edu.ar/evolucion-de-los-salarios-universitarios/"
+   },
+   {
+    "mes": "2024-02",
+    "basico": 652706.45,
+    "aumento": 16.0,
+    "ipc_mes": 13.24,
+    "con_ipc": 913967.03,
+    "real": 71.4,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-03",
+    "basico": 731032.0,
+    "aumento": 12.0,
+    "ipc_mes": 11.01,
+    "con_ipc": 1014594.81,
+    "real": 72.1,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-04",
+    "basico": 789514.56,
+    "aumento": 8.0,
+    "ipc_mes": 8.83,
+    "con_ipc": 1104183.53,
+    "real": 71.5,
+    "fuente": "UTN BA, Evolución de los salarios universitarios",
+    "link": "https://frba.utn.edu.ar/evolucion-de-los-salarios-universitarios/"
+   },
+   {
+    "mes": "2024-05",
+    "basico": 860571.35,
+    "aumento": 9.0,
+    "ipc_mes": 4.18,
+    "con_ipc": 1150338.4,
+    "real": 74.8,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-06",
+    "basico": 894994.21,
+    "aumento": 4.0,
+    "ipc_mes": 4.58,
+    "con_ipc": 1203023.9,
+    "real": 74.4,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-07",
+    "basico": 962118.78,
+    "aumento": 7.5,
+    "ipc_mes": 4.03,
+    "con_ipc": 1251505.76,
+    "real": 76.9,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-08",
+    "basico": 990982.35,
+    "aumento": 3.0,
+    "ipc_mes": 4.17,
+    "con_ipc": 1303693.55,
+    "real": 76.0,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-09",
+    "basico": 1010802.0,
+    "aumento": 2.0,
+    "ipc_mes": 3.47,
+    "con_ipc": 1348931.72,
+    "real": 74.9,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-10",
+    "basico": 1079536.54,
+    "aumento": 6.8,
+    "ipc_mes": 2.69,
+    "con_ipc": 1385217.98,
+    "real": 77.9,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-11",
+    "basico": 1101127.28,
+    "aumento": 2.0,
+    "ipc_mes": 2.43,
+    "con_ipc": 1418878.78,
+    "real": 77.6,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2024-12",
+    "basico": 1112138.56,
+    "aumento": 1.0,
+    "ipc_mes": 2.7,
+    "con_ipc": 1457188.5,
+    "real": 76.3,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-01",
+    "basico": 1128820.64,
+    "aumento": 1.5,
+    "ipc_mes": 2.21,
+    "con_ipc": 1489392.37,
+    "real": 75.8,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-02",
+    "basico": 1142366.49,
+    "aumento": 1.2,
+    "ipc_mes": 2.4,
+    "con_ipc": 1525137.79,
+    "real": 74.9,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-03",
+    "basico": 1157217.26,
+    "aumento": 1.3,
+    "ipc_mes": 3.73,
+    "con_ipc": 1582025.42,
+    "real": 73.1,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-04",
+    "basico": 1172261.09,
+    "aumento": 1.3,
+    "ipc_mes": 2.78,
+    "con_ipc": 1626005.73,
+    "real": 72.1,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-05",
+    "basico": 1187500.49,
+    "aumento": 1.3,
+    "ipc_mes": 1.5,
+    "con_ipc": 1650395.82,
+    "real": 72.0,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-06",
+    "basico": 1202938.0,
+    "aumento": 1.3,
+    "ipc_mes": 1.62,
+    "con_ipc": 1677132.23,
+    "real": 71.7,
+    "fuente": "Instructivo de liquidación jun-ago 2025 (publicado por la UNGS)",
+    "link": "https://transparencia.ungs.edu.ar/wp-content/uploads/2025/08/Instructivo-de-Liquidacion-Docentes-y-No-Docentes-Junio-a-Agosto-2025.pdf"
+   },
+   {
+    "mes": "2025-07",
+    "basico": 1218576.2,
+    "aumento": 1.3,
+    "ipc_mes": 1.9,
+    "con_ipc": 1708997.74,
+    "real": 71.3,
+    "fuente": "Instructivo de liquidación jun-ago 2025 (publicado por la UNGS)",
+    "link": "https://transparencia.ungs.edu.ar/wp-content/uploads/2025/08/Instructivo-de-Liquidacion-Docentes-y-No-Docentes-Junio-a-Agosto-2025.pdf"
+   },
+   {
+    "mes": "2025-08",
+    "basico": 1234417.7,
+    "aumento": 1.3,
+    "ipc_mes": 1.88,
+    "con_ipc": 1741126.9,
+    "real": 70.9,
+    "fuente": "Instructivo de liquidación jun-ago 2025 (publicado por la UNGS)",
+    "link": "https://transparencia.ungs.edu.ar/wp-content/uploads/2025/08/Instructivo-de-Liquidacion-Docentes-y-No-Docentes-Junio-a-Agosto-2025.pdf"
+   },
+   {
+    "mes": "2025-09",
+    "basico": 1249230.71,
+    "aumento": 1.2,
+    "ipc_mes": 2.08,
+    "con_ipc": 1777342.34,
+    "real": 70.3,
+    "fuente": "Escalas nodocentes, datos abiertos UNC",
+    "link": "https://datosabiertos.unc.edu.ar/dataset/?q=escalas+salariales+nodocentes"
+   },
+   {
+    "mes": "2025-10",
+    "basico": 1262972.25,
+    "aumento": 1.1,
+    "ipc_mes": 2.34,
+    "con_ipc": 1818932.15,
+    "real": 69.4,
+    "fuente": "Escalas nodocentes, datos abiertos UNC",
+    "link": "https://datosabiertos.unc.edu.ar/dataset/?q=escalas+salariales+nodocentes"
+   },
+   {
+    "mes": "2025-11",
+    "basico": 1276864.96,
+    "aumento": 1.1,
+    "ipc_mes": 2.47,
+    "con_ipc": 1863859.77,
+    "real": 68.5,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2025-12",
+    "basico": 1302402.26,
+    "aumento": 2.0,
+    "ipc_mes": 2.85,
+    "con_ipc": 1916979.78,
+    "real": 67.9,
+    "fuente": "Instructivo de liquidación ene-2026 (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-01",
+    "basico": 1334962.32,
+    "aumento": 2.5,
+    "ipc_mes": 2.88,
+    "con_ipc": 1972188.8,
+    "real": 67.7,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-02",
+    "basico": 1364331.5,
+    "aumento": 2.2,
+    "ipc_mes": 2.9,
+    "con_ipc": 2029382.27,
+    "real": 67.2,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-03",
+    "basico": 1391618.13,
+    "aumento": 2.0,
+    "ipc_mes": 3.38,
+    "con_ipc": 2097975.39,
+    "real": 66.3,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-04",
+    "basico": 1415275.64,
+    "aumento": 1.7,
+    "ipc_mes": 2.58,
+    "con_ipc": 2152103.16,
+    "real": 65.8,
+    "fuente": "Instructivo de liquidación (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-05",
+    "basico": 1436504.77,
+    "aumento": 1.5,
+    "ipc_mes": 2.15,
+    "con_ipc": 2198373.37,
+    "real": 65.3,
+    "fuente": "Escalas nodocentes, datos abiertos UNC",
+    "link": "https://datosabiertos.unc.edu.ar/dataset/?q=escalas+salariales+nodocentes"
+   },
+   {
+    "mes": "2026-06",
+    "basico": 1742911.25,
+    "aumento": 21.33,
+    "ipc_mes": 1.89,
+    "con_ipc": 2239922.63,
+    "real": 77.8,
+    "fuente": "Instructivo de liquidación jun-2026 (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   },
+   {
+    "mes": "2026-07",
+    "basico": 1742911.25,
+    "aumento": 0.0,
+    "ipc_mes": 2.11,
+    "con_ipc": 2287185.0,
+    "real": 76.2,
+    "fuente": "Escalas nodocentes, datos abiertos UNC",
+    "link": "https://datosabiertos.unc.edu.ar/dataset/?q=escalas+salariales+nodocentes"
+   },
+   {
+    "mes": "2026-08",
+    "basico": 1742911.25,
+    "aumento": 0.0,
+    "ipc_mes": 1.66,
+    "con_ipc": 2325152.27,
+    "real": 75.0,
+    "fuente": "Escalas nodocentes, datos abiertos UNC",
+    "link": "https://datosabiertos.unc.edu.ar/dataset/?q=escalas+salariales+nodocentes"
+   },
+   {
+    "mes": "2026-09",
+    "basico": 1795198.59,
+    "aumento": 3.0,
+    "ipc_mes": 1.9,
+    "con_ipc": 2369330.16,
+    "real": 75.8,
+    "fuente": "Instructivo de liquidación sep-2026 (publicado por la UNCuyo)",
+    "link": "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+   }
+  ],
+  "kpis": {
+   "ultimo_mes": "2026-09",
+   "real": 75.8,
+   "perdida": -24.2,
+   "falta_para_recuperar": 31.9,
+   "piso": {
+    "mes": "2026-05",
+    "real": 65.3
+   },
+   "antes_acta": {
+    "mes": "2026-05",
+    "real": 65.3
+   },
+   "salto_aumento": {
+    "mes": "2026-06",
+    "aumento": 21.33,
+    "real": 77.8,
+    "puntos": 12.5
+   },
+   "recuperado_puntos": 10.5,
+   "tramos": [
+    {
+     "mes": "2026-06",
+     "aumento": 21.33
+    },
+    {
+     "mes": "2026-09",
+     "aumento": 3.0
+    }
+   ],
+   "sueldos_perdidos": 9.3,
+   "meses": 34,
+   "aumento_acumulado": 236.6,
+   "inflacion_acumulada": 344.2
+  }
+ },
  "tarjetas": [
   {
    "id": "macri",
