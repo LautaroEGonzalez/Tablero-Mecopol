@@ -21,6 +21,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -85,6 +86,9 @@ def traer(ids, desde, hasta, sin_cache=False):
     return df.sort_index()
 
 
+MAX_HUECOS = 3   # meses vacíos sueltos que se aceptan (interpolados) en un pedido de varias series
+
+
 def traer_completo(ids, desde, hasta, que):
     """Como traer(), pero exige que ninguna serie tenga meses faltantes entre `desde` y `hasta`.
 
@@ -97,6 +101,16 @@ def traer_completo(ids, desde, hasta, que):
         df = traer(ids, desde, hasta, sin_cache=intento > 0).reindex(meses)
         faltan = int(df.isna().sum().sum())
         if faltan == 0:
+            return df
+        # Huecos sueltos en el medio (un mes en null dentro de una serie que sigue) no son
+        # "la API a medio cargar": a veces la API trae un mes vacío y lo corrige días después.
+        # Si son pocos y ninguno es el último mes, se completan interpolando y se avisa.
+        ultimo_ok = df.iloc[-1].notna().all() and df.iloc[0].notna().all()
+        if ultimo_ok and faltan <= MAX_HUECOS and intento >= 1:
+            huecos = [f"{c} {ym(f)}" for c in df.columns for f in df.index[df[c].isna()]]
+            df = np.exp(np.log(df).interpolate(method="linear", limit_area="inside"))
+            print(f"::warning::La API trae {faltan} mes(es) vacío(s) en {que}: {', '.join(huecos)}. "
+                  "Se completaron interpolando entre el mes anterior y el siguiente.")
             return df
         print(f"  ⚠️ La API devolvió {que} incompleto ({faltan} datos faltantes); reintento en 60 s")
         time.sleep(60)
