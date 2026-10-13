@@ -1,0 +1,23 @@
+name: Diagnóstico (temporal)
+on: workflow_dispatch
+jobs:
+  ver:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Listar escalas nodocentes de la UNC
+        run: |
+          python3 - << 'PY'
+          import json, urllib.request, urllib.parse
+          base = "https://datosabiertos.unc.edu.ar/api/3/action/package_search?"
+          nombres = []
+          for start in range(0, 400, 100):
+              q = urllib.parse.urlencode({"q": "nodocente OR nodocentes OR \"no docente\"", "rows": 100, "start": start})
+              j = json.load(urllib.request.urlopen(base + q, timeout=60))
+              for p in j["result"]["results"]:
+                  if "docente" in p["name"] and "autoridad" not in p["name"] and "escalas-salariales-docentes" not in p["name"]:
+                      nombres.append(p["name"])
+              if start + 100 >= j["result"]["count"]:
+                  break
+          nombres = sorted(set(nombres))
+          print(f"::notice::{len(nombres)} datasets: " + " ".join(nombres)[:3900])
+          PY
