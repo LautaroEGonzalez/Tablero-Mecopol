@@ -1,18 +1,18 @@
 {
- "actualizado": "2026-10-09T16:08+00:00",
- "ultimo_mes": "2026-08",
+ "actualizado": "2026-10-13T21:55+00:00",
+ "ultimo_mes": "2026-09",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
- "mes_gobierno": 33,
- "meses_restantes": 15,
+ "mes_gobierno": 34,
+ "meses_restantes": 14,
  "kpis": {
-  "mensual": 1.66,
-  "mensual_previo": 2.11,
-  "interanual": 33.5,
-  "interanual_previo": 33.8,
-  "acum_anio": 21.3,
-  "acum_gobierno": 336.0,
-  "promedio_mensual": 4.56
+  "mensual": 1.9,
+  "mensual_previo": 1.66,
+  "interanual": 33.4,
+  "interanual_previo": 33.5,
+  "acum_anio": 23.6,
+  "acum_gobierno": 344.3,
+  "promedio_mensual": 4.48
  },
  "serie": [
   {
@@ -212,6 +212,12 @@
    "mensual": 1.66,
    "interanual": 33.5,
    "acumulada": 336.0
+  },
+  {
+   "fecha": "2026-09",
+   "mensual": 1.9,
+   "interanual": 33.4,
+   "acumulada": 344.3
   }
  ],
  "hitos": {
@@ -222,8 +228,8 @@
    "acumulada": 25.5
   },
   "primeros_5": 107.0,
-  "resto": 110.6,
-  "meses_resto": 28
+  "resto": 114.6,
+  "meses_resto": 29
  },
  "rubros": [
   {
@@ -2396,5 +2402,24 @@
    "Restaurantes y hoteles": "146.3_IRESTAUNAL_DICI_M_33",
    "Bienes y servicios varios": "146.3_IBIENESNAL_DICI_M_36"
   }
+ },
+ "parcial": {
+  "secciones_hasta": "2026-08",
+  "kpis_secciones": {
+   "mensual": 1.66,
+   "mensual_previo": 2.11,
+   "interanual": 33.5,
+   "interanual_previo": 33.8,
+   "acum_anio": 21.3,
+   "acum_gobierno": 336.0,
+   "promedio_mensual": 4.56
+  },
+  "meses": [
+   {
+    "mes": "2026-09",
+    "fuente": "INDEC, Índice de precios al consumidor, septiembre de 2026 (informe del 13-oct-2026)",
+    "link": "https://www.indec.gob.ar/indec/web/Nivel4-Tema-3-5-31"
+   }
+  ]
  }
 }
