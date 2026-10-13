@@ -4,21 +4,29 @@ jobs:
   ver:
     runs-on: ubuntu-24.04
     steps:
-      - name: Instructivo UNGS junio-agosto 2025 y mayo 2025
+      - name: Instructivos de liquidación publicados por la UNCuyo
         run: |
           pip install -q pypdf
           python3 - << 'PY'
           import urllib.request, io, re
           from pypdf import PdfReader
-          for url in ["https://transparencia.ungs.edu.ar/wp-content/uploads/2025/08/Instructivo-de-Liquidacion-Docentes-y-No-Docentes-Junio-a-Agosto-2025.pdf",
-                      "https://transparencia.ungs.edu.ar/wp-content/uploads/2025/06/Instructivo-de-Liquidacion-Docentes-y-No-Docentes-Mayo-2025.pdf"]:
+          UA = {"User-Agent": "Mozilla/5.0"}
+          base = "https://www.uncuyo.edu.ar/transparencia/escalas-salariales-y-convenios"
+          h = urllib.request.urlopen(urllib.request.Request(base, headers=UA), timeout=60).read().decode("utf-8", "replace")
+          links = sorted(set(re.findall(r'href="([^"]+\.pdf)"', h, re.I)))
+          lineas = []
+          for l in links:
+              url = l if l.startswith("http") else "https://www.uncuyo.edu.ar" + ("" if l.startswith("/") else "/transparencia/") + l.lstrip("/") if not l.startswith("/") else "https://www.uncuyo.edu.ar" + l
               try:
-                  b = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=60).read()
+                  b = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60).read()
                   t = "\n".join(pg.extract_text() or "" for pg in PdfReader(io.BytesIO(b)).pages)
-                  t = re.sub(r"[ \t]+", " ", t)
-                  partes = [t[i:i+3800] for i in range(0, min(len(t), 3800*4), 3800)]
-                  for k, p in enumerate(partes):
-                      print(f"::notice::{url.rsplit('/',1)[-1]} [{k}] " + p.replace("\n", " ¶ "))
+                  tit = re.search(r"NO DOCENTE\s*(?:DE LAS UNIVERSIDADES NACIONALES)?\s*\n?\s*([A-ZÁÉÍÓÚ ]+\d{4}(?:[A-ZÁÉÍÓÚ ]+\d{4})?)", t)
+                  i = t.find("escalafón no docente"); i = t.find("escalafon no docente") if i < 0 else i
+                  seg = re.sub(r"\s+", " ", t[i:i+700]) if i >= 0 else "SIN TABLA NODOCENTE"
+                  lineas.append(f"[{url.rsplit('/',1)[-1][:14]}] {tit.group(1).strip() if tit else '?'} :: {seg[:520]}")
               except Exception as e:
-                  print(f"::notice::{url} error {e}")
+                  lineas.append(f"[{url.rsplit('/',1)[-1][:14]}] ERR {e}")
+          txt = "\n".join(lineas)
+          for k in range(0, len(txt), 3800):
+              print("::notice::" + txt[k:k+3800].replace("\n", " ¶¶ "))
           PY
