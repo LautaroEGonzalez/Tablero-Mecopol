@@ -516,7 +516,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
                 return `<b>${r.region}</b><br>${etq(MS)}: <b>${pct(r.mensual, 2)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
             visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
               text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
-              inRange: { color: ['#3b2430', '#8e3557', '#e0527c', '#f5a3bd'] }, seriesIndex: 0 },
+              inRange: { color: ['#f7b3c8', '#e0527c', '#a3264f', '#5a0d29'] }, seriesIndex: 0 },
             geo: { map: 'regiones', roam: false, aspectScale: 0.82, layoutCenter: ['50%', window.innerWidth < 560 ? '48%' : '46%'], layoutSize: window.innerWidth < 560 ? '134%' : '86%',
               itemStyle: { areaColor: '#20242c', borderColor: T.panel, borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
             series: [
@@ -526,8 +526,8 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
               { type: 'scatter', coordinateSystem: 'geo', symbolSize: 0, silent: true,
                 data: RG.map(r => ({ name: r.region, value: [...(centro[r.region] || pos[r.region]), r[med]] })),
                 label: { show: true, formatter: p => `{n|${p.name}}\n{v|${pct(p.value[2], dec)}}`, align: 'center',
-                  rich: { n: { color: T.fg, fontSize: window.innerWidth < 560 ? 10 : 11, fontFamily: T.ui, fontWeight: 600, lineHeight: 15, textShadowColor: 'rgba(0,0,0,.6)', textShadowBlur: 3 },
-                          v: { color: T.fg, fontSize: window.innerWidth < 560 ? 11 : 13, fontFamily: T.num, fontWeight: 600, lineHeight: 16, textShadowColor: 'rgba(0,0,0,.6)', textShadowBlur: 3 } } } },
+                  rich: { n: { fontSize: window.innerWidth < 560 ? 10 : 11, fontFamily: T.ui, fontWeight: 600, lineHeight: 15, color: '#fff', textBorderColor: '#000', textBorderWidth: 3 },
+                          v: { fontSize: window.innerWidth < 560 ? 11 : 13, fontFamily: T.num, fontWeight: 600, lineHeight: 16, color: '#fff', textBorderColor: '#000', textBorderWidth: 3 } } } },
             ],
           }, { replaceMerge: ['series'] });
         };
