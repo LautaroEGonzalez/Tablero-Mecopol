@@ -70,13 +70,15 @@ def pedir(url, params, intentos=4):
     raise RuntimeError(f"La API no respondió: {url} {params}")
 
 
-def traer(ids, desde, hasta):
+def traer(ids, desde, hasta, sin_cache=False):
     """Descarga series (máx. 40 por consulta) y devuelve un DataFrame mensual."""
     partes = []
     for i in range(0, len(ids), 40):
         lote = ids[i:i + 40]
-        j = pedir(API, {"ids": ",".join(lote), "start_date": desde,
-                        "end_date": hasta, "limit": 1000})
+        params = {"ids": ",".join(lote), "start_date": desde, "end_date": hasta, "limit": 1000}
+        if sin_cache:   # parámetro de más para saltear respuestas guardadas en caché
+            params["nocache"] = int(time.time())
+        j = pedir(API, params)
         partes.append(pd.DataFrame(j["data"], columns=["fecha"] + lote).set_index("fecha"))
     df = pd.concat(partes, axis=1).apply(pd.to_numeric, errors="coerce")
     df.index = pd.to_datetime(df.index)
@@ -321,14 +323,18 @@ def main():
     # El día que el INDEC publica, la API a veces devuelve la serie a medio cargar
     # (con meses de menos). Se reintenta unos minutos antes de cortar.
     for intento in range(4):
-        nac = traer([IPC_NAC], desde, hoy.strftime("%Y-%m-%d"))[IPC_NAC].dropna()
+        nac = traer([IPC_NAC], desde, hoy.strftime("%Y-%m-%d"), sin_cache=intento > 0)[IPC_NAC].dropna()
         faltan = pd.date_range(desde, nac.index.max(), freq="MS").difference(nac.index) if len(nac) else [desde]
         if len(faltan) == 0:
             break
         print(f"  ⚠️ La API devolvió la serie incompleta (faltan {len(faltan)} meses); reintento en 60 s")
         time.sleep(60)
     else:
-        raise RuntimeError("La API devuelve el IPC con meses faltantes; probablemente se está actualizando. Se reintenta en la próxima corrida.")
+        # No es un error del tablero: la API se está recargando. Se deja todo como estaba
+        # y la Action termina en verde con un aviso; la próxima corrida vuelve a probar.
+        print("::warning::La API de datos.gob.ar devuelve el IPC con meses faltantes (se está actualizando). "
+              "No se tocaron los datos; se reintenta en la próxima corrida.")
+        sys.exit(0)
     mes = nac.index.max()
     previo = mes - un_mes
     K = meses_entre(inicio, mes)
