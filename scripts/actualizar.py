@@ -318,7 +318,17 @@ def main():
     # 1. Nivel general --------------------------------------------------
     print("📥 IPC nacional, nivel general")
     desde = ym(inicio - pd.DateOffset(months=14)) + "-01"
-    nac = traer([IPC_NAC], desde, hoy.strftime("%Y-%m-%d"))[IPC_NAC].dropna()
+    # El día que el INDEC publica, la API a veces devuelve la serie a medio cargar
+    # (con meses de menos). Se reintenta unos minutos antes de cortar.
+    for intento in range(4):
+        nac = traer([IPC_NAC], desde, hoy.strftime("%Y-%m-%d"))[IPC_NAC].dropna()
+        faltan = pd.date_range(desde, nac.index.max(), freq="MS").difference(nac.index) if len(nac) else [desde]
+        if len(faltan) == 0:
+            break
+        print(f"  ⚠️ La API devolvió la serie incompleta (faltan {len(faltan)} meses); reintento en 60 s")
+        time.sleep(60)
+    else:
+        raise RuntimeError("La API devuelve el IPC con meses faltantes; probablemente se está actualizando. Se reintenta en la próxima corrida.")
     mes = nac.index.max()
     previo = mes - un_mes
     K = meses_entre(inicio, mes)
