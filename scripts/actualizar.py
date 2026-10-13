@@ -87,6 +87,11 @@ def traer(ids, desde, hasta, sin_cache=False):
 
 
 MAX_HUECOS = 3   # meses vacíos sueltos que se aceptan (interpolados) en un pedido de varias series
+PUBLICADO = RAIZ / "fuentes" / "ipc_publicado.csv"   # IPC del informe del INDEC, cargado a mano
+
+
+class DatosIncompletos(Exception):
+    """La API devuelve series con meses faltantes (suele pasar mientras se recarga)."""
 
 
 def traer_completo(ids, desde, hasta, que):
@@ -114,9 +119,7 @@ def traer_completo(ids, desde, hasta, que):
             return df
         print(f"  ⚠️ La API devolvió {que} incompleto ({faltan} datos faltantes); reintento en 60 s")
         time.sleep(60)
-    print(f"::warning::La API de datos.gob.ar devuelve {que} con datos faltantes (se está actualizando). "
-          "No se tocaron los datos; se reintenta en la próxima corrida.")
-    sys.exit(0)
+    raise DatosIncompletos(f"la API de datos.gob.ar devuelve {que} con datos faltantes")
 
 
 def buscar_division(nombre, clave):
@@ -348,7 +351,8 @@ def regiones(inicio, mes):
 # ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
-def main():
+def calcular():
+    """Cálculo completo con la API. Devuelve el dict del tablero (o lanza DatosIncompletos)."""
     hoy = pd.Timestamp.today().normalize()
     inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
     fin = pd.Timestamp(CONFIG["fin_mandato"])
@@ -367,11 +371,7 @@ def main():
         print(f"  ⚠️ La API devolvió la serie incompleta (faltan {len(faltan)} meses); reintento en 60 s")
         time.sleep(60)
     else:
-        # No es un error del tablero: la API se está recargando. Se deja todo como estaba
-        # y la Action termina en verde con un aviso; la próxima corrida vuelve a probar.
-        print("::warning::La API de datos.gob.ar devuelve el IPC con meses faltantes (se está actualizando). "
-              "No se tocaron los datos; se reintenta en la próxima corrida.")
-        sys.exit(0)
+        raise DatosIncompletos("la API de datos.gob.ar devuelve el IPC nacional con meses faltantes")
     mes = nac.index.max()
     previo = mes - un_mes
     K = meses_entre(inicio, mes)
@@ -465,19 +465,78 @@ def main():
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
     }
 
+    return datos
+
+
+# ------------------------------------------------------------------
+# Meses publicados por el INDEC que la API todavía no cargó
+# ------------------------------------------------------------------
+def completar_con_publicado(datos):
+    """Agrega al tablero los meses de fuentes/ipc_publicado.csv posteriores al último de la API.
+
+    Solo se actualiza el nivel general (mensual, interanual, acumuladas). Rubros, regiones y
+    canasta 2017/18 quedan con el último mes completo de la API y la página lo avisa.
+    """
+    if not PUBLICADO.exists():
+        return datos
+    pub = pd.read_csv(PUBLICADO, dtype={"mes": str}).sort_values("mes")
+    inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
+    for _, f in pub.iterrows():
+        ult = pd.Timestamp(datos["ultimo_mes"] + "-01")
+        mes = pd.Timestamp(f["mes"] + "-01")
+        if mes <= ult:
+            continue
+        if mes != ult + pd.DateOffset(months=1):
+            print(f"::warning::{f['mes']} en ipc_publicado.csv no sigue al último mes del tablero ({datos['ultimo_mes']}); se ignora.")
+            break
+        k_ant = datos["kpis"]
+        if not datos.get("parcial"):
+            datos["parcial"] = {"secciones_hasta": datos["ultimo_mes"], "kpis_secciones": dict(k_ant), "meses": []}
+        m, ia, aa = float(f["mensual"]), float(f["interanual"]), float(f["acum_anio"])
+        acum = ((1 + k_ant["acum_gobierno"] / 100) * (1 + m / 100) - 1) * 100
+        K = meses_entre(inicio, mes)
+        datos["serie"].append({"fecha": ym(mes), "mensual": m, "interanual": ia, "acumulada": r(acum, 1)})
+        datos["kpis"] = {"mensual": m, "mensual_previo": k_ant["mensual"], "interanual": ia,
+                         "interanual_previo": k_ant["interanual"], "acum_anio": aa, "acum_gobierno": r(acum, 1),
+                         "promedio_mensual": r(((1 + acum / 100) ** (1 / K) - 1) * 100)}
+        datos["ultimo_mes"], datos["mes_gobierno"] = ym(mes), K
+        datos["meses_restantes"] = meses_entre(mes, pd.Timestamp(CONFIG["fin_mandato"]))
+        h5 = datos["hitos"]
+        h5["pico"] = max(datos["serie"], key=lambda x: x["mensual"])
+        h5["resto"] = r(((1 + acum / 100) / (1 + h5["primeros_5"] / 100) - 1) * 100, 1)
+        h5["meses_resto"] = K - 5
+        datos["parcial"]["meses"].append({"mes": ym(mes), "fuente": f["fuente"], "link": f["link"]})
+        print(f"📝 {etiqueta(mes)} agregado desde el informe del INDEC: mensual {m}% · interanual {ia}% "
+              "(rubros, regiones y canasta quedan a la espera de la API)")
+    return datos
+
+
+def main():
+    previo_txt = SALIDA.read_text(encoding="utf-8") if SALIDA.exists() else None
+    try:
+        datos = calcular()
+    except DatosIncompletos as e:
+        print(f"::warning::{e} (se está actualizando). Se publica lo que haya y se reintenta en la próxima corrida.")
+        if previo_txt is None:
+            return
+        datos = json.loads(previo_txt)
+        # si el archivo ya tenía meses del informe, se arma de nuevo desde el último mes de la API
+        if datos.get("parcial"):
+            print("   (se conserva el tablero tal como estaba)")
+    datos = completar_con_publicado(datos)
+
     # Si los números no cambiaron, no se reescribe el archivo: así la Action
     # no genera un commit por día y la fecha muestra el último cambio real.
-    if SALIDA.exists():
-        previo_json = json.loads(SALIDA.read_text(encoding="utf-8"))
-        sin_fecha = lambda x: {k: v for k, v in x.items() if k != "actualizado"}
-        if sin_fecha(previo_json) == json.loads(json.dumps(sin_fecha(datos), ensure_ascii=False)):
-            print(f"✔️ Sin datos nuevos (último mes: {etiqueta(mes)}).")
-            return
-
+    sin_fecha = lambda x: {k: v for k, v in x.items() if k != "actualizado"}
+    if previo_txt and sin_fecha(json.loads(previo_txt)) == json.loads(json.dumps(sin_fecha(datos), ensure_ascii=False)):
+        print(f"✔️ Sin datos nuevos (último mes: {datos['ultimo_mes']}).")
+        return
+    datos["actualizado"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"💾 {SALIDA.relative_to(RAIZ)} · {etiqueta(mes)} · mes {K} · "
-          f"mensual {kpis['mensual']}% · interanual {kpis['interanual']}%")
+    k = datos["kpis"]
+    print(f"💾 {SALIDA.relative_to(RAIZ)} · {datos['ultimo_mes']} · mes {datos['mes_gobierno']} · "
+          f"mensual {k['mensual']}% · interanual {k['interanual']}%" + (" · parcial" if datos.get("parcial") else ""))
 
 
 if __name__ == "__main__":

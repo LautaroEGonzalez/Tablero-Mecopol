@@ -200,6 +200,9 @@ th.rel, td.rel { width: 38%; text-align: center; }
   .calor th, .calor td { padding: 7px 5px; }
   .calor td:first-child { max-width: 118px; white-space: normal; line-height: 1.25; }
 }
+.espera { padding: 8px 12px; border-radius: var(--r); font-size: 13px; color: var(--fg-2); border: 1px dashed #4d3f19; background: rgba(224,163,58,.06); }
+.espera b { color: var(--fg); font-weight: 600; }
+.aviso a { color: inherit; }
 .nota-reg { margin: 0; font-size: 12px; color: var(--fg-3); max-width: 80ch; }
 .dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
 @media (max-width: 900px) { .dos-col { grid-template-columns: 1fr; } }
@@ -276,6 +279,11 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
 
   function render(d) {
     const k = d.kpis, M = d.ultimo_mes, K = d.mes_gobierno, total = K + d.meses_restantes;
+    // parcial: el INDEC ya publicó el mes pero la API todavía no lo cargó. El nivel general sale
+    // del informe; rubros, regiones y canasta quedan con el último mes completo (MS, KS).
+    const P = d.parcial, MS = P ? P.secciones_hasta : M, KS = P ? P.kpis_secciones : k;
+    const mesL = ym => MESL[+ym.slice(5) - 1], Mayus = s => s[0].toUpperCase() + s.slice(1);
+    const espera = P ? `<div class="espera">Datos de <b>${largo(MS)}</b>. ${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: a la espera de la carga del dato en la API del INDEC.</div>` : '';
     const app = document.getElementById('app');
     const act = new Date(d.actualizado);
 
@@ -289,8 +297,10 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     app.innerHTML = `
       ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
 
+      ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras la API de datos.gob.ar no lo cargue, los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}.</div>` : ''}
+
       <section class="cifras" aria-label="Cifras de ${largo(M)}">
-        <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, 2)}<small>%</small></div>
+        <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
           <div class="pie">${chip(k.mensual, k.mensual_previo)}<span>mes anterior ${pct(k.mensual_previo, 2)}</span></div>
           <div class="spark" id="sp1" role="img" aria-label="Inflación mensual, últimos 12 meses"></div></div>
         <div class="cifra"><h2>Interanual</h2><div class="valor">${nf(k.interanual, 1)}<small>%</small></div>
@@ -316,13 +326,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       <section class="sec">
         <div class="sec-cab"><div><h2>Por región</h2>
           <p class="sub">El INDEC mide el IPC en seis regiones, no por provincia. Cada región tiene su propia canasta, así que el mismo aumento pega distinto según dónde se viva.</p></div>
-          <div class="seg" role="group" id="sel-reg">${[['mensual', `${MESL[+M.slice(5) - 1][0].toUpperCase() + MESL[+M.slice(5) - 1].slice(1)}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
+          <div class="seg" role="group" id="sel-reg">${[['mensual', `${Mayus(mesL(MS))}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
+        ${espera}
         <div class="reg-grid">
           <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div></div>
           <div class="caja reg reg-der">
             <div class="tabla-wrap"><table>
-              <thead><tr><th>Región</th><th>${etq(M)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+              <thead><tr><th>Región</th><th>${etq(MS)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
               <tbody id="tb-reg"></tbody></table></div>
             <p class="lectura" id="lectura-reg"></p>
           </div>
@@ -339,13 +350,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       <section class="sec">
         <div class="sec-cab"><div><h2>Rubros</h2>
           <p class="sub">El precio relativo compara cuánto subió cada rubro desde nov-23 con el nivel general. Positivo: se encareció más que el promedio.</p></div></div>
+        ${espera}
         <div class="caja">
           <div class="tabla-wrap"><table>
-            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(M)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(MS)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
             <tbody id="tb-rubros"></tbody>
           </table></div>
         </div>
-        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(k.mensual, 2)} en ${etq(M)} · ${pct(k.acum_gobierno, 1)} desde nov-23</span></div>
+        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(KS.mensual, 2)} en ${etq(MS)} · ${pct(KS.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
       ${d.reponderado ? `
@@ -354,7 +366,8 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
           <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. <b>Es una estimación de MECOPOL, no un dato oficial.</b></p></div>
           <div class="seg" role="group" id="sel-rep">${[['acumulada', 'Acumulada'], ['interanual', 'Interanual'], ['mensual', 'Mensual']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
-        <div class="comp">${[['mensual', `Inflación de ${MESL[+M.slice(5) - 1]}`, 2], ['interanual', 'Interanual', 1], ['acum_anio', `Acumulada ${M.slice(0, 4)}`, 1], ['acum_gobierno', 'Desde nov-23', 1]].map(([c, t, dec]) => {
+        ${espera}
+        <div class="comp">${[['mensual', `Inflación de ${mesL(MS)}`, 2], ['interanual', 'Interanual', 1], ['acum_anio', `Acumulada ${MS.slice(0, 4)}`, 1], ['acum_gobierno', 'Desde nov-23', 1]].map(([c, t, dec]) => {
             const x = d.reponderado.resumen[c], df = x.reponderado - x.oficial;
             return `<div><h3>${t}</h3><div class="par"><b>${pct(x.reponderado, dec)}</b><span>oficial ${pct(x.oficial, dec)}</span></div>
               <div class="dif">${df >= 0 ? '+' : ''}${nf(df, 1)} pp con la canasta 2017/18</div></div>`; }).join('')}</div>
@@ -466,7 +479,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       const RG = d.regiones.regiones;
       const ordRub = [...d.rubros].sort((a, b) => b.acum_gobierno - a.acum_gobierno).map(r => r.rubro);
       const nacRub = Object.fromEntries(d.rubros.map(r => [r.rubro, r]));
-      const nacGen = { mensual: k.mensual, interanual: k.interanual, acum_gobierno: k.acum_gobierno };
+      const nacGen = { mensual: KS.mensual, interanual: KS.interanual, acum_gobierno: KS.acum_gobierno };
       const calor = (med, dec) => {
         const tb = document.getElementById('tb-calor'); if (!tb) return;
         tb.innerHTML = ordRub.map(rub => {
@@ -493,14 +506,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
             `<tr><td>${r.region}</td><td>${pct(r.mensual, 2)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`).join('') +
             `<tr class="nac"><td>Nacional</td><td>${pct(nacGen.mensual, 2)}</td><td>${pct(nacGen.interanual, 1)}</td><td>${pct(nacGen.acum_gobierno, 0)}</td></tr>`;
           const alto = ordenadas[0], bajo = ordenadas[ordenadas.length - 1];
-          const queMide = med === 'mensual' ? `En ${MESL[+M.slice(5) - 1]}` : med === 'interanual' ? 'En los últimos doce meses' : 'Desde noviembre de 2023';
+          const queMide = med === 'mensual' ? `En ${mesL(MS)}` : med === 'interanual' ? 'En los últimos doce meses' : 'Desde noviembre de 2023';
           const masSubio = r => { const e = Object.entries(r.rubros || {}).sort((a, b) => b[1][med] - a[1][med])[0]; return e ? ` (lo que más subió: ${(corto[e[0]] || e[0]).toLowerCase()}, ${pct(e[1][med], dec)})` : ''; };
           document.getElementById('lectura-reg').innerHTML = `${queMide}, la inflación más alta fue la de <b>${alto.region}</b>, con <b>${pct(alto[med], dec)}</b>${masSubio(alto)}, y la más baja la de <b>${bajo.region}</b>, con <b>${pct(bajo[med], dec)}</b>. La diferencia entre las dos es de ${nf(alto[med] - bajo[med], dec === 2 ? 2 : 1)} puntos.`;
           calor(med, dec);
           ch.setOption({
             tooltip: { trigger: 'item', backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
               formatter: p => { const r = RG.find(x => x.region === p.name); if (!r) return '';
-                return `<b>${r.region}</b><br>${etq(M)}: <b>${pct(r.mensual, 2)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
+                return `<b>${r.region}</b><br>${etq(MS)}: <b>${pct(r.mensual, 2)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
             visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
               text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
               inRange: { color: ['#3b2430', '#8e3557', '#e0527c', '#f5a3bd'] }, seriesIndex: 0 },
