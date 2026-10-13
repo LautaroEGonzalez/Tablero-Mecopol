@@ -1,10 +1,21 @@
 {
   "_comentario": "Parámetros que se editan a mano. Después de cambiar algo, la Action regenera el tablero.",
-
   "_inicio": "Último mes completo antes de que asuma el gobierno (asumió el 10 de diciembre de 2023).",
   "inicio_gobierno": "2023-11-01",
   "fin_mandato": "2027-11-01",
-
-  "_ids_divisiones": "Opcional: si la búsqueda automática de algún rubro falla, poner acá su id (ej. \"Salud\": \"148.3_...\").",
-  "ids_divisiones": {}
+  "_ids_divisiones": "Ids de las 12 divisiones del IPC Nacional (base dic-2016). Están fijos para que la Action no dependa del buscador de la API, que a veces no las encuentra.",
+  "ids_divisiones": {
+    "Alimentos y bebidas no alcohólicas": "146.3_IALIMENNAL_DICI_M_45",
+    "Bebidas alcohólicas y tabaco": "146.3_IBEBIDANAL_DICI_M_39",
+    "Prendas de vestir y calzado": "146.3_IPRENDANAL_DICI_M_35",
+    "Vivienda, agua, electricidad, gas y otros combustibles": "146.3_IVIVIENNAL_DICI_M_52",
+    "Equipamiento y mantenimiento del hogar": "146.3_IEQUIPANAL_DICI_M_46",
+    "Salud": "146.3_ISALUDNAL_DICI_M_18",
+    "Transporte": "146.3_ITRANSPNAL_DICI_M_23",
+    "Comunicación": "146.3_ICOMUNINAL_DICI_M_27",
+    "Recreación y cultura": "146.3_IRECREANAL_DICI_M_31",
+    "Educación": "146.3_IEDUCACNAL_DICI_M_22",
+    "Restaurantes y hoteles": "146.3_IRESTAUNAL_DICI_M_33",
+    "Bienes y servicios varios": "146.3_IBIENESNAL_DICI_M_36"
+  }
 }
