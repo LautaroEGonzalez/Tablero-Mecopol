@@ -85,6 +85,26 @@ def traer(ids, desde, hasta, sin_cache=False):
     return df.sort_index()
 
 
+def traer_completo(ids, desde, hasta, que):
+    """Como traer(), pero exige que ninguna serie tenga meses faltantes entre `desde` y `hasta`.
+
+    El día que el INDEC publica, la API a veces devuelve series a medio cargar. Se reintenta
+    unos minutos salteando la caché; si siguen incompletas, no se toca nada y la Action
+    termina en verde con un aviso (la próxima corrida vuelve a probar).
+    """
+    meses = pd.date_range(desde, hasta, freq="MS")
+    for intento in range(4):
+        df = traer(ids, desde, hasta, sin_cache=intento > 0).reindex(meses)
+        faltan = int(df.isna().sum().sum())
+        if faltan == 0:
+            return df
+        print(f"  ⚠️ La API devolvió {que} incompleto ({faltan} datos faltantes); reintento en 60 s")
+        time.sleep(60)
+    print(f"::warning::La API de datos.gob.ar devuelve {que} con datos faltantes (se está actualizando). "
+          "No se tocaron los datos; se reintenta en la próxima corrida.")
+    sys.exit(0)
+
+
 def buscar_division(nombre, clave):
     """Busca la serie NACIONAL, mensual y en nivel (no en variación) de una división."""
     for pagina in range(3):
@@ -139,9 +159,9 @@ ENCUESTA = ("2017-11-01", "2018-11-01")   # período de relevamiento de la ENGHo
 def reponderar(ids_div, nac_corta, inicio, mes):
     un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
     pond = pd.read_csv(PONDERACIONES).set_index("division")
-    div = traer(list(ids_div.values()), "2016-12-01", ym(mes) + "-01")
+    div = traer_completo(list(ids_div.values()), "2016-12-01", ym(mes) + "-01", "los rubros del IPC (desde 2016)")
     div.columns = list(ids_div)
-    nac = traer([IPC_NAC], "2016-12-01", ym(mes) + "-01")[IPC_NAC]
+    nac = traer_completo([IPC_NAC], "2016-12-01", ym(mes) + "-01", "el IPC nacional (desde 2016)")[IPC_NAC]
     div, nac = div.loc[:mes], nac.loc[:mes]
 
     w_vig = pond.loc[div.columns, "pond_ipc_vigente"]
@@ -251,8 +271,11 @@ def buscar_rubro_region(nombre, clave, region):
 def regiones(inicio, mes):
     un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
     ids = {}
+    ids_previos = {}
+    if SALIDA.exists():
+        ids_previos = (json.loads(SALIDA.read_text(encoding="utf-8")).get("regiones") or {}).get("ids", {})
     for reg in REGIONES_IPC:
-        fid = CONFIG.get("ids_regiones", {}).get(reg) or buscar_region(reg)
+        fid = CONFIG.get("ids_regiones", {}).get(reg) or ids_previos.get(reg) or buscar_region(reg)
         print(f"   {'✅' if fid else '❌'} región {reg}: {fid}")
         if fid:
             ids[reg] = fid
@@ -373,7 +396,7 @@ def main():
         faltan = sorted(set(DIVISIONES) - set(ids_div))
         raise RuntimeError(f"Faltan rubros: {faltan}. Cargar sus ids en config.json → ids_divisiones")
 
-    div = traer(list(ids_div.values()), desde, ym(mes) + "-01")
+    div = traer_completo(list(ids_div.values()), desde, ym(mes) + "-01", "los rubros del IPC")
     div.columns = list(ids_div)
 
     rubros = []
