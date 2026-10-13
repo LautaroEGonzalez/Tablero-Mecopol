@@ -351,4 +351,5 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(f"⛔ {e}")
+        print(f"::error::Universidades: {type(e).__name__}: {str(e)[:300]}")
         sys.exit(1)
