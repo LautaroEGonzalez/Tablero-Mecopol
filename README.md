@@ -9,9 +9,7 @@ Versión enfocada en el gobierno de Milei:
 - Inflación por región, con mapa y la variación de cada rubro en cada región
 - IPC recalculado con la canasta de la ENGHo 2017/18 (estimación propia)
 
-Y una segunda página, **Mirada larga** (`docs/historia.html`, borrador), con la inflación por gobierno desde 2003: Kirchner, CFK I y II, Macri, Alberto Fernández y Milei.
-
-Y una tercera, **Universidades y Ley 27.795** (`docs/universidades.html`, borrador): qué dice la ley y el decreto 759/2025, contador de días, financiamiento real del programa 26 por gobierno (Presupuesto Abierto e IPC del INDEC) y cronología. Por ahora, solo fuentes oficiales.
+Las páginas **Mirada larga** (inflación por gobierno desde 2003) y **Universidades y Ley 27.795** se mudaron al repositorio [Análisis Económicos](https://github.com/LautaroEGonzalez/Analisis-Economicos).
 
 ## Ramas
 
@@ -32,9 +30,7 @@ API de datos.gob.ar ──► scripts/actualizar.py ──► docs/data/dashboar
 | Archivo | Qué es |
 |---|---|
 | `scripts/actualizar.py` | Baja las series del IPC, calcula todo y escribe el JSON |
-| `scripts/historia.py` | Arma la serie larga 2002–hoy y escribe `docs/data/historia.json` |
-| `scripts/universidades.py` | Arma `docs/data/universidades.json` con los hechos de `fuentes/universidades_fuentes.csv` y la serie de Presupuesto Abierto deflactada con el IPC |
-| `fuentes/` | Series que no están en la API: IPCNu 2014–2015, nov-2015 a dic-2016, el IPC oficial anual 2007–2015 con sus links y el IPC Provincias de CIFRA-CTA (estimación alternativa) |
+| `fuentes/` | Lo que no está en la API: ponderaciones del IPC, estimaciones de terceros para comparar y el IPC publicado a mano cuando la API se atrasa |
 | `config.json` | Lo que se edita a mano: fechas del mandato e ids de rubros |
 | `docs/index.html` | El tablero. Lee el JSON y dibuja los gráficos |
 | `docs/data/dashboard.json` | Los datos procesados. Lo escribe la Action, no se toca a mano |

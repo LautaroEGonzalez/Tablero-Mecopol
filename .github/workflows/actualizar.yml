@@ -40,17 +40,6 @@ jobs:
       - name: Bajar datos y calcular indicadores
         run: python scripts/actualizar.py
 
-      - name: Serie histórica por gobierno (Mirada larga)
-        # si falla, la portada se actualiza igual y la página histórica queda con sus últimos datos
-        continue-on-error: true
-        run: python scripts/historia.py
-
-      - name: Universidades y Ley 27.795
-        # baja Presupuesto Abierto (solo años que faltan); si falla, la página queda con sus últimos datos
-        continue-on-error: true
-        timeout-minutes: 15
-        run: python scripts/universidades.py
-
       - name: Guardar cambios (solo si hay datos nuevos)
         run: |
           git config user.name  "mecopol-bot"
