@@ -1,0 +1,92 @@
+mes,region,division,mensual,interanual,acum_anio
+2026-09,Nacional,Nivel general,1.9,33.4,23.6
+2026-09,Nacional,Alimentos y bebidas no alcohólicas,2.0,35.1,24.5
+2026-09,Nacional,Bebidas alcohólicas y tabaco,1.4,22.4,15.0
+2026-09,Nacional,Prendas de vestir y calzado,1.4,10.3,6.0
+2026-09,Nacional,"Vivienda, agua, electricidad, gas y otros combustibles",3.1,49.1,35.6
+2026-09,Nacional,Equipamiento y mantenimiento del hogar,1.6,23.7,18.0
+2026-09,Nacional,Salud,2.4,33.3,25.2
+2026-09,Nacional,Transporte,1.5,36.2,22.9
+2026-09,Nacional,Comunicación,2.5,37.3,26.6
+2026-09,Nacional,Recreación y cultura,1.9,32.2,23.8
+2026-09,Nacional,Educación,3.0,39.9,34.0
+2026-09,Nacional,Restaurantes y hoteles,1.1,34.6,24.5
+2026-09,Nacional,Bienes y servicios varios,1.9,32.5,22.9
+2026-09,GBA,Nivel general,2.0,33.5,23.8
+2026-09,GBA,Alimentos y bebidas no alcohólicas,2.2,34.6,24.6
+2026-09,GBA,Bebidas alcohólicas y tabaco,1.5,22.7,15.1
+2026-09,GBA,Prendas de vestir y calzado,1.9,9.2,4.2
+2026-09,GBA,"Vivienda, agua, electricidad, gas y otros combustibles",2.7,45.2,32.5
+2026-09,GBA,Equipamiento y mantenimiento del hogar,1.7,24.7,18.2
+2026-09,GBA,Salud,2.4,33.9,25.7
+2026-09,GBA,Transporte,1.7,37.0,23.7
+2026-09,GBA,Comunicación,2.5,38.7,27.3
+2026-09,GBA,Recreación y cultura,1.2,32.1,23.4
+2026-09,GBA,Educación,2.9,41.1,35.3
+2026-09,GBA,Restaurantes y hoteles,1.3,35.6,25.3
+2026-09,GBA,Bienes y servicios varios,2.0,35.0,24.5
+2026-09,Pampeana,Nivel general,2.0,33.1,23.3
+2026-09,Pampeana,Alimentos y bebidas no alcohólicas,2.0,35.3,24.6
+2026-09,Pampeana,Bebidas alcohólicas y tabaco,1.3,21.9,14.7
+2026-09,Pampeana,Prendas de vestir y calzado,0.7,10.6,7.0
+2026-09,Pampeana,"Vivienda, agua, electricidad, gas y otros combustibles",3.8,49.3,35.2
+2026-09,Pampeana,Equipamiento y mantenimiento del hogar,1.7,23.8,18.8
+2026-09,Pampeana,Salud,2.4,33.4,25.1
+2026-09,Pampeana,Transporte,1.5,35.4,22.0
+2026-09,Pampeana,Comunicación,2.6,36.4,26.5
+2026-09,Pampeana,Recreación y cultura,2.3,34.2,25.1
+2026-09,Pampeana,Educación,3.8,37.1,30.7
+2026-09,Pampeana,Restaurantes y hoteles,0.8,35.3,24.1
+2026-09,Pampeana,Bienes y servicios varios,1.9,31.1,22.2
+2026-09,Noreste,Nivel general,1.7,36.9,26.6
+2026-09,Noreste,Alimentos y bebidas no alcohólicas,1.2,40.8,27.5
+2026-09,Noreste,Bebidas alcohólicas y tabaco,1.0,21.9,15.1
+2026-09,Noreste,Prendas de vestir y calzado,0.4,10.0,7.0
+2026-09,Noreste,"Vivienda, agua, electricidad, gas y otros combustibles",4.1,76.9,64.1
+2026-09,Noreste,Equipamiento y mantenimiento del hogar,1.6,19.6,15.3
+2026-09,Noreste,Salud,2.1,31.6,24.1
+2026-09,Noreste,Transporte,1.2,29.2,16.9
+2026-09,Noreste,Comunicación,3.0,35.6,25.7
+2026-09,Noreste,Recreación y cultura,1.8,30.3,21.4
+2026-09,Noreste,Educación,2.8,45.3,46.4
+2026-09,Noreste,Restaurantes y hoteles,0.7,38.2,25.7
+2026-09,Noreste,Bienes y servicios varios,2.2,28.2,20.5
+2026-09,Noroeste,Nivel general,1.9,33.6,24.6
+2026-09,Noroeste,Alimentos y bebidas no alcohólicas,1.4,36.8,25.1
+2026-09,Noroeste,Bebidas alcohólicas y tabaco,1.1,22.3,14.5
+2026-09,Noroeste,Prendas de vestir y calzado,2.1,11.7,7.2
+2026-09,Noroeste,"Vivienda, agua, electricidad, gas y otros combustibles",3.3,52.0,40.4
+2026-09,Noroeste,Equipamiento y mantenimiento del hogar,1.9,23.5,18.4
+2026-09,Noroeste,Salud,2.6,31.7,24.2
+2026-09,Noroeste,Transporte,0.4,37.7,25.5
+2026-09,Noroeste,Comunicación,2.1,35.6,25.7
+2026-09,Noroeste,Recreación y cultura,3.9,30.3,25.6
+2026-09,Noroeste,Educación,2.7,41.9,36.4
+2026-09,Noroeste,Restaurantes y hoteles,1.6,31.8,26.6
+2026-09,Noroeste,Bienes y servicios varios,2.3,29.7,20.9
+2026-09,Cuyo,Nivel general,1.9,33.0,22.8
+2026-09,Cuyo,Alimentos y bebidas no alcohólicas,1.7,34.7,22.9
+2026-09,Cuyo,Bebidas alcohólicas y tabaco,1.4,22.9,15.1
+2026-09,Cuyo,Prendas de vestir y calzado,2.3,15.7,10.6
+2026-09,Cuyo,"Vivienda, agua, electricidad, gas y otros combustibles",2.6,49.1,32.9
+2026-09,Cuyo,Equipamiento y mantenimiento del hogar,1.5,21.8,16.4
+2026-09,Cuyo,Salud,2.2,31.4,23.8
+2026-09,Cuyo,Transporte,2.1,41.2,26.2
+2026-09,Cuyo,Comunicación,2.4,35.4,24.8
+2026-09,Cuyo,Recreación y cultura,1.7,28.5,21.7
+2026-09,Cuyo,Educación,1.0,37.3,30.3
+2026-09,Cuyo,Restaurantes y hoteles,1.1,27.7,20.3
+2026-09,Cuyo,Bienes y servicios varios,1.1,30.8,22.2
+2026-09,Patagonia,Nivel general,1.4,30.3,21.2
+2026-09,Patagonia,Alimentos y bebidas no alcohólicas,1.7,29.8,21.6
+2026-09,Patagonia,Bebidas alcohólicas y tabaco,1.6,24.2,16.6
+2026-09,Patagonia,Prendas de vestir y calzado,0.0,12.1,9.3
+2026-09,Patagonia,"Vivienda, agua, electricidad, gas y otros combustibles",2.1,48.6,32.0
+2026-09,Patagonia,Equipamiento y mantenimiento del hogar,0.7,20.0,14.5
+2026-09,Patagonia,Salud,2.1,32.9,25.5
+2026-09,Patagonia,Transporte,1.0,34.0,20.1
+2026-09,Patagonia,Comunicación,2.4,34.6,24.4
+2026-09,Patagonia,Recreación y cultura,1.8,25.9,19.9
+2026-09,Patagonia,Educación,1.6,38.9,32.1
+2026-09,Patagonia,Restaurantes y hoteles,0.1,28.6,21.2
+2026-09,Patagonia,Bienes y servicios varios,1.2,28.4,19.1

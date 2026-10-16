@@ -281,8 +281,13 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     // parcial: el INDEC ya publicó el mes pero la API todavía no lo cargó. El nivel general sale
     // del informe; rubros, regiones y canasta quedan con el último mes completo (MS, KS).
     const P = d.parcial, MS = P ? P.secciones_hasta : M, KS = P ? P.kpis_secciones : k;
+    // rubros y regiones pueden venir de los cuadros del informe (MR); la canasta 2017/18 sigue en MS.
+    const MR = (P && P.rubros_hasta) || MS, infR = !!P && MR !== MS, dM = infR ? 1 : 2;
+    const sR = d.serie.find(x => x.fecha === MR), KR = infR && sR ? { mensual: sR.mensual, interanual: sR.interanual, acum_gobierno: sR.acumulada } : KS;
     const mesL = ym => MESL[+ym.slice(5) - 1], Mayus = s => s[0].toUpperCase() + s.slice(1);
     const espera = P ? `<div class="espera">Datos de <b>${largo(MS)}</b>. ${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: a la espera de la carga del dato en la API del INDEC.</div>` : '';
+    const linkR = P ? (P.meses.find(x => x.mes === MR) || P.meses[P.meses.length - 1]).link : '';
+    const esperaR = infR ? `<div class="espera"><b>${Mayus(largo(MR))}</b>: cuadros del <a href="${linkR}" target="_blank" rel="noopener">informe del INDEC</a>, con un decimal. La acumulada desde nov-23 se encadena con el mes anterior. Cuando la API cargue el mes, se reemplaza sola.</div>` : espera;
     const app = document.getElementById('app');
     const act = new Date(d.actualizado);
 
@@ -296,7 +301,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     app.innerHTML = `
       ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
 
-      ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras la API de datos.gob.ar no lo cargue, los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}.</div>` : ''}
+      ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras la API de datos.gob.ar no lo cargue, ${infR ? `los rubros y las regiones salen de los cuadros del informe y la canasta 2017/18 muestra ${largo(MS)}` : `los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}`}.</div>` : ''}
 
       <section class="cifras" aria-label="Cifras de ${largo(M)}">
         <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
@@ -325,14 +330,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       <section class="sec">
         <div class="sec-cab"><div><h2>Por región</h2>
           <p class="sub">El INDEC mide el IPC en seis regiones, no por provincia. Cada región tiene su propia canasta, así que el mismo aumento pega distinto según dónde se viva.</p></div>
-          <div class="seg" role="group" id="sel-reg">${[['mensual', `${Mayus(mesL(MS))}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
+          <div class="seg" role="group" id="sel-reg">${[['mensual', `${Mayus(mesL(MR))}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
-        ${espera}
+        ${esperaR}
         <div class="reg-grid">
           <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div></div>
           <div class="caja reg reg-der">
             <div class="tabla-wrap"><table>
-              <thead><tr><th>Región</th><th>${etq(MS)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+              <thead><tr><th>Región</th><th>${etq(MR)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
               <tbody id="tb-reg"></tbody></table></div>
             <p class="lectura" id="lectura-reg"></p>
           </div>
@@ -349,14 +354,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       <section class="sec">
         <div class="sec-cab"><div><h2>Rubros</h2>
           <p class="sub">El precio relativo compara cuánto subió cada rubro desde nov-23 con el nivel general. Positivo: se encareció más que el promedio.</p></div></div>
-        ${espera}
+        ${esperaR}
         <div class="caja">
           <div class="tabla-wrap"><table>
-            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(MS)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(MR)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
             <tbody id="tb-rubros"></tbody>
           </table></div>
         </div>
-        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(KS.mensual, 2)} en ${etq(MS)} · ${pct(KS.acum_gobierno, 1)} desde nov-23</span></div>
+        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(KR.mensual, dM)} en ${etq(MR)} · ${pct(KR.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
       ${d.reponderado ? `
@@ -478,7 +483,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       const RG = d.regiones.regiones;
       const ordRub = [...d.rubros].sort((a, b) => b.acum_gobierno - a.acum_gobierno).map(r => r.rubro);
       const nacRub = Object.fromEntries(d.rubros.map(r => [r.rubro, r]));
-      const nacGen = { mensual: KS.mensual, interanual: KS.interanual, acum_gobierno: KS.acum_gobierno };
+      const nacGen = { mensual: KR.mensual, interanual: KR.interanual, acum_gobierno: KR.acum_gobierno };
       const calor = (med, dec) => {
         const tb = document.getElementById('tb-calor'); if (!tb) return;
         tb.innerHTML = ordRub.map(rub => {
@@ -498,21 +503,21 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
         pos.Patagonia = [-68.5, -44.5]; pos.Pampeana = [-61.6, -35.6]; pos.Cuyo = [-68.6, -32.6];
         const ch = nuevo(document.getElementById('ch-mapa'), {});
         const dibujar = med => {
-          const dec = med === 'mensual' ? 2 : med === 'interanual' ? 1 : 0, vals = RG.map(r => r[med]);
+          const dec = med === 'mensual' ? dM : med === 'interanual' ? 1 : 0, vals = RG.map(r => r[med]);
           const mn = Math.min(...vals), mx = Math.max(...vals);
           const ordenadas = [...RG].sort((a, b) => b[med] - a[med]);
           document.getElementById('tb-reg').innerHTML = ordenadas.map(r =>
-            `<tr><td>${r.region}</td><td>${pct(r.mensual, 2)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`).join('') +
-            `<tr class="nac"><td>Nacional</td><td>${pct(nacGen.mensual, 2)}</td><td>${pct(nacGen.interanual, 1)}</td><td>${pct(nacGen.acum_gobierno, 0)}</td></tr>`;
+            `<tr><td>${r.region}</td><td>${pct(r.mensual, dM)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`).join('') +
+            `<tr class="nac"><td>Nacional</td><td>${pct(nacGen.mensual, dM)}</td><td>${pct(nacGen.interanual, 1)}</td><td>${pct(nacGen.acum_gobierno, 0)}</td></tr>`;
           const alto = ordenadas[0], bajo = ordenadas[ordenadas.length - 1];
-          const queMide = med === 'mensual' ? `En ${mesL(MS)}` : med === 'interanual' ? 'En los últimos doce meses' : 'Desde noviembre de 2023';
+          const queMide = med === 'mensual' ? `En ${mesL(MR)}` : med === 'interanual' ? 'En los últimos doce meses' : 'Desde noviembre de 2023';
           const masSubio = r => { const e = Object.entries(r.rubros || {}).sort((a, b) => b[1][med] - a[1][med])[0]; return e ? ` (lo que más subió: ${(corto[e[0]] || e[0]).toLowerCase()}, ${pct(e[1][med], dec)})` : ''; };
           document.getElementById('lectura-reg').innerHTML = `${queMide}, la inflación más alta fue la de <b>${alto.region}</b>, con <b>${pct(alto[med], dec)}</b>${masSubio(alto)}, y la más baja la de <b>${bajo.region}</b>, con <b>${pct(bajo[med], dec)}</b>. La diferencia entre las dos es de ${nf(alto[med] - bajo[med], dec === 2 ? 2 : 1)} puntos.`;
           calor(med, dec);
           ch.setOption({
             tooltip: { trigger: 'item', backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
               formatter: p => { const r = RG.find(x => x.region === p.name); if (!r) return '';
-                return `<b>${r.region}</b><br>${etq(MS)}: <b>${pct(r.mensual, 2)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
+                return `<b>${r.region}</b><br>${etq(MR)}: <b>${pct(r.mensual, dM)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
             visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
               text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
               inRange: { color: ['#f7b3c8', '#e0527c', '#a3264f', '#5a0d29'] }, seriesIndex: 0 },

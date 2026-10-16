@@ -88,6 +88,7 @@ def traer(ids, desde, hasta, sin_cache=False):
 
 MAX_HUECOS = 3   # meses vacíos sueltos que se aceptan (interpolados) en un pedido de varias series
 PUBLICADO = RAIZ / "fuentes" / "ipc_publicado.csv"   # IPC del informe del INDEC, cargado a mano
+PUBLICADO_DIV = RAIZ / "fuentes" / "ipc_publicado_divisiones.csv"   # cuadros 1 a 3 del informe (rubros × regiones)
 
 
 class DatosIncompletos(Exception):
@@ -511,6 +512,56 @@ def completar_con_publicado(datos):
     return datos
 
 
+def completar_divisiones(datos):
+    """Rubros y regiones de los meses que vinieron del informe, desde fuentes/ipc_publicado_divisiones.csv.
+
+    Mensual, interanual y acumulada del año salen tal cual de los cuadros 1 a 3 del informe
+    (con un decimal). La acumulada desde nov-23 se encadena con la del mes anterior. La canasta
+    2017/18 necesita los índices de cada rubro y sigue esperando a la API.
+    """
+    P = datos.get("parcial")
+    if not P or not PUBLICADO_DIV.exists():
+        return datos
+    tab = pd.read_csv(PUBLICADO_DIV, dtype={"mes": str})
+    cad = lambda previo, m: r(((1 + previo / 100) * (1 + m / 100) - 1) * 100, 1)
+    rubros = [x["rubro"] for x in datos["rubros"]]
+    RG = (datos.get("regiones") or {}).get("regiones", [])
+    for info in P["meses"]:
+        mes, hasta = info["mes"], P.get("rubros_hasta", P["secciones_hasta"])
+        if mes <= hasta:
+            continue
+        if ym(pd.Timestamp(hasta + "-01") + pd.DateOffset(months=1)) != mes:
+            break
+        x = {(f.region, f.division): f for f in tab[tab["mes"] == mes].itertuples()}
+        if not x:
+            break
+        faltan = [k for k in [("Nacional", "Nivel general")] + [("Nacional", d) for d in rubros]
+                  + [(g["region"], d) for g in RG for d in ["Nivel general"] + list(g.get("rubros", {}))] if k not in x]
+        if faltan:
+            print(f"::warning::{mes}: en ipc_publicado_divisiones.csv faltan {len(faltan)} datos (p. ej. {faltan[0]}); rubros y regiones quedan en {hasta}.")
+            break
+        nac = next(s for s in datos["serie"] if s["fecha"] == mes)
+        if abs(x[("Nacional", "Nivel general")].mensual - nac["mensual"]) > 0.05:
+            print(f"::warning::{mes}: el nivel general de ipc_publicado_divisiones.csv no coincide con ipc_publicado.csv; se ignora.")
+            break
+        for rb in datos["rubros"]:
+            f = x[("Nacional", rb["rubro"])]
+            rb.update(mensual=f.mensual, interanual=f.interanual, acum_gobierno=cad(rb["acum_gobierno"], f.mensual))
+            rb["relativo"] = r(((1 + rb["acum_gobierno"] / 100) / (1 + nac["acumulada"] / 100) - 1) * 100, 1)
+        for g in RG:
+            f = x[(g["region"], "Nivel general")]
+            g.update(mensual=f.mensual, interanual=f.interanual, acum_anio=f.acum_anio,
+                     acum_gobierno=cad(g["acum_gobierno"], f.mensual))
+            g["serie_mensual"].append({"fecha": mes, "valor": f.mensual})
+            for nombre, v in g.get("rubros", {}).items():
+                f = x[(g["region"], nombre)]
+                v.update(mensual=f.mensual, interanual=f.interanual, acum_gobierno=cad(v["acum_gobierno"], f.mensual))
+        P["rubros_hasta"] = mes
+        info["divisiones"] = True
+        print(f"📝 {mes}: rubros y regiones cargados desde los cuadros del informe del INDEC")
+    return datos
+
+
 def main():
     previo_txt = SALIDA.read_text(encoding="utf-8") if SALIDA.exists() else None
     try:
@@ -524,6 +575,7 @@ def main():
         if datos.get("parcial"):
             print("   (se conserva el tablero tal como estaba)")
     datos = completar_con_publicado(datos)
+    datos = completar_divisiones(datos)
 
     # Si los números no cambiaron, no se reescribe el archivo: así la Action
     # no genera un commit por día y la fecha muestra el último cambio real.
