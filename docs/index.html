@@ -10,122 +10,183 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: una sola columna de lectura (máx. 1200px). Arriba la cifra del mes,
-   después la serie y los rubros. Pocos bordes, mucho aire.
-   Tema oscuro único, elegido a propósito. */
+/* Tablero MECOPOL — tema oscuro con superficies de vidrio.
+   Una sola columna de lectura (máx. 1200px): arriba la cifra del mes, después
+   la serie, las regiones y los rubros. El color de marca (bordó) ilumina la
+   parte de arriba de la página y las superficies translúcidas lo recogen.
+   Todo lo translúcido tiene alternativa sólida más abajo. */
 :root {
   color-scheme: dark;
-  --bg:       #0e1014;
-  --panel:    #14171c;
-  --panel-hi: #1b1f26;
-  --line:     #23272f;
-  --grid:     #1f232a;
-  --fg:       #e3e5ea;
-  --fg-2:     #a3a9b6;
-  --fg-3:     #6f7685;
-  --marca:    #950b32;   /* bordó de MECOPOL (banner) */
-  --accent:   #e0527c;   /* rosa del logo, para las marcas de los gráficos */
-  --sube:     #e66767;   /* rubro que se encareció más que el promedio */
-  --baja:     #3987e5;   /* rubro que se encareció menos */
-  --good:     #3fb27f;
-  --warn:     #e0a33a;
+  --bg:        #0a0b10;
+  --panel:     #14161d;   /* sólido: lo usan los gráficos y la columna fija de la tabla */
+  --panel-hi:  #1c1f29;
+  --line:      rgba(255,255,255,.11);
+  --grid:      rgba(255,255,255,.075);
+  --fg:        #edeff4;
+  --fg-2:      #a8aebd;
+  --fg-3:      #767d8e;
+  --marca:     #950b32;   /* bordó de MECOPOL */
+  --accent:    #e85a86;   /* rosa del logo, para las marcas de los gráficos */
+  --accent-hi: #ff8bae;
+  --sube:      #ef6b6b;   /* rubro que se encareció más que el promedio */
+  --baja:      #4a95ee;   /* rubro que se encareció menos */
+  --good:      #45c08a;
+  --warn:      #e8ae45;
+  /* vidrio */
+  --vid:       rgba(255,255,255,.045);
+  --vid-hi:    rgba(255,255,255,.085);
+  --vid-line:  rgba(255,255,255,.09);
+  --desenfoque: blur(22px) saturate(140%);
+  --sombra:    0 1px 0 rgba(255,255,255,.07) inset, 0 22px 48px -26px rgba(0,0,0,.95);
   --font-ui:  "Archivo", "Helvetica Neue", Arial, sans-serif;
   --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --r: 6px;
+  --r: 16px;
+  --r-s: 10px;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
   background: var(--bg); color: var(--fg);
   font: 15px/1.55 var(--font-ui);
-  padding-inline: 16px; padding-block: 0 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 56px;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-color: #343845 transparent;
+}
+/* luz de fondo: el bordó de la marca arriba, un azul frío abajo para que el
+   vidrio tenga algo que recoger. Sin esto la translucidez no se ve. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(1500px 430px at 50% -5%, rgba(170,16,60,.30), transparent 72%),
+    radial-gradient(760px 480px at 8% 4%, rgba(192,19,69,.16), transparent 64%),
+    radial-gradient(900px 760px at 86% 82%, rgba(74,149,238,.09), transparent 64%),
+    radial-gradient(700px 520px at 4% 58%, rgba(149,11,50,.08), transparent 68%);
+}
+/* grano finísimo: evita el bandeado de los degradados grandes */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
 }
 a { color: var(--fg); text-underline-offset: 2px; }
-button:focus-visible, a:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
-.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; padding-top: 28px; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 46px; padding-top: 34px; }
+
+/* superficie de vidrio: una sola capa, nunca vidrio sobre vidrio */
+.caja, .cifra, .seg, .comp > div, .aviso, .espera {
+  background: linear-gradient(158deg, var(--vid-hi), var(--vid));
+  -webkit-backdrop-filter: var(--desenfoque); backdrop-filter: var(--desenfoque);
+  border: 1px solid var(--vid-line);
+  box-shadow: var(--sombra);
+}
 
 /* ---- banner con la identidad de MECOPOL ---- */
 .banda {
-  margin-inline: -16px; padding: 24px 16px 22px;
-  background: var(--marca); color: #fff;
-  border-bottom: 3px solid #6e0824;
+  position: relative; color: #fff;
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 28px;
+  background:
+    radial-gradient(900px 320px at 16% -40%, rgba(255,255,255,.22), transparent 68%),
+    linear-gradient(168deg, #b31042 0%, #8c0c2f 46%, #530720 100%);
+  border-bottom: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 24px 60px -30px rgba(149,11,50,.9);
 }
-.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 22px; }
+.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 24px; }
 .marca {
-  flex: none; display: block; background: #fff; border-radius: 10px; padding: 6px;
-  box-shadow: 0 1px 0 rgba(0,0,0,.25);
+  flex: none; display: block; background: #fff; border-radius: 14px; padding: 7px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.5), 0 14px 30px -14px rgba(0,0,0,.75);
 }
-.marca img { display: block; width: 92px; height: auto; }
-.banda-txt { flex: 1; min-width: 0; display: grid; gap: 10px; }
+.marca img { display: block; width: 94px; height: auto; }
+.banda-txt { flex: 1; min-width: 0; display: grid; gap: 12px; }
 .eyebrow {
-  font: 600 12px var(--font-ui); font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(255,255,255,.78); display: flex; flex-wrap: wrap; gap: 4px 14px;
+  font: 600 11px var(--font-ui); font-stretch: 82%; letter-spacing: .13em; text-transform: uppercase;
+  color: rgba(255,255,255,.74); display: flex; flex-wrap: wrap; gap: 4px 16px;
 }
+.eyebrow span:last-child { color: rgba(255,255,255,.92); }
 h1 {
-  margin: 0; font-weight: 600; font-stretch: 85%; letter-spacing: -.01em; color: #fff;
-  font-size: clamp(26px, 4vw, 42px); line-height: 1.08; text-wrap: balance;
+  margin: 0; font-weight: 600; font-stretch: 84%; letter-spacing: -.015em; color: #fff;
+  font-size: clamp(28px, 4.4vw, 46px); line-height: 1.05; text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(50,2,16,.45);
 }
-.mandato { display: grid; gap: 6px; max-width: 560px; }
+.mandato { display: grid; gap: 7px; max-width: 580px; }
 .mandato:empty { display: none; }
-.mandato .barra { height: 6px; background: rgba(0,0,0,.28); border-radius: 3px; overflow: hidden; }
-.mandato .barra i { display: block; height: 100%; background: #fff; border-radius: 3px; }
-.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: rgba(255,255,255,.75); }
+.mandato .barra { height: 7px; background: rgba(0,0,0,.32); border-radius: 4px; overflow: hidden; box-shadow: 0 1px 0 rgba(255,255,255,.1); }
+.mandato .barra i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, rgba(255,255,255,.72), #fff); box-shadow: 0 0 14px rgba(255,255,255,.45); }
+.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: rgba(255,255,255,.72); }
 .mandato .txt b { color: #fff; font-weight: 500; }
-.nav { display: flex; gap: 4px; flex-wrap: wrap; }
-.nav a { font-size: 13px; text-decoration: none; color: rgba(255,255,255,.8); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,.25); }
-.nav a[aria-current="page"] { background: rgba(0,0,0,.25); color: #fff; border-color: transparent; }
-.nav a:hover { color: #fff; border-color: rgba(255,255,255,.6); }
 @media (max-width: 560px) {
-  .banda-in { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .banda-in { flex-direction: column; align-items: flex-start; gap: 16px; }
   .marca img { width: 72px; }
 }
 
+.aviso, .espera { border-radius: var(--r-s); font-size: 13px; }
 .aviso {
-  padding: 9px 13px; border-radius: var(--r); font-size: 13px;
-  background: #221d10; color: #e9cf8f; border: 1px solid #4d3f19;
+  padding: 11px 14px; color: #f2dcaa;
+  background: linear-gradient(158deg, rgba(232,174,69,.14), rgba(232,174,69,.05));
+  border-color: rgba(232,174,69,.26);
 }
+.aviso a { color: inherit; }
 
 /* ---- cifras ---- */
-.cifras {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+.cifras { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 12px; }
+.cifra { position: relative; overflow: hidden; border-radius: var(--r); padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.cifra.hero {
+  background: linear-gradient(158deg, rgba(232,90,134,.16), rgba(149,11,50,.09) 54%, rgba(255,255,255,.035));
+  border-color: rgba(232,90,134,.26);
 }
-.cifra { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.cifra + .cifra { border-left: 1px solid var(--line); }
+.cifra.hero::after {
+  content: ""; position: absolute; width: 220px; height: 220px; right: -90px; top: -120px; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,139,174,.30), transparent 70%);
+}
 .cifra h2 { margin: 0; font-size: 13px; font-weight: 500; color: var(--fg-2); }
-.cifra .valor { font: 600 40px/1.05 var(--font-num); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.cifra .valor small { font-size: 20px; color: var(--fg-3); margin-left: 2px; }
+.cifra.hero h2 { color: #f6c9d8; }
+.cifra .valor { font: 600 clamp(32px, 3.1vw, 42px)/1 var(--font-num); letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+.cifra.hero .valor { font-size: clamp(40px, 4.3vw, 58px); color: #fff; text-shadow: 0 0 38px rgba(232,90,134,.42); }
+.cifra .valor small { font-size: .5em; color: var(--fg-3); margin-left: 3px; letter-spacing: 0; }
+.cifra.hero .valor small { color: rgba(255,255,255,.55); }
 .cifra .pie { font-size: 12px; color: var(--fg-3); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 3px; font: 500 12px var(--font-num); border: 1px solid currentColor; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 999px; font: 500 12px var(--font-num); border: 1px solid currentColor; background: rgba(255,255,255,.05); }
 .chip.baja { color: var(--good); } .chip.sube { color: var(--warn); } .chip.igual { color: var(--fg-2); }
-.spark { width: 100%; height: 38px; }
-@media (max-width: 900px) {
+.spark { width: 100%; height: 44px; margin-top: auto; }
+.spark:empty { display: none; }
+@media (max-width: 1040px) {
   .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cifra:nth-child(3) { border-left: 0; }
-  .cifra:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .cifra.hero .valor { font-size: 48px; }
 }
-@media (max-width: 480px) {
-  .cifras { grid-template-columns: 1fr; }
-  .cifra + .cifra { border-left: 0; border-top: 1px solid var(--line); }
-  .cifra .valor { font-size: 34px; }
+/* en el teléfono la cifra del mes ocupa el ancho y las otras van de a dos */
+@media (max-width: 560px) {
+  .cifras { gap: 10px; }
+  .cifra { padding: 15px 15px 13px; gap: 8px; }
+  .cifra:first-child, .cifra:last-child { grid-column: 1 / -1; }
+  .cifra .valor { font-size: 27px; }
+  .cifra.hero .valor { font-size: 46px; }
+  .cifra .pie { font-size: 11px; }
+  .spark { height: 36px; }
 }
 
 /* ---- secciones ---- */
-.sec { display: grid; gap: 14px; }
-.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; }
+.sec { display: grid; gap: 16px; }
+.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; }
 .sec-cab > div { flex: 1 1 320px; min-width: 0; }
-.sec h2 { margin: 0; font-size: 20px; font-weight: 600; font-stretch: 90%; text-wrap: balance; }
-.sec p.sub { margin: 4px 0 0; color: var(--fg-2); font-size: 14px; max-width: 68ch; }
-.caja { background: var(--panel); border-radius: var(--r); padding: 16px; min-width: 0; }
-.chart { width: 100%; height: 360px; }
+.sec h2 { margin: 0; font-size: 21px; font-weight: 600; font-stretch: 88%; letter-spacing: -.01em; text-wrap: balance; }
+.sec p.sub { margin: 5px 0 0; color: var(--fg-2); font-size: 14px; max-width: 68ch; }
+.caja { border-radius: var(--r); padding: 18px; min-width: 0; }
+.chart { width: 100%; height: 370px; }
 @media (max-width: 560px) { .chart { height: 300px; } }
 
-.seg { display: inline-flex; background: var(--panel); border-radius: var(--r); padding: 3px; gap: 2px; }
+.seg { display: inline-flex; border-radius: 12px; padding: 4px; gap: 2px; }
 .seg button {
   font: 500 13px var(--font-ui); color: var(--fg-2); background: transparent; border: 0;
-  padding: 5px 12px; border-radius: 4px; cursor: pointer;
+  padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: color .15s, background .15s;
 }
-.seg button[aria-pressed="true"] { background: var(--panel-hi); color: var(--fg); }
+.seg button[aria-pressed="true"] {
+  background: linear-gradient(180deg, rgba(255,255,255,.17), rgba(255,255,255,.07));
+  color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,.16) inset, 0 6px 14px -8px rgba(0,0,0,.9);
+}
 .seg button:hover { color: var(--fg); }
 
 .lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 72ch; }
@@ -134,31 +195,32 @@ h1 {
 /* ---- tabla de rubros ---- */
 .tabla-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
-th, td { padding: 9px 10px; text-align: right; white-space: nowrap; }
-th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+th, td { padding: 10px; text-align: right; white-space: nowrap; }
+th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
 td { font-family: var(--font-num); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--grid); }
 th:first-child, td:first-child { text-align: left; }
 td:first-child { font-family: var(--font-ui); color: var(--fg); }
 tr:last-child td { border-bottom: 0; }
-tbody tr:hover td { background: var(--panel-hi); }
+tbody tr:hover td { background: rgba(255,255,255,.04); }
 th.rel, td.rel { width: 38%; text-align: center; }
 .div { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; position: relative; height: 18px; }
-.div::after { content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px; background: var(--fg-3); }
+.div::after { content: ""; position: absolute; left: 50%; top: -5px; bottom: -5px; width: 1px; background: rgba(255,255,255,.18); }
 .div .izq, .div .der { display: flex; align-items: center; gap: 6px; height: 100%; }
 .div .izq { justify-content: flex-end; }
 .div .pista { flex: 1; display: flex; height: 10px; }
 .div .izq .pista { justify-content: flex-end; }
 .div i { display: block; height: 10px; min-width: 2px; }
-.div .izq i { background: var(--baja); border-radius: 2px 0 0 2px; }
-.div .der i { background: var(--sube); border-radius: 0 2px 2px 0; }
+.div .izq i { background: linear-gradient(90deg, var(--baja), rgba(74,149,238,.5)); border-radius: 3px 0 0 3px; box-shadow: 0 0 14px -3px rgba(74,149,238,.65); }
+.div .der i { background: linear-gradient(90deg, rgba(239,107,107,.5), var(--sube)); border-radius: 0 3px 3px 0; box-shadow: 0 0 14px -3px rgba(239,107,107,.65); }
 .div span { flex: none; width: 52px; font-size: 12px; color: var(--fg-2); }
 .div .der span { text-align: left; } .div .izq span { text-align: right; }
+
 /* ---- canasta de hoy ---- */
-.comp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.comp > div { background: var(--panel); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.comp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.comp > div { border-radius: var(--r-s); padding: 14px 16px; display: grid; gap: 5px; min-width: 0; }
 .comp h3 { margin: 0; font-size: 12px; font-weight: 500; color: var(--fg-2); }
 .comp .par { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
-.comp .par b { font-size: 22px; font-weight: 600; color: var(--accent); }
+.comp .par b { font-size: 24px; font-weight: 600; color: var(--accent-hi); letter-spacing: -.02em; }
 .comp .par span { font-size: 13px; color: var(--fg-3); }
 .comp .dif { font: 500 12px var(--font-num); color: var(--fg-2); }
 @media (max-width: 900px) { .comp { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -170,8 +232,9 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .pond table { min-width: 0; font-size: 13px; }
 .pond th, .pond td { padding: 8px 6px; }
 .pond th { white-space: normal; }
+
 /* ---- regiones ---- */
-.reg-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 10px; align-items: stretch; }
+.reg-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 12px; align-items: stretch; }
 @media (max-width: 900px) { .reg-grid { grid-template-columns: 1fr; } }
 .reg-der { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
 .reg-der .lectura { padding: 0 6px 6px; max-width: none; }
@@ -182,17 +245,17 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .reg th, .reg td { padding: 8px 6px; }
 .reg th { white-space: normal; }
 .reg td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
-.reg tr.activa td { background: var(--panel-hi); }
+.reg tr.activa td { background: rgba(255,255,255,.05); }
 @media (min-width: 901px) { .reg td { padding: 13px 6px; } }
 .calor table { min-width: 720px; font-size: 13px; }
-.calor th, .calor td { padding: 8px 8px; }
+.calor th, .calor td { padding: 8px; }
 .calor td { text-align: center; }
 .calor td:first-child { text-align: left; }
 .calor th:not(:first-child) { text-align: center; }
 .calor td.nac { color: var(--fg-2); border-right: 1px solid var(--line); }
-.calor td.cel { color: #fff; }
+.calor td.cel { color: #fff; border-radius: 4px; }
 .calor td.max { font-weight: 600; }
-.calor th:first-child, .calor td:first-child { position: sticky; left: 0; background: var(--panel); z-index: 1; }
+.calor th:first-child, .calor td:first-child { position: sticky; left: 0; background: #15171e; z-index: 1; }
 .desliza { display: none; margin: 0 0 8px; font-size: 12px; color: var(--fg-3); }
 @media (max-width: 700px) {
   .desliza { display: block; }
@@ -200,22 +263,36 @@ th.rel, td.rel { width: 38%; text-align: center; }
   .calor th, .calor td { padding: 7px 5px; }
   .calor td:first-child { max-width: 118px; white-space: normal; line-height: 1.25; }
 }
-.espera { padding: 8px 12px; border-radius: var(--r); font-size: 13px; color: var(--fg-2); border: 1px dashed #4d3f19; background: rgba(224,163,58,.06); }
+.espera {
+  padding: 10px 14px; color: var(--fg-2);
+  background: linear-gradient(158deg, rgba(232,174,69,.10), rgba(232,174,69,.03));
+  border-color: rgba(232,174,69,.22);
+}
 .espera b { color: var(--fg); font-weight: 600; }
-.aviso a { color: inherit; }
 .nota-reg { margin: 0; font-size: 12px; color: var(--fg-3); max-width: 80ch; }
-.dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
+.dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; }
 @media (max-width: 900px) { .dos-col { grid-template-columns: 1fr; } }
 .leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
-.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
 
 /* ---- pie ---- */
-.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 32px; border-top: 1px solid var(--line); padding-top: 22px; }
+.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px 32px; border-top: 1px solid var(--line); padding-top: 24px; }
 .notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
 .notas p { margin: 0; font-size: 13px; color: var(--fg-2); max-width: 62ch; }
-code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi); padding: 1px 4px; border-radius: 3px; overflow-wrap: anywhere; }
+code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,255,.07); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
 .estado { padding: 60px 0; color: var(--fg-2); }
 
+/* ---- alternativas sin vidrio ---- */
+@media (max-width: 760px) { :root { --desenfoque: blur(12px) saturate(130%); } }
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  .caja, .cifra, .seg, .comp > div, .aviso, .espera { background: var(--panel); }
+  .cifra.hero { background: #241019; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .caja, .cifra, .seg, .comp > div { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--panel); }
+  .cifra.hero { background: #241019; }
+  body::before { opacity: .45; }
+}
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -243,6 +320,11 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
     panel: css('--panel'), accent: css('--accent'), num: css('--font-num'), ui: css('--font-ui') };
+  const VIDRIO = 'border-radius:12px;padding:9px 12px;backdrop-filter:blur(16px) saturate(140%);'
+    + '-webkit-backdrop-filter:blur(16px) saturate(140%);box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 16px 36px -18px rgba(0,0,0,.95);';
+  const RGB_AC = '232,90,134', RGB_N = '150,160,178';
+  const deg = (rgb, o = .30) => new echarts.graphic.LinearGradient(0, 0, 0, 1,
+    [{ offset: 0, color: `rgba(${rgb},${o})` }, { offset: 1, color: `rgba(${rgb},0)` }]);
   const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
   const pct = (v, d = 1, signo = false) => v == null ? '—' : (signo && v > 0 ? '+' : '') + nf(v, d) + '%';
   const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -255,9 +337,9 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
     'Equipamiento y mantenimiento del hogar': 'Equipamiento del hogar', 'Bienes y servicios varios': 'Bienes y servicios varios',
   };
   const tip = () => ({
-    trigger: 'axis', backgroundColor: '#1d2129', borderColor: T.line, borderWidth: 1,
-    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: 'border-radius:6px;',
-    axisPointer: { type: 'line', lineStyle: { color: T.fg3, width: 1 } },
+    trigger: 'axis', backgroundColor: 'rgba(18,20,27,.82)', borderColor: 'rgba(255,255,255,.14)', borderWidth: 1,
+    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: VIDRIO,
+    axisPointer: { type: 'line', lineStyle: { color: 'rgba(255,255,255,.28)', width: 1 } },
   });
   const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
     axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true }, splitLine: { show: false } }, extra);
@@ -304,16 +386,18 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras la API de datos.gob.ar no lo cargue, ${infR ? `los rubros y las regiones salen de los cuadros del informe y la canasta 2017/18 muestra ${largo(MS)}` : `los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}`}.</div>` : ''}
 
       <section class="cifras" aria-label="Cifras de ${largo(M)}">
-        <div class="cifra"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
+        <div class="cifra hero"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
           <div class="pie">${chip(k.mensual, k.mensual_previo)}<span>mes anterior ${pct(k.mensual_previo, 2)}</span></div>
           <div class="spark" id="sp1" role="img" aria-label="Inflación mensual, últimos 12 meses"></div></div>
         <div class="cifra"><h2>Interanual</h2><div class="valor">${nf(k.interanual, 1)}<small>%</small></div>
           <div class="pie">${chip(k.interanual, k.interanual_previo)}<span>vs. ${etq(shift(M, -12))}</span></div>
           <div class="spark" id="sp2" role="img" aria-label="Inflación interanual, últimos 12 meses"></div></div>
         <div class="cifra"><h2>Acumulada ${M.slice(0, 4)}</h2><div class="valor">${nf(k.acum_anio, 1)}<small>%</small></div>
-          <div class="pie"><span>desde dic-${String(+M.slice(0, 4) - 1).slice(2)}</span></div></div>
+          <div class="pie"><span>desde dic-${String(+M.slice(0, 4) - 1).slice(2)}</span></div>
+          <div class="spark" id="sp3" role="img" aria-label="Acumulada del año, mes a mes"></div></div>
         <div class="cifra"><h2>Acumulada del gobierno</h2><div class="valor">${nf(k.acum_gobierno, 1)}<small>%</small></div>
-          <div class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></div></div>
+          <div class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></div>
+          <div class="spark" id="sp4" role="img" aria-label="Acumulada del gobierno, mes a mes"></div></div>
       </section>
 
       <section class="sec">
@@ -407,16 +491,32 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
 
     // ---- sparklines ----
     const ult = d.serie.slice(-12);
-    const spark = (id, campo, dec) => nuevo(document.getElementById(id), {
-      grid: { left: 0, right: 4, top: 4, bottom: 2 },
-      tooltip: Object.assign(tip(), { axisPointer: { type: 'none' }, formatter: p => `${etq(p[0].name)}: <b>${pct(p[0].value, dec)}</b>` }),
-      xAxis: { type: 'category', data: ult.map(x => x.fecha), show: false, boundaryGap: false },
-      yAxis: { type: 'value', show: false, scale: true },
-      series: [{ type: 'line', data: ult.map(x => x[campo]), symbol: 'none', lineStyle: { width: 1.5, color: T.fg2 },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(163,169,182,.22)' }, { offset: 1, color: 'rgba(163,169,182,0)' }]) },
-        markPoint: { symbol: 'circle', symbolSize: 6, itemStyle: { color: T.fg }, label: { show: false }, data: [{ coord: [ult.length - 1, ult[ult.length - 1][campo]] }] } }],
-    });
-    spark('sp1', 'mensual', 2); spark('sp2', 'interanual', 1);
+    const spark = (id, pares, dec, rgb) => {
+      const el = document.getElementById(id);
+      if (!el || pares.length < 3) return;
+      nuevo(el, {
+        grid: { left: 1, right: 8, top: 6, bottom: 3 },
+        tooltip: Object.assign(tip(), { axisPointer: { type: 'none' }, formatter: p => `${etq(p[0].name)}: <b>${pct(p[0].value, dec)}</b>` }),
+        xAxis: { type: 'category', data: pares.map(p => p[0]), show: false, boundaryGap: false },
+        yAxis: { type: 'value', show: false, scale: true },
+        series: [{ type: 'line', data: pares.map(p => p[1]), symbol: 'none', smooth: 0.22,
+          lineStyle: { width: 1.8, color: `rgb(${rgb})`, shadowColor: `rgba(${rgb},.5)`, shadowBlur: 10 },
+          areaStyle: { color: deg(rgb, 0.28) },
+          markPoint: { symbol: 'circle', symbolSize: 6, label: { show: false },
+            itemStyle: { color: '#fff', borderColor: `rgb(${rgb})`, borderWidth: 2, shadowColor: `rgba(${rgb},.9)`, shadowBlur: 10 },
+            data: [{ coord: [pares.length - 1, pares[pares.length - 1][1]] }] } }],
+      });
+    };
+    // acumulada del año en curso, encadenando las variaciones mensuales
+    const anio = M.slice(0, 4);
+    let acc = 1;
+    const ytd = d.serie.filter(x => x.fecha.slice(0, 4) === anio)
+      .map(x => { acc *= 1 + x.mensual / 100; return [x.fecha, +((acc - 1) * 100).toFixed(2)]; });
+    if (ytd.length) ytd[ytd.length - 1][1] = k.acum_anio;
+    spark('sp1', ult.map(x => [x.fecha, x.mensual]), 2, RGB_AC);
+    spark('sp2', ult.map(x => [x.fecha, x.interanual]), 1, RGB_N);
+    spark('sp3', ytd, 1, RGB_N);
+    spark('sp4', d.serie.map(x => [x.fecha, x.acumulada]), 0, RGB_N);
 
     // ---- serie ----
     const xs = d.serie.map(x => x.fecha);
@@ -425,20 +525,24 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
       const ys = d.serie.map(x => x[medida]), dec = medida === 'mensual' ? 2 : 1, ultI = ys.length - 1;
       const barras = medida === 'mensual';
       const serie = barras ? {
-        type: 'bar', data: ys.map((v, i) => ({ value: v, itemStyle: { color: i === ultI ? T.accent : '#59606e', borderRadius: [3, 3, 0, 0] } })),
+        type: 'bar', data: ys.map((v, i) => ({ value: v, itemStyle: i === ultI
+          ? { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#ff8bae' }, { offset: 1, color: 'rgba(232,90,134,.55)' }]),
+              borderRadius: [4, 4, 0, 0], shadowColor: 'rgba(232,90,134,.55)', shadowBlur: 18 }
+          : { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(198,206,222,.72)' }, { offset: 1, color: 'rgba(198,206,222,.32)' }]),
+              borderRadius: [4, 4, 0, 0] } })),
         barWidth: '62%',
         label: { show: true, position: 'top', fontFamily: T.num, fontSize: 11, color: T.fg2,
           formatter: p => (p.dataIndex === 0 || p.dataIndex === ultI) ? nf(p.value, 1) : '' },
       } : {
-        type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2.5, color: T.accent },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(224,82,124,.22)' }, { offset: 1, color: 'rgba(224,82,124,0)' }]) },
-        markPoint: { symbol: 'circle', symbolSize: 8, itemStyle: { color: T.accent, borderColor: T.panel, borderWidth: 2 },
+        type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2.8, color: T.accent, shadowColor: 'rgba(232,90,134,.5)', shadowBlur: 14 },
+        areaStyle: { color: deg(RGB_AC, 0.3) },
+        markPoint: { symbol: 'circle', symbolSize: 9, itemStyle: { color: '#fff', borderColor: T.accent, borderWidth: 2.5, shadowColor: 'rgba(232,90,134,.9)', shadowBlur: 12 },
           label: { show: true, position: 'top', color: T.fg, fontFamily: T.num, fontSize: 11, formatter: () => pct(ys[ultI], dec) },
           data: [{ coord: [ultI, ys[ultI]] }] },
       };
       ch.setOption({
         grid: { left: 4, right: 24, top: 28, bottom: 4, containLabel: true },
-        tooltip: Object.assign(tip(), barras ? { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.04)' } } } : {},
+        tooltip: Object.assign(tip(), barras ? { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.055)' } } } : {},
           { formatter: p => `${largo(p[0].name)}<br>${medida[0].toUpperCase() + medida.slice(1)}: <b>${pct(p[0].value, dec)}</b>` }),
         xAxis: ejeX({ type: 'category', data: xs, boundaryGap: barras, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
         yAxis: ejeY({}),
@@ -464,8 +568,8 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
           xAxis: ejeX({ type: 'category', data: RS.map(x => x.fecha), boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
           yAxis: ejeY({}),
           series: [
-            { name: 'IPC oficial', type: 'line', symbol: 'none', data: RS.map(x => x.oficial[med]), lineStyle: { width: 2, color: T.fg2 } },
-            { name: 'Canasta 2017/18', type: 'line', symbol: 'none', data: RS.map(x => x.reponderado[med]), lineStyle: { width: 2.5, color: T.accent },
+            { name: 'IPC oficial', type: 'line', symbol: 'none', data: RS.map(x => x.oficial[med]), lineStyle: { width: 1.8, color: T.fg2 } },
+            { name: 'Canasta 2017/18', type: 'line', symbol: 'none', data: RS.map(x => x.reponderado[med]), lineStyle: { width: 2.8, color: T.accent, shadowColor: 'rgba(232,90,134,.5)', shadowBlur: 14 },
               endLabel: { show: true, color: T.fg, fontFamily: T.num, fontSize: 11, formatter: p => pct(p.value, dec) } },
           ],
         }, { replaceMerge: ['series'] });
@@ -491,7 +595,7 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
           const ok = vals.filter(v => v != null), mn = Math.min(...ok), mx = Math.max(...ok);
           const cel = v => { if (v == null) return '<td class="cel">—</td>';
             const t = mx > mn ? (v - mn) / (mx - mn) : 0.5, a = (0.12 + 0.78 * t).toFixed(2);
-            return `<td class="cel${v === mx ? ' max' : ''}" style="background:rgba(224,82,124,${a})">${pct(v, dec)}</td>`; };
+            return `<td class="cel${v === mx ? ' max' : ''}" style="background:rgba(232,90,134,${a})">${pct(v, dec)}</td>`; };
           const n = nacRub[rub] ? nacRub[rub][med] : null;
           return `<tr><td>${corto[rub] || rub}</td><td class="nac">${pct(n, dec)}</td>${vals.map(cel).join('')}</tr>`;
         }).join('');
@@ -515,14 +619,14 @@ code { font-family: var(--font-num); font-size: 12px; background: var(--panel-hi
           document.getElementById('lectura-reg').innerHTML = `${queMide}, la inflación más alta fue la de <b>${alto.region}</b>, con <b>${pct(alto[med], dec)}</b>${masSubio(alto)}, y la más baja la de <b>${bajo.region}</b>, con <b>${pct(bajo[med], dec)}</b>. La diferencia entre las dos es de ${nf(alto[med] - bajo[med], dec === 2 ? 2 : 1)} puntos.`;
           calor(med, dec);
           ch.setOption({
-            tooltip: { trigger: 'item', backgroundColor: '#1d2129', borderColor: T.line, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
+            tooltip: { trigger: 'item', backgroundColor: 'rgba(18,20,27,.82)', borderColor: 'rgba(255,255,255,.14)', extraCssText: VIDRIO, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
               formatter: p => { const r = RG.find(x => x.region === p.name); if (!r) return '';
                 return `<b>${r.region}</b><br>${etq(MR)}: <b>${pct(r.mensual, dM)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
             visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
               text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
-              inRange: { color: ['#f7b3c8', '#e0527c', '#a3264f', '#5a0d29'] }, seriesIndex: 0 },
+              inRange: { color: ['#ffc9da', '#ff8bae', '#e85a86', '#9e1f47'] }, seriesIndex: 0 },
             geo: { map: 'regiones', roam: false, aspectScale: 0.82, layoutCenter: ['50%', window.innerWidth < 560 ? '48%' : '46%'], layoutSize: window.innerWidth < 560 ? '134%' : '86%',
-              itemStyle: { areaColor: '#20242c', borderColor: T.panel, borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
+              itemStyle: { areaColor: 'rgba(255,255,255,.055)', borderColor: 'rgba(10,11,16,.75)', borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
             series: [
               { type: 'map', geoIndex: 0, data: RG.map(r => ({ name: r.region, value: r[med] })) },
               { type: 'lines', coordinateSystem: 'geo', silent: true, symbol: 'none', lineStyle: { color: T.fg2, width: 1 },
