@@ -383,7 +383,7 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
     app.innerHTML = `
       ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
 
-      ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras la API de datos.gob.ar no lo cargue, ${infR ? `los rubros y las regiones salen de los cuadros del informe y la canasta 2017/18 muestra ${largo(MS)}` : `los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}`}.</div>` : ''}
+      ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras las APIs no lo carguen, ${infR ? `los rubros y las regiones salen de los cuadros del informe y la canasta 2017/18 muestra ${largo(MS)}` : `los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}`}.</div>` : ''}
 
       <section class="cifras" aria-label="Cifras de ${largo(M)}">
         <div class="cifra hero"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
@@ -483,7 +483,7 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
       </section>` : ''}
 
       <footer class="notas">
-        <div><h3>Fuente</h3><p>IPC Nacional del INDEC (base diciembre 2016 = 100), vía la API de Series de Tiempo de datos.gob.ar. El tablero se revisa todos los días; el INDEC publica a mediados de cada mes.</p></div>
+        <div><h3>Fuente</h3><p>IPC Nacional del INDEC (base diciembre 2016 = 100), desde la API del INDEC (api.indec.gob.ar), con la API de Series de Tiempo de datos.gob.ar de respaldo y para la serie larga. El tablero se revisa todos los días; el INDEC publica a mediados de cada mes.</p></div>
         <div><h3>Punto de partida</h3><p>El gobierno asumió el 10 de diciembre de 2023, así que la base es noviembre de 2023. Eso incluye diciembre (${pct(d.hitos.pico.mensual, 1)}), el mes de la devaluación.</p></div>
         ${d.reponderado ? `<div><h3>Canasta 2017/18</h3><p>Se toma la canasta de la ENGHo 2017/18 por rubro y se calcula cuánto cuesta en cada mes con los índices de cada división del IPC. Al índice oficial se le aplica solo esa diferencia de ponderaciones. El INDEC tenía previsto publicar su IPC con estas ponderaciones desde enero de 2026 y lo postergó; su índice nuevo también cambia productos y regiones, así que puede dar distinto.</p></div>` : ''}
         <div><h3>Series</h3><p><code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales del IPC.</p></div>

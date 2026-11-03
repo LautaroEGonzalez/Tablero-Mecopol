@@ -38,6 +38,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Bajar datos y calcular indicadores
+        env:
+          INDEC_API_TOKEN: ${{ secrets.INDEC_API_TOKEN }}   # API del INDEC (secreto del repositorio)
         run: python scripts/actualizar.py
 
       - name: Guardar cambios (solo si hay datos nuevos)

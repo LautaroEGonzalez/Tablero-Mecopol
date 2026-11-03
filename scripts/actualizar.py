@@ -2,9 +2,15 @@
 MECOPOL · Tablero de precios — actualización de datos
 =====================================================
 
-Baja las series del IPC del INDEC desde la API de Series de Tiempo
-(apis.datos.gob.ar), calcula los indicadores del gobierno actual y los
-guarda en docs/data/dashboard.json, que es lo que lee la página.
+Baja las series del IPC del INDEC, calcula los indicadores del gobierno actual
+y los guarda en docs/data/dashboard.json, que es lo que lee la página.
+
+Fuentes, en orden:
+  1. API del INDEC (api.indec.gob.ar, beta desde nov-2026): el dato sale el mismo día
+     del informe. Pide token: se lee de la variable de entorno INDEC_API_TOKEN (en la
+     Action es un secreto del repositorio). Nunca se imprime ni se guarda.
+  2. API de Series de Tiempo (apis.datos.gob.ar): misma base dic-2016, con la historia
+     larga, pero se atrasa días o semanas. Se usa para lo que la del INDEC no tenga.
 
 Lo corre la GitHub Action todos los días. También se puede correr a mano:
     pip install -r requirements.txt
@@ -16,6 +22,7 @@ mostrando los últimos datos buenos y GitHub avisa por mail.
 """
 
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -53,6 +60,11 @@ MESES_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct"
 SESION = requests.Session()
 SESION.headers["User-Agent"] = "mecopol-dashboard (github actions)"
 
+INDEC_API = "https://api.indec.gob.ar/v1/"          # la barra final es obligatoria
+INDEC_TOKEN = os.environ.get("INDEC_API_TOKEN", "").strip()
+MAPA_INDEC = {}    # id de datos.gob.ar -> (región, descripción) en la API del INDEC
+_INDEC = None      # (región, descripción) -> serie de índices (base dic-2016 = 100)
+
 
 # ------------------------------------------------------------------
 # Acceso a la API
@@ -71,18 +83,97 @@ def pedir(url, params, intentos=4):
     raise RuntimeError(f"La API no respondió: {url} {params}")
 
 
+def indec_ipc():
+    """Índices del IPC (nivel general y 12 divisiones, 7 regiones) desde la API del INDEC.
+
+    Devuelve {(región, descripción): serie mensual}. Si no hay token o la API falla,
+    devuelve {} y todo sale de datos.gob.ar como antes.
+    """
+    global _INDEC
+    if _INDEC is not None:
+        return _INDEC
+    _INDEC = {}
+    if not INDEC_TOKEN:
+        print("ℹ️ Sin INDEC_API_TOKEN: se usa solo datos.gob.ar")
+        return _INDEC
+    cab = {"Authorization": f"Bearer {INDEC_TOKEN}", "Accept": "application/json"}
+    filas, offset = [], 0
+    try:
+        while True:
+            params = {"tipo_de_indicador": "eq.Indice", "nivel": 'in.("Nivel General","División")',
+                      "select": "periodo,region,descripcion,valor",
+                      "order": "periodo.asc,region.asc,codigo.asc", "limit": 1000, "offset": offset}
+            for i in range(4):
+                try:
+                    r = SESION.get(INDEC_API + "ipc_nacional", params=params, headers=cab, timeout=60)
+                except requests.RequestException as e:
+                    print(f"  ⚠️ API del INDEC: {e.__class__.__name__} (intento {i + 1})")
+                    time.sleep(5 * (i + 1))
+                    continue
+                if r.status_code == 200:
+                    break
+                print(f"  ⚠️ API del INDEC: HTTP {r.status_code} (intento {i + 1}) {r.text[:200]}")
+                if r.status_code in (401, 403):
+                    raise RuntimeError("token rechazado: revisar el secreto INDEC_API_TOKEN")
+                time.sleep(5 * (i + 1))
+            else:
+                raise RuntimeError("no respondió")
+            pagina = r.json()
+            filas += pagina
+            if len(pagina) < 1000:
+                break
+            offset += 1000
+    except (RuntimeError, ValueError) as e:
+        print(f"::warning::API del INDEC: {e}. Se usa datos.gob.ar.")
+        return _INDEC
+    num = lambda v: float(str(v).replace(".", "").replace(",", ".")) if isinstance(v, str) and "," in v else (
+        float(v) if v not in (None, "") else np.nan)
+    df = pd.DataFrame(filas)
+    if df.empty:
+        print("::warning::API del INDEC: no devolvió filas del IPC. Se usa datos.gob.ar.")
+        return _INDEC
+    df["fecha"] = pd.to_datetime(df["periodo"].astype(str) + "01", format="%Y%m%d")
+    df["valor"] = df["valor"].map(num)
+    for (reg, desc), g in df.groupby(["region", "descripcion"]):
+        _INDEC[(reg, desc)] = g.set_index("fecha")["valor"].sort_index()
+    print(f"🆕 API del INDEC: {len(df)} índices, {len(_INDEC)} series, "
+          f"de {etiqueta(df['fecha'].min())} a {etiqueta(df['fecha'].max())}")
+    return _INDEC
+
+
 def traer(ids, desde, hasta, sin_cache=False):
-    """Descarga series (máx. 40 por consulta) y devuelve un DataFrame mensual."""
-    partes = []
-    for i in range(0, len(ids), 40):
-        lote = ids[i:i + 40]
-        params = {"ids": ",".join(lote), "start_date": desde, "end_date": hasta, "limit": 1000}
-        if sin_cache:   # parámetro de más para saltear respuestas guardadas en caché
-            params["nocache"] = int(time.time())
-        j = pedir(API, params)
-        partes.append(pd.DataFrame(j["data"], columns=["fecha"] + lote).set_index("fecha"))
-    df = pd.concat(partes, axis=1).apply(pd.to_numeric, errors="coerce")
-    df.index = pd.to_datetime(df.index)
+    """Descarga series y devuelve un DataFrame mensual.
+
+    Base: datos.gob.ar (máx. 40 series por consulta). Encima, para las series que tienen
+    equivalente en la API del INDEC (MAPA_INDEC), se usan los valores del INDEC: misma base
+    dic-2016, pero al día. Si datos.gob.ar no responde y todas las series están en la API
+    del INDEC, alcanza con esa.
+    """
+    I = indec_ipc() if any(c in MAPA_INDEC for c in ids) else {}
+    try:
+        partes = []
+        for i in range(0, len(ids), 40):
+            lote = ids[i:i + 40]
+            params = {"ids": ",".join(lote), "start_date": desde, "end_date": hasta, "limit": 1000}
+            if sin_cache:   # parámetro de más para saltear respuestas guardadas en caché
+                params["nocache"] = int(time.time())
+            j = pedir(API, params)
+            partes.append(pd.DataFrame(j["data"], columns=["fecha"] + lote).set_index("fecha"))
+        df = pd.concat(partes, axis=1).apply(pd.to_numeric, errors="coerce")
+        df.index = pd.to_datetime(df.index)
+    except RuntimeError:
+        if not I or not all(MAPA_INDEC.get(c) in I for c in ids):
+            raise
+        print("  ⚠️ datos.gob.ar no respondió: se usa solo la API del INDEC")
+        df = pd.DataFrame(columns=ids, dtype=float)
+    if I:
+        for c in ids:
+            s = I.get(MAPA_INDEC.get(c))
+            if s is None:
+                continue
+            s = s.loc[pd.Timestamp(desde):pd.Timestamp(hasta)]
+            df = df.reindex(df.index.union(s.index))
+            df[c] = s.reindex(df.index).combine_first(df[c])
     return df.sort_index()
 
 
@@ -297,6 +388,7 @@ def regiones(inicio, mes):
         print(f"   {'✅' if fid else '❌'} región {reg}: {fid}")
         if fid:
             ids[reg] = fid
+            MAPA_INDEC[fid] = (reg, "Nivel general")
     if len(ids) < len(REGIONES_IPC):
         print("   ⚠️ faltan regiones: el mapa queda con los datos anteriores")
         return None
@@ -320,6 +412,7 @@ def regiones(inicio, mes):
             fid = CONFIG.get("ids_rubros_region", {}).get(k) or previo.get(k) or buscar_rubro_region(nombre, clave, reg)
             if fid:
                 ids_rub[k] = fid
+                MAPA_INDEC[fid] = (reg, nombre)
     print(f"   rubros por región: {len(ids_rub)} de {len(REGIONES_IPC) * len(DIVISIONES)} series")
     rub = traer(list(ids_rub.values()), ym(inicio - un_anio) + "-01", ym(mes) + "-01") if ids_rub else pd.DataFrame()
     if ids_rub:
@@ -360,6 +453,7 @@ def calcular():
     un_mes, un_anio = pd.DateOffset(months=1), pd.DateOffset(months=12)
 
     # 1. Nivel general --------------------------------------------------
+    MAPA_INDEC[IPC_NAC] = ("Nacional", "Nivel general")
     print("📥 IPC nacional, nivel general")
     desde = ym(inicio - pd.DateOffset(months=14)) + "-01"
     # El día que el INDEC publica, la API a veces devuelve la serie a medio cargar
@@ -407,6 +501,7 @@ def calcular():
         print(f"   {'✅' if fid else '❌'} {nombre}: {fid}")
         if fid:
             ids_div[nombre] = fid
+            MAPA_INDEC[fid] = ("Nacional", nombre)
     if len(ids_div) < len(DIVISIONES):
         faltan = sorted(set(DIVISIONES) - set(ids_div))
         raise RuntimeError(f"Faltan rubros: {faltan}. Cargar sus ids en config.json → ids_divisiones")
@@ -463,7 +558,8 @@ def calcular():
         "rubros": rubros,
         "reponderado": reponderado,
         "regiones": por_region,
-        "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div},
+        "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div,
+                    "api": "INDEC (api.indec.gob.ar) y datos.gob.ar" if _INDEC else "datos.gob.ar"},
     }
 
     return datos
