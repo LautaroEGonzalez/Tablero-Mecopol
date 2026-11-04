@@ -450,7 +450,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
           <p class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></p>
           <div class="spark" id="sp4" role="img" aria-label="Acumulada del gobierno, mes a mes"></div></div>
         ${d.reponderado ? `<div class="cifra est"><h3>Con la canasta 2017/18</h3><div class="valor">${pct(d.reponderado.resumen.mensual.reponderado, 1)}</div>
-          <p class="pie"><span>Inflación de ${mesL(MS)}. Estimación de MECOPOL, no es dato oficial. <a href="#sec-canasta">Ver cómo se calcula</a></span></p></div>` : ''}
+          <p class="pie"><span>Inflación de ${mesL(MS)}. Estimación de MECOPOL. <a href="#sec-canasta">Ver cómo se calcula</a></span></p></div>` : ''}
         </div>
       </section>
 
@@ -508,7 +508,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       ${d.reponderado ? `
       <section class="sec tinta-negra" id="sec-canasta">
         <div class="sec-cab"><div><h2>Con la canasta de hoy</h2>
-          <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. <b>Es una estimación de MECOPOL, no un dato oficial.</b></p></div>
+          <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. <b>Es una estimación de MECOPOL.</b></p></div>
           <div class="seg" role="group" aria-label="Medida de la canasta" id="sel-rep">${[['acumulada', 'Acumulada'], ['interanual', 'Interanual'], ['mensual', 'Mensual']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
         ${espera}

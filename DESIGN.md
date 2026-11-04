@@ -298,7 +298,7 @@ Tooltips rectas sin sombra, de texto crema sobre negro en lo oficial. Transicion
 ## Do's and Don'ts
 
 ### Do:
-- **Do** poner cada dato oficial en bordó sobre papel y cada estimación de MECOPOL en el contexto de tinta negra con rosa, con la leyenda de que no es dato oficial.
+- **Do** poner cada dato oficial en bordó sobre papel y cada estimación de MECOPOL en el contexto de tinta negra con rosa, con la leyenda «Estimación de MECOPOL».
 - **Do** dar al último mes la tinta más fuerte de su contexto: crema con historial en rosa medio sobre bordó, bordó con historial en #bc677a sólido sobre papel.
 - **Do** pintar mapa y mapa de calor en cuatro escalones planos de intervalos iguales, y el máximo de cada fila del mapa de calor en bordó lleno.
 - **Do** dimensionar los altos en píxeles por rango de ancho, porque la página se inserta por iframe.
