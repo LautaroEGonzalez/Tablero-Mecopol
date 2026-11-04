@@ -3,328 +3,338 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#950b32">
 <title>Tablero de Precios MECOPOL</title>
 <meta name="description" content="Inflación durante el gobierno de Milei con datos del INDEC: mes a mes y por rubro. Mesa de Economía Política UNLa.">
 <link rel="icon" type="image/png" href="img/icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Public+Sans:wght@400..800&display=swap">
 <style>
-/* Tablero MECOPOL — tema oscuro con superficies de vidrio.
-   Una sola columna de lectura (máx. 1200px): arriba la cifra del mes, después
-   la serie, las regiones y los rubros. El color de marca (bordó) ilumina la
-   parte de arriba de la página y las superficies translúcidas lo recogen.
-   Todo lo translúcido tiene alternativa sólida más abajo. */
+/* Tablero MECOPOL — afiche de universidad pública: tintas planas sobre papel.
+   Lo oficial va en bordó; lo estimado por MECOPOL, siempre en tinta negra con rosa.
+   Sin sombras, degradados ni desenfoque. Como se inserta por iframe, ningún alto
+   depende del viewport. */
 :root {
-  color-scheme: dark;
-  --bg:        #0a0b10;
-  --panel:     #14161d;   /* sólido: lo usan los gráficos y la columna fija de la tabla */
-  --panel-hi:  #1c1f29;
-  --line:      rgba(255,255,255,.11);
-  --grid:      rgba(255,255,255,.075);
-  --fg:        #edeff4;
-  --fg-2:      #a8aebd;
-  --fg-3:      #767d8e;
-  --marca:     #950b32;   /* bordó de MECOPOL */
-  --accent:    #e85a86;   /* rosa del logo, para las marcas de los gráficos */
-  --accent-hi: #ff8bae;
-  --sube:      #ef6b6b;   /* rubro que se encareció más que el promedio */
-  --baja:      #4a95ee;   /* rubro que se encareció menos */
-  --good:      #45c08a;
-  --warn:      #e8ae45;
-  /* vidrio */
-  --vid:       rgba(255,255,255,.045);
-  --vid-hi:    rgba(255,255,255,.085);
-  --vid-line:  rgba(255,255,255,.09);
-  --desenfoque: blur(22px) saturate(140%);
-  --sombra:    0 1px 0 rgba(255,255,255,.07) inset, 0 22px 48px -26px rgba(0,0,0,.95);
-  --font-ui:  "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --r: 16px;
-  --r-s: 10px;
+  color-scheme: light;
+  --bordo:     #950b32;
+  --bordo-osc: #6d0623;
+  --crema:     #f7efe6;
+  --negro:     #1a0a10;
+  --rosa:      #ff8bae;
+  --rosa-hist: #dd7a96;   /* historial sobre bordó: 3:1 */
+  --hist:      #bc677a;   /* historial sobre papel: tinte sólido de bordó, 3:1 */
+  /* tintas del contexto; la sección de la estimación las redefine */
+  --fondo:     var(--crema);
+  --txt:       var(--negro);
+  --txt-2:     #5e4a50;
+  --acento:    var(--bordo);
+  --sobre-ac:  var(--crema);
+  --linea:     rgba(26,10,16,.2);
+  --resalta:   rgba(26,10,16,.05);
+  --display: "Anton", "Arial Narrow", sans-serif;
+  --ui: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --m: max(clamp(16px, 3.4vw, 48px), calc((100vw - 1344px) / 2));
 }
 * { box-sizing: border-box; }
+html { scroll-padding-top: 75px; scrollbar-color: var(--bordo) var(--crema); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 html, body { margin: 0; }
 body {
-  background: var(--bg); color: var(--fg);
-  font: 15px/1.55 var(--font-ui);
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 0 56px;
-  -webkit-font-smoothing: antialiased;
-  scrollbar-color: #343845 transparent;
+  background: var(--crema); color: var(--negro);
+  font: 400 16px/1.5 var(--ui);
+  -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
 }
-/* luz de fondo: el bordó de la marca arriba, un azul frío abajo para que el
-   vidrio tenga algo que recoger. Sin esto la translucidez no se ve. */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-  background:
-    radial-gradient(1500px 430px at 50% -5%, rgba(170,16,60,.30), transparent 72%),
-    radial-gradient(760px 480px at 8% 4%, rgba(192,19,69,.16), transparent 64%),
-    radial-gradient(900px 760px at 86% 82%, rgba(74,149,238,.09), transparent 64%),
-    radial-gradient(700px 520px at 4% 58%, rgba(149,11,50,.08), transparent 68%);
-}
-/* grano finísimo: evita el bandeado de los degradados grandes */
-body::after {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
-}
-a { color: var(--fg); text-underline-offset: 2px; }
-button:focus-visible, a:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
-.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 46px; padding-top: 34px; }
+::selection { background: var(--bordo); color: var(--crema); }
+a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* superficie de vidrio: una sola capa, nunca vidrio sobre vidrio */
-.caja, .cifra, .seg, .comp > div, .aviso, .espera {
-  background: linear-gradient(158deg, var(--vid-hi), var(--vid));
-  -webkit-backdrop-filter: var(--desenfoque); backdrop-filter: var(--desenfoque);
-  border: 1px solid var(--vid-line);
-  box-shadow: var(--sombra);
+/* ---- banda de navegación ---- */
+.cab {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 16px 20px;
+  padding: 10px var(--m); background: var(--bordo); color: var(--crema);
 }
-
-/* ---- banner con la identidad de MECOPOL ---- */
-.banda {
-  position: relative; color: #fff;
-  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
-  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 32px 28px;
-  background:
-    radial-gradient(900px 320px at 16% -40%, rgba(255,255,255,.22), transparent 68%),
-    linear-gradient(168deg, #b31042 0%, #8c0c2f 46%, #530720 100%);
-  border-bottom: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 24px 60px -30px rgba(149,11,50,.9);
+.marca { flex: none; display: block; background: #fff; padding: 3px; }
+.marca img { display: block; width: 50px; height: auto; }
+.cab-txt { min-width: 0; margin-right: auto; }
+h1 { margin: 0; font: 800 19px/1.2 var(--ui); text-wrap: balance; }
+.cab-txt p { margin: 2px 0 0; font-size: 13px; line-height: 1.3; }
+.secs { display: flex; gap: 2px; flex: none; }
+.secs a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 11px;
+  font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap;
+  box-shadow: inset 0 0 0 0 var(--crema); transition: box-shadow .15s;
 }
-.banda-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; gap: 24px; }
-.marca {
-  flex: none; display: block; background: #fff; border-radius: 14px; padding: 7px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.5), 0 14px 30px -14px rgba(0,0,0,.75);
-}
-.marca img { display: block; width: 94px; height: auto; }
-.banda-txt { flex: 1; min-width: 0; display: grid; gap: 12px; }
-.eyebrow {
-  font: 600 11px var(--font-ui); font-stretch: 82%; letter-spacing: .13em; text-transform: uppercase;
-  color: rgba(255,255,255,.74); display: flex; flex-wrap: wrap; gap: 4px 16px;
-}
-.eyebrow span:last-child { color: rgba(255,255,255,.92); }
-h1 {
-  margin: 0; font-weight: 600; font-stretch: 84%; letter-spacing: -.015em; color: #fff;
-  font-size: clamp(28px, 4.4vw, 46px); line-height: 1.05; text-wrap: balance;
-  text-shadow: 0 2px 24px rgba(50,2,16,.45);
-}
-.mandato { display: grid; gap: 7px; max-width: 580px; }
-.mandato:empty { display: none; }
-.mandato .barra { height: 7px; background: rgba(0,0,0,.32); border-radius: 4px; overflow: hidden; box-shadow: 0 1px 0 rgba(255,255,255,.1); }
-.mandato .barra i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, rgba(255,255,255,.72), #fff); box-shadow: 0 0 14px rgba(255,255,255,.45); }
-.mandato .txt { display: flex; justify-content: space-between; gap: 12px; font: 12px var(--font-num); color: rgba(255,255,255,.72); }
-.mandato .txt b { color: #fff; font-weight: 500; }
-@media (max-width: 560px) {
-  .banda-in { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .marca img { width: 72px; }
-}
-
-.aviso, .espera { border-radius: var(--r-s); font-size: 13px; }
-.aviso {
-  padding: 11px 14px; color: #f2dcaa;
-  background: linear-gradient(158deg, rgba(232,174,69,.14), rgba(232,174,69,.05));
-  border-color: rgba(232,174,69,.26);
-}
-.aviso a { color: inherit; }
-
-/* ---- cifras ---- */
-.cifras { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 12px; }
-.cifra { position: relative; overflow: hidden; border-radius: var(--r); padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.cifra.hero {
-  background: linear-gradient(158deg, rgba(232,90,134,.16), rgba(149,11,50,.09) 54%, rgba(255,255,255,.035));
-  border-color: rgba(232,90,134,.26);
-}
-.cifra.hero::after {
-  content: ""; position: absolute; width: 220px; height: 220px; right: -90px; top: -120px; pointer-events: none;
-  background: radial-gradient(circle, rgba(255,139,174,.30), transparent 70%);
-}
-.cifra h2 { margin: 0; font-size: 13px; font-weight: 500; color: var(--fg-2); }
-.cifra.hero h2 { color: #f6c9d8; }
-.cifra .valor { font: 600 clamp(32px, 3.1vw, 42px)/1 var(--font-num); letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
-.cifra.hero .valor { font-size: clamp(40px, 4.3vw, 58px); color: #fff; text-shadow: 0 0 38px rgba(232,90,134,.42); }
-.cifra .valor small { font-size: .5em; color: var(--fg-3); margin-left: 3px; letter-spacing: 0; }
-.cifra.hero .valor small { color: rgba(255,255,255,.55); }
-.cifra .pie { font-size: 12px; color: var(--fg-3); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 999px; font: 500 12px var(--font-num); border: 1px solid currentColor; background: rgba(255,255,255,.05); }
-.chip.baja { color: var(--good); } .chip.sube { color: var(--warn); } .chip.igual { color: var(--fg-2); }
-.spark { width: 100%; height: 44px; margin-top: auto; }
-.spark:empty { display: none; }
+.secs a:hover { box-shadow: inset 0 -2px 0 0 var(--crema); }
+.secs a[aria-current="true"] { box-shadow: inset 0 -3px 0 0 var(--crema); font-weight: 700; }
+.secs a[hidden] { display: none; }
 @media (max-width: 1040px) {
-  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cifra.hero .valor { font-size: 48px; }
+  /* en pantallas angostas solo queda fija la fila de secciones; el script mide cuánto esconder */
+  .cab { flex-wrap: wrap; padding-bottom: 0; }
+  .cab-txt { flex: 1 1 0; }
+  .secs { flex: 1 0 100%; overflow-x: auto; scrollbar-width: none; margin-inline: -8px; }
+  .secs::-webkit-scrollbar { display: none; }
+  .secs a { flex: none; padding: 0 9px; }
 }
-/* en el teléfono la cifra del mes ocupa el ancho y las otras van de a dos */
-@media (max-width: 560px) {
-  .cifras { gap: 10px; }
-  .cifra { padding: 15px 15px 13px; gap: 8px; }
-  .cifra:first-child, .cifra:last-child { grid-column: 1 / -1; }
-  .cifra .valor { font-size: 27px; }
-  .cifra.hero .valor { font-size: 46px; }
-  .cifra .pie { font-size: 11px; }
-  .spark { height: 36px; }
+
+/* ---- avisos de estado ---- */
+.aviso, .espera { background: var(--crema); color: var(--negro); font-size: 14px; }
+.aviso { padding: 12px var(--m); border-bottom: 3px solid var(--bordo); }
+.espera { padding: 11px 14px; border: 3px solid var(--bordo); }
+.espera b { font-weight: 700; }
+.estado { padding: 72px var(--m); color: var(--txt-2); font-size: 18px; }
+
+/* ---- campo bordó: la cifra del mes ---- */
+.hero {
+  container-type: inline-size;
+  background: var(--bordo); color: var(--crema); padding-inline: var(--m); overflow: hidden;
+}
+.hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); gap: 40px; align-items: stretch; min-height: 520px; }
+.num {
+  --n: 4; align-self: end; margin: 0 0 -.041em; padding: 0;
+  font: 400 min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 430px)/1.16 var(--display);
+  white-space: nowrap;
+}
+.num small { font-size: .5em; color: var(--rosa); }
+.hero-der { display: flex; flex-direction: column; padding-top: 28px; text-align: right; }
+.hero h2 { margin: 0 0 12px; font: 400 clamp(38px, 4cqw, 58px)/1.06 var(--display); text-wrap: balance; }
+.hero-der p { margin: 0; font-size: 17px; line-height: 1.4; }
+.mandato { margin-top: 20px; display: grid; gap: 6px; font-size: 13px; }
+.mandato .barra { height: 6px; background: var(--bordo-osc); }
+.mandato .barra i { display: block; height: 100%; background: var(--crema); }
+.mandato .txt { display: flex; justify-content: space-between; gap: 12px; }
+.mandato .txt span:first-child, .mandato .txt span:last-child { white-space: nowrap; }
+.mandato b { font-weight: 700; }
+.anio { margin-top: auto; padding-top: 28px; }
+.anio .ejes { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.barras { display: flex; align-items: flex-end; gap: 6px; height: 170px; }
+.barras i { flex: 1; background: var(--rosa-hist); transform-origin: bottom; }
+.barras i.ult { background: var(--crema); }
+@media (prefers-reduced-motion: no-preference) {
+  .barras i { animation: sube .7s cubic-bezier(.16, 1, .3, 1) backwards; animation-delay: calc(var(--i) * 35ms); }
+  @keyframes sube { from { transform: scaleY(0); } }
+}
+@media (max-width: 1040px) {
+  .hero-in { display: flex; flex-direction: column; gap: 0; min-height: 0; }
+  .hero-der { display: contents; text-align: left; }
+  .hero h2 { order: 1; margin: 24px 0 0; }
+  .num { order: 2; align-self: flex-start; margin: 0; padding: 4px 0 2px; font-size: min(calc(98cqw / (.44 * var(--n) + .25)), 300px); }
+  .hero-der > p { order: 3; }
+  .mandato { order: 4; }
+  .anio { order: 5; margin-top: 0; padding-top: 22px; }
+  .barras { height: 110px; }
+}
+
+/* ---- las otras cifras ---- */
+.cifras { container-type: inline-size; }
+.cifras-in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.2fr); padding-inline: var(--m); }
+.cifra { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 28px 20px 30px; border-right: 3px solid var(--bordo); }
+.cifra:first-child { padding-left: 0; }
+.cifra h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.valor { font: 400 clamp(52px, 5.6cqw, 88px)/1.16 var(--display); color: var(--acento); white-space: nowrap; }
+.valor small { font-size: 1em; }
+.cifra .pie { margin: 0; font-size: 14px; color: var(--txt-2); display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: var(--txt); white-space: nowrap; }
+.chip svg { width: 9px; height: 9px; fill: currentColor; }
+.spark { width: 100%; height: 46px; margin-top: auto; }
+.spark:empty { display: none; }
+.cifra.est { position: relative; background: var(--negro); color: var(--crema); border-right: 0; --acento: var(--rosa); --txt-2: #c9b7bc; }
+/* el bloque negro llega hasta el borde de la pantalla, más allá del margen */
+.cifra.est::after { content: ""; position: absolute; top: 0; bottom: 0; left: 100%; width: var(--m); background: var(--negro); }
+.cifra.est a { font-weight: 600; }
+@media (max-width: 1040px) {
+  .cifras-in { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-inline: 0; }
+  .cifra { padding: 20px 16px 22px; border-bottom: 3px solid var(--bordo); }
+  .cifra:first-child { padding-left: var(--m); }
+  .cifra:nth-child(2n) { border-right: 0; }
+  .cifra.est::after { display: none; }
+  .cifra:nth-child(3) { padding-left: var(--m); }
+  .cifra.est { padding-right: 16px; border-bottom: 0; }
+  .cifra:last-child:nth-child(3) { grid-column: 1 / -1; border-right: 0; }
+  .valor { font-size: clamp(44px, 13.4cqw, 76px); }
 }
 
 /* ---- secciones ---- */
-.sec { display: grid; gap: 16px; }
-.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; }
-.sec-cab > div { flex: 1 1 320px; min-width: 0; }
-.sec h2 { margin: 0; font-size: 21px; font-weight: 600; font-stretch: 88%; letter-spacing: -.01em; text-wrap: balance; }
-.sec p.sub { margin: 5px 0 0; color: var(--fg-2); font-size: 14px; max-width: 68ch; }
-.caja { border-radius: var(--r); padding: 18px; min-width: 0; }
-.chart { width: 100%; height: 370px; }
+.sec {
+  background: var(--fondo); color: var(--txt);
+  display: grid; gap: 22px; padding: clamp(48px, 6vw, 84px) var(--m); border-top: 3px solid var(--bordo);
+}
+.sec > * { min-width: 0; }
+.sec-cab { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 28px; }
+.sec-cab > div:first-child { flex: 1 1 340px; min-width: 0; }
+.sec h2 { margin: 0; font: 400 clamp(38px, 4.6vw, 62px)/1.08 var(--display); color: var(--acento); text-wrap: balance; }
+.sec h3.sub-t { margin: 0; font: 400 clamp(26px, 2.8vw, 34px)/1.15 var(--display); }
+.sec p.sub { margin: 8px 0 0; color: var(--txt-2); max-width: 68ch; }
+.sec p.sub b { color: var(--txt); }
+.sub-cab { margin-top: 26px; }
+.caja { min-width: 0; border-top: 3px solid var(--txt); padding-top: 16px; }
+.chart { width: 100%; height: 400px; }
 @media (max-width: 560px) { .chart { height: 300px; } }
 
-.seg { display: inline-flex; border-radius: 12px; padding: 4px; gap: 2px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 2px solid var(--acento); }
 .seg button {
-  font: 500 13px var(--font-ui); color: var(--fg-2); background: transparent; border: 0;
-  padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: color .15s, background .15s;
+  font: 600 14px var(--ui); color: var(--acento); background: transparent; border: 0;
+  min-height: 44px; padding: 0 16px; cursor: pointer; transition: background-color .15s, color .15s;
 }
-.seg button[aria-pressed="true"] {
-  background: linear-gradient(180deg, rgba(255,255,255,.17), rgba(255,255,255,.07));
-  color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,.16) inset, 0 6px 14px -8px rgba(0,0,0,.9);
-}
-.seg button:hover { color: var(--fg); }
+.seg button:hover { background: var(--resalta); }
+.seg button[aria-pressed="true"] { background: var(--acento); color: var(--sobre-ac); }
+.seg button:focus-visible { outline-offset: -5px; }
 
-.lectura { margin: 0; color: var(--fg-2); font-size: 14px; max-width: 72ch; }
-.lectura b { color: var(--fg); font-weight: 600; }
+.lectura { margin: 0; color: var(--txt-2); max-width: 72ch; }
+.lectura b { color: var(--txt); font-weight: 700; }
 
-/* ---- tabla de rubros ---- */
-.tabla-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+/* ---- tablas ---- */
+.tabla-wrap { overflow-x: auto; scrollbar-color: var(--acento) transparent; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 640px; font-variant-numeric: tabular-nums; }
 th, td { padding: 10px; text-align: right; white-space: nowrap; }
-th { color: var(--fg-3); font-weight: 500; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
-td { font-family: var(--font-num); font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--grid); }
-th:first-child, td:first-child { text-align: left; }
-td:first-child { font-family: var(--font-ui); color: var(--fg); }
+th { color: var(--txt-2); font-weight: 600; font-size: 13px; border-bottom: 1px solid var(--txt); vertical-align: bottom; }
+td { border-bottom: 1px solid var(--linea); }
+th:first-child, td:first-child { text-align: left; padding-left: 0; }
+td:first-child { font-weight: 500; }
 tr:last-child td { border-bottom: 0; }
-tbody tr:hover td { background: rgba(255,255,255,.04); }
+tbody tr:hover td { background: var(--resalta); }
 th.rel, td.rel { width: 38%; text-align: center; }
-.div { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; position: relative; height: 18px; }
-.div::after { content: ""; position: absolute; left: 50%; top: -5px; bottom: -5px; width: 1px; background: rgba(255,255,255,.18); }
+.div { display: grid; grid-template-columns: 1fr 1fr; align-items: center; position: relative; height: 20px; }
+.div::after { content: ""; position: absolute; left: 50%; top: -6px; bottom: -6px; width: 1px; background: var(--txt); }
 .div .izq, .div .der { display: flex; align-items: center; gap: 6px; height: 100%; }
 .div .izq { justify-content: flex-end; }
-.div .pista { flex: 1; display: flex; height: 10px; }
+.div .pista { flex: 1; display: flex; height: 12px; }
 .div .izq .pista { justify-content: flex-end; }
-.div i { display: block; height: 10px; min-width: 2px; }
-.div .izq i { background: linear-gradient(90deg, var(--baja), rgba(74,149,238,.5)); border-radius: 3px 0 0 3px; box-shadow: 0 0 14px -3px rgba(74,149,238,.65); }
-.div .der i { background: linear-gradient(90deg, rgba(239,107,107,.5), var(--sube)); border-radius: 0 3px 3px 0; box-shadow: 0 0 14px -3px rgba(239,107,107,.65); }
-.div span { flex: none; width: 52px; font-size: 12px; color: var(--fg-2); }
+.div i { display: block; height: 12px; min-width: 2px; }
+.div .izq i { background: var(--negro); }
+.div .der i { background: var(--bordo); }
+.div span { flex: none; width: 52px; font-size: 13px; color: var(--txt-2); }
 .div .der span { text-align: left; } .div .izq span { text-align: right; }
 
-/* ---- canasta de hoy ---- */
-.comp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.comp > div { border-radius: var(--r-s); padding: 14px 16px; display: grid; gap: 5px; min-width: 0; }
-.comp h3 { margin: 0; font-size: 12px; font-weight: 500; color: var(--fg-2); }
-.comp .par { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
-.comp .par b { font-size: 24px; font-weight: 600; color: var(--accent-hi); letter-spacing: -.02em; }
-.comp .par span { font-size: 13px; color: var(--fg-3); }
-.comp .dif { font: 500 12px var(--font-num); color: var(--fg-2); }
-@media (max-width: 900px) { .comp { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.otras td.txt { font-family: var(--font-ui); color: var(--fg-2); white-space: normal; text-align: left; }
-.otras th:nth-child(2) { text-align: left; }
-.otras a { color: var(--fg); }
-.mute { color: var(--fg-3); }
-.pond td.d-mas { color: var(--sube); } .pond td.d-menos { color: var(--baja); }
-.pond table { min-width: 0; font-size: 13px; }
-.pond th, .pond td { padding: 8px 6px; }
-.pond th { white-space: normal; }
-
 /* ---- regiones ---- */
-.reg-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 12px; align-items: stretch; }
+.reg-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 36px; align-items: stretch; }
 @media (max-width: 900px) { .reg-grid { grid-template-columns: 1fr; } }
-.reg-der { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
-.reg-der .lectura { padding: 0 6px 6px; max-width: none; }
-.mapa { width: 100%; height: 470px; }
-@media (max-width: 560px) { .mapa { height: 440px; } }
-.reg tr.nac td { border-top: 1px solid var(--line); color: var(--fg-2); }
-.reg table { min-width: 0; font-size: 13px; }
+.reg-der { display: flex; flex-direction: column; gap: 22px; }
+.mapa { width: 100%; height: 600px; }
+@media (max-width: 560px) { .mapa { height: 480px; } }
+.reg tr.nac td { border-top: 1px solid var(--txt); color: var(--txt-2); }
+.reg table { min-width: 0; font-size: 14px; }
 .reg th, .reg td { padding: 8px 6px; }
 .reg th { white-space: normal; }
-.reg td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
-.reg tr.activa td { background: rgba(255,255,255,.05); }
-@media (min-width: 901px) { .reg td { padding: 13px 6px; } }
-.calor table { min-width: 720px; font-size: 13px; }
-.calor th, .calor td { padding: 8px; }
+@media (min-width: 901px) { .reg td { padding: 19px 6px; } }
+.calor table { min-width: 720px; font-size: 14px; border-collapse: separate; border-spacing: 2px; }
+.calor th, .calor td { padding: 8px; border-bottom: 0; }
 .calor td { text-align: center; }
-.calor td:first-child { text-align: left; }
+.calor td:first-child { text-align: left; padding-left: 0; }
 .calor th:not(:first-child) { text-align: center; }
-.calor td.nac { color: var(--fg-2); border-right: 1px solid var(--line); }
-.calor td.cel { color: #fff; border-radius: 4px; }
-.calor td.max { font-weight: 600; }
-.calor th:first-child, .calor td:first-child { position: sticky; left: 0; background: #15171e; z-index: 1; }
-.desliza { display: none; margin: 0 0 8px; font-size: 12px; color: var(--fg-3); }
+.calor td.nac { color: var(--txt-2); }
+.calor td.cel { color: var(--negro); }
+.calor td.max { font-weight: 800; background: var(--bordo); color: var(--crema); }
+/* tablas anchas: la primera columna queda fija al deslizar */
+.fija th:first-child, .fija td:first-child { position: sticky; left: 0; background: var(--fondo); z-index: 1; }
+.fija tbody tr:hover td:first-child { background: var(--fondo); }
+.desliza { display: none; margin: 0 0 8px; font-size: 13px; color: var(--txt-2); }
 @media (max-width: 700px) {
   .desliza { display: block; }
-  .calor table { min-width: 640px; font-size: 12px; }
+  .calor table { min-width: 640px; font-size: 13px; }
   .calor th, .calor td { padding: 7px 5px; }
-  .calor td:first-child { max-width: 118px; white-space: normal; line-height: 1.25; }
+  .fija td:first-child { max-width: 118px; white-space: normal; line-height: 1.25; }
 }
-.espera {
-  padding: 10px 14px; color: var(--fg-2);
-  background: linear-gradient(158deg, rgba(232,174,69,.10), rgba(232,174,69,.03));
-  border-color: rgba(232,174,69,.22);
+.nota-reg { margin: 0; font-size: 14px; color: var(--txt-2); max-width: 80ch; }
+
+/* ---- rubros ---- */
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 14px; color: var(--txt-2); }
+.leyenda i { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -1px; }
+
+/* ---- la estimación de MECOPOL: siempre en tinta negra con rosa ---- */
+.tinta-negra {
+  --fondo: var(--negro); --txt: var(--crema); --txt-2: #c9b7bc;
+  --acento: var(--rosa); --sobre-ac: var(--negro);
+  --linea: rgba(247,239,230,.22); --resalta: rgba(247,239,230,.07);
+  border-top: 0;
 }
-.espera b { color: var(--fg); font-weight: 600; }
-.nota-reg { margin: 0; font-size: 12px; color: var(--fg-3); max-width: 80ch; }
-.dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; }
+.tinta-negra ::selection { background: var(--rosa); color: var(--negro); }
+.comp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--linea); }
+.comp > div { padding: 16px 20px 18px; display: grid; gap: 4px; min-width: 0; border-right: 1px solid var(--linea); }
+.comp > div:first-child { padding-left: 0; }
+.comp > div:last-child { border-right: 0; }
+.comp h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.comp .par { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.comp .par b { font: 400 clamp(38px, 3.6vw, 50px)/1.16 var(--display); color: var(--acento); }
+.comp .par span { font-size: 14px; color: var(--txt-2); }
+.comp .dif { font-size: 13px; font-weight: 500; color: var(--txt-2); }
+@media (max-width: 900px) {
+  .comp { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .comp > div { padding: 14px 14px 16px; }
+  .comp > div:nth-child(odd) { padding-left: 0; }
+  .comp > div:nth-child(2n) { border-right: 0; }
+}
+.dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 36px; }
 @media (max-width: 900px) { .dos-col { grid-template-columns: 1fr; } }
-.leyenda { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--fg-3); }
-.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.otras td.txt { color: var(--txt-2); white-space: normal; text-align: left; }
+.otras th:nth-child(2) { text-align: left; }
+.otras th:last-child, .otras td:last-child b { color: var(--acento); }
+.mute { color: var(--txt-2); }
+.pond td.d-mas { color: var(--acento); font-weight: 700; } .pond td.d-menos { color: var(--txt-2); }
+.pond table { min-width: 0; font-size: 14px; }
+.pond table.otras { min-width: 640px; }
+.pond th, .pond td { padding: 8px 6px; }
+.pond th { white-space: normal; }
+@media (max-width: 560px) {
+  .otras-caja .desliza { display: none; }
+  .pond table.otras { min-width: 0; }
+  .otras thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .otras tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 10px; padding: 12px 0; border-bottom: 1px solid var(--linea); }
+  .otras tr:last-child { border-bottom: 0; }
+  .pond .otras td { display: block; padding: 0; border: 0; text-align: left; white-space: normal; }
+  .fija .otras td:first-child { position: static; max-width: none; font-weight: 700; }
+  .otras td:nth-child(-n+2) { grid-column: 1 / -1; }
+  .otras td[data-l]::before { content: attr(data-l); display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--txt-2); }
+  .otras td:last-child[data-l]::before { color: var(--acento); }
+}
+.reg th:first-child, .reg td:first-child, .pond th:first-child, .pond td:first-child, .calor th:first-child { padding-left: 0; }
 
 /* ---- pie ---- */
-.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px 32px; border-top: 1px solid var(--line); padding-top: 24px; }
-.notas h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
-.notas p { margin: 0; font-size: 13px; color: var(--fg-2); max-width: 62ch; }
-code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,255,.07); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
-.estado { padding: 60px 0; color: var(--fg-2); }
-
-/* ---- alternativas sin vidrio ---- */
-@media (max-width: 760px) { :root { --desenfoque: blur(12px) saturate(130%); } }
-@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
-  .caja, .cifra, .seg, .comp > div, .aviso, .espera { background: var(--panel); }
-  .cifra.hero { background: #241019; }
+.notas {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px 36px;
+  background: var(--bordo); color: var(--crema); padding: 44px var(--m) 52px;
 }
-@media (prefers-reduced-transparency: reduce) {
-  .caja, .cifra, .seg, .comp > div { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--panel); }
-  .cifra.hero { background: #241019; }
-  body::before { opacity: .45; }
-}
+.notas h3 { margin: 0 0 6px; font: 400 24px/1.15 var(--display); }
+.notas p { margin: 0; font-size: 14px; max-width: 62ch; }
+code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
-<header class="banda">
-  <div class="banda-in">
-    <a class="marca" href="https://mecopolunla.wixsite.com/mecopol" target="_blank" rel="noopener">
-      <img src="img/logo-mecopol.png" width="320" height="316" alt="MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús">
-    </a>
-    <div class="banda-txt">
-      <div class="eyebrow" id="eyebrow"><span>Tablero de precios</span><span>Mesa de Economía Política UNLa</span><span>Datos: INDEC</span></div>
-      <h1>Inflación en el gobierno de Milei</h1>
-      <div class="mandato" id="mandato"></div>
-    </div>
+<header class="cab">
+  <a class="marca" href="https://mecopolunla.wixsite.com/mecopol" target="_blank" rel="noopener">
+    <img src="img/logo-mecopol.png" width="320" height="316" alt="MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús">
+  </a>
+  <div class="cab-txt">
+    <h1>Inflación en el gobierno de Milei</h1>
+    <p>Tablero de precios · Mesa de Economía Política UNLa · Datos: INDEC</p>
   </div>
+  <nav class="secs" aria-label="Secciones" id="secs">
+    <a href="#sec-mes" data-s="sec-mes">Último mes</a>
+    <a href="#sec-serie" data-s="sec-serie">Serie</a>
+    <a href="#sec-regiones" data-s="sec-regiones">Regiones</a>
+    <a href="#sec-rubros" data-s="sec-rubros">Rubros</a>
+    <a href="#sec-canasta" data-s="sec-canasta">Canasta 2017/18</a>
+  </nav>
 </header>
 
-<div class="wrap" id="app">
+<main id="app">
   <div class="estado">Cargando datos del INDEC…</div>
-</div>
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script>
 (() => {
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const T = { fg: css('--fg'), fg2: css('--fg-2'), fg3: css('--fg-3'), grid: css('--grid'), line: css('--line'),
-    panel: css('--panel'), accent: css('--accent'), num: css('--font-num'), ui: css('--font-ui') };
-  const VIDRIO = 'border-radius:12px;padding:9px 12px;backdrop-filter:blur(16px) saturate(140%);'
-    + '-webkit-backdrop-filter:blur(16px) saturate(140%);box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 16px 36px -18px rgba(0,0,0,.95);';
-  const RGB_AC = '232,90,134', RGB_N = '150,160,178';
-  const deg = (rgb, o = .30) => new echarts.graphic.LinearGradient(0, 0, 0, 1,
-    [{ offset: 0, color: `rgba(${rgb},${o})` }, { offset: 1, color: `rgba(${rgb},0)` }]);
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BORDO = css('--bordo'), CREMA = css('--crema'), NEGRO = css('--negro'), ROSA = css('--rosa'), HIST = css('--hist');
+  const FONT = css('--ui');
+  // tintas de los gráficos: papel para lo oficial, negro para la estimación de MECOPOL
+  const PAPEL = { fg: NEGRO, fg3: css('--txt-2'), grid: 'rgba(26,10,16,.12)', line: NEGRO };
+  const TINTA = { fg: CREMA, fg3: '#c9b7bc', grid: 'rgba(247,239,230,.14)', line: CREMA };
   const nf = (v, d = 1) => v == null ? '—' : v.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
   const pct = (v, d = 1, signo = false) => v == null ? '—' : (signo && v > 0 ? '+' : '') + nf(v, d) + '%';
   const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -336,27 +346,49 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
     'Prendas de vestir y calzado': 'Ropa y calzado', 'Vivienda, agua, electricidad, gas y otros combustibles': 'Vivienda y servicios',
     'Equipamiento y mantenimiento del hogar': 'Equipamiento del hogar', 'Bienes y servicios varios': 'Bienes y servicios varios',
   };
-  const tip = () => ({
-    trigger: 'axis', backgroundColor: 'rgba(18,20,27,.82)', borderColor: 'rgba(255,255,255,.14)', borderWidth: 1,
-    textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui }, extraCssText: VIDRIO,
-    axisPointer: { type: 'line', lineStyle: { color: 'rgba(255,255,255,.28)', width: 1 } },
+  const TIP = { backgroundColor: NEGRO, borderWidth: 0, textStyle: { color: CREMA, fontSize: 13, fontFamily: FONT },
+    extraCssText: 'border-radius:0;padding:8px 12px;box-shadow:none;' };
+  const tip = (t = PAPEL) => Object.assign({}, TIP, t === TINTA ? { backgroundColor: CREMA, textStyle: { color: NEGRO, fontSize: 13, fontFamily: FONT } } : {}, {
+    trigger: 'axis', axisPointer: { type: 'line', lineStyle: { color: t.fg3, width: 1 } },
   });
-  const ejeX = extra => Object.assign({ axisLine: { lineStyle: { color: T.line } }, axisTick: { show: false },
-    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, hideOverlap: true }, splitLine: { show: false } }, extra);
-  const ejeY = extra => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
-    axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: v => nf(v, 0) + '%' },
-    splitLine: { lineStyle: { color: T.grid, width: 1 } } }, extra);
+  const ejeX = (t, extra) => Object.assign({ axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false },
+    axisLabel: { color: t.fg3, fontFamily: FONT, fontSize: 12, hideOverlap: true }, splitLine: { show: false } }, extra);
+  const ejeY = (t, extra) => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: t.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) + '%' },
+    splitLine: { lineStyle: { color: t.grid, width: 1 } } }, extra);
   const nuevo = (el, opt) => {
     const c = echarts.init(el);
-    c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: T.ui, color: T.fg2 }, animationDuration: 500 }, opt));
+    c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: FONT, color: NEGRO },
+      animation: !quieto, animationDuration: 400 }, opt));
     new ResizeObserver(() => c.resize()).observe(el);
     return c;
   };
+  const FLECHA = { baja: '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 1h10L5 9z"/></svg>',
+    sube: '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1l5 8H0z"/></svg>',
+    igual: '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 3.5h10v3H0z"/></svg>' };
+  const VERBO = { baja: 'Bajó', sube: 'Subió', igual: 'Igual' };
+  const tendencia = (a, p) => { const d = a - p; return Math.abs(d) < 0.05 ? 'igual' : d < 0 ? 'baja' : 'sube'; };
   const chip = (a, p, unidad = 'pp') => {
     if (a == null || p == null) return '';
-    const d = a - p, c = Math.abs(d) < 0.05 ? 'igual' : d < 0 ? 'baja' : 'sube';
-    return `<span class="chip ${c}" title="${c === 'baja' ? 'Bajó' : c === 'sube' ? 'Subió' : 'Igual'} respecto del mes anterior">${c === 'baja' ? '▼' : c === 'sube' ? '▲' : '■'} ${nf(Math.abs(d), 1)} ${unidad}</span>`;
+    const c = tendencia(a, p);
+    return `<span class="chip" title="${VERBO[c]} respecto del mes anterior"><span class="oculto">${VERBO[c]} </span>${FLECHA[c]}${nf(Math.abs(a - p), 1)} ${unidad}</span>`;
   };
+  // los grupos de botones marcan cuál está elegido y le avisan al gráfico
+  const selector = (id, fn) => document.getElementById(id).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    fn(b.dataset.v);
+  });
+
+  // la banda: en pantallas angostas se esconde la fila del logo y queda fija la de secciones
+  const cab = document.querySelector('.cab'), secs = document.getElementById('secs');
+  const ajustarCab = () => {
+    const angosta = window.matchMedia('(max-width: 1040px)').matches;
+    cab.style.top = angosta ? `-${secs.offsetTop}px` : '';
+    document.documentElement.style.scrollPaddingTop = `${angosta ? secs.offsetHeight : cab.offsetHeight}px`;
+  };
+  ajustarCab();
+  new ResizeObserver(ajustarCab).observe(cab);
 
   function render(d) {
     const k = d.kpis, M = d.ultimo_mes, K = d.mes_gobierno, total = K + d.meses_restantes;
@@ -372,113 +404,140 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
     const esperaR = infR ? `<div class="espera"><b>${Mayus(largo(MR))}</b>: cuadros del <a href="${linkR}" target="_blank" rel="noopener">informe del INDEC</a>, con un decimal. La acumulada desde nov-23 se encadena con el mes anterior. Cuando la API cargue el mes, se reemplaza sola.</div>` : espera;
     const app = document.getElementById('app');
     const act = new Date(d.actualizado);
+    const actTxt = act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
 
-    document.getElementById('eyebrow').insertAdjacentHTML('beforeend',
-      `<span>Actualizado ${act.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>`);
-    const man = document.getElementById('mandato');
-    man.setAttribute('role', 'img'); man.setAttribute('aria-label', `Mes ${K} de ${total} del mandato`);
-    man.innerHTML = `<div class="barra"><i style="width:${(K / total * 100).toFixed(1)}%"></i></div>
-      <div class="txt"><span>dic-23</span><span>Mes <b>${K}</b> de ${total} · último dato <b>${etq(M)}</b></span><span>${etq(d.fin_mandato)}</span></div>`;
+    // la cifra del mes y su comparación
+    const cifraMes = nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2);
+    const mesPrev = shift(M, -1), trend = k.mensual_previo == null ? null : tendencia(k.mensual, k.mensual_previo);
+    const difMes = trend == null ? '' : nf(Math.abs(k.mensual - k.mensual_previo), 1);
+    const comparacion = trend == null ? '' : `${Mayus(mesL(mesPrev))} fue ${pct(k.mensual_previo, 2)}. ` +
+      (trend === 'igual' ? 'Sin cambios.' : `${trend === 'sube' ? 'Sube' : 'Baja'} ${difMes} ${difMes === '1,0' ? 'punto' : 'puntos'}.`);
+    const anio13 = d.serie.slice(-13), maxAnio = Math.max(...anio13.map(x => x.mensual));
 
     app.innerHTML = `
       ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
 
       ${P ? `<div class="aviso">${Mayus(P.meses.map(x => largo(x.mes)).join(' y '))}: dato publicado por el INDEC (<a href="${P.meses[P.meses.length - 1].link}" target="_blank" rel="noopener">informe oficial</a>). Mientras las APIs no lo carguen, ${infR ? `los rubros y las regiones salen de los cuadros del informe y la canasta 2017/18 muestra ${largo(MS)}` : `los rubros, las regiones y la canasta 2017/18 muestran ${largo(MS)}`}.</div>` : ''}
 
-      <section class="cifras" aria-label="Cifras de ${largo(M)}">
-        <div class="cifra hero"><h2>Inflación de ${MESL[+M.slice(5) - 1]}</h2><div class="valor">${nf(k.mensual, P && P.meses.some(x => x.mes === M) ? 1 : 2)}<small>%</small></div>
-          <div class="pie">${chip(k.mensual, k.mensual_previo)}<span>mes anterior ${pct(k.mensual_previo, 2)}</span></div>
-          <div class="spark" id="sp1" role="img" aria-label="Inflación mensual, últimos 12 meses"></div></div>
-        <div class="cifra"><h2>Interanual</h2><div class="valor">${nf(k.interanual, 1)}<small>%</small></div>
-          <div class="pie">${chip(k.interanual, k.interanual_previo)}<span>vs. ${etq(shift(M, -12))}</span></div>
-          <div class="spark" id="sp2" role="img" aria-label="Inflación interanual, últimos 12 meses"></div></div>
-        <div class="cifra"><h2>Acumulada ${M.slice(0, 4)}</h2><div class="valor">${nf(k.acum_anio, 1)}<small>%</small></div>
-          <div class="pie"><span>desde dic-${String(+M.slice(0, 4) - 1).slice(2)}</span></div>
-          <div class="spark" id="sp3" role="img" aria-label="Acumulada del año, mes a mes"></div></div>
-        <div class="cifra"><h2>Acumulada del gobierno</h2><div class="valor">${nf(k.acum_gobierno, 1)}<small>%</small></div>
-          <div class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></div>
-          <div class="spark" id="sp4" role="img" aria-label="Acumulada del gobierno, mes a mes"></div></div>
+      <section class="hero" id="sec-mes" aria-label="Cifra de ${largo(M)}">
+        <div class="hero-in">
+          <p class="num" style="--n:${cifraMes.length}">${cifraMes}<small>%</small></p>
+          <div class="hero-der">
+            <h2>Inflación de ${MESL[+M.slice(5) - 1]} ${M.slice(0, 4)}</h2>
+            <p>${comparacion} IPC Nacional, INDEC. Actualizado ${actTxt}.</p>
+            <div class="mandato" role="img" aria-label="Mes ${K} de ${total} del mandato">
+              <div class="barra"><i style="width:${(K / total * 100).toFixed(1)}%"></i></div>
+              <div class="txt"><span>dic-23</span><span>Mes <b>${K}</b> de ${total} · último dato <b>${etq(M)}</b></span><span>${etq(d.fin_mandato)}</span></div>
+            </div>
+            <div class="anio">
+              <div class="ejes" aria-hidden="true"><span>${etq(anio13[0].fecha)}</span><span>${etq(anio13[anio13.length - 1].fecha)}</span></div>
+              <div class="barras" role="img" aria-label="Inflación mensual de los últimos 13 meses: ${anio13.map(x => `${etq(x.fecha)} ${pct(x.mensual, 1)}`).join(', ')}">${anio13.map((x, i) =>
+                `<i class="${i === anio13.length - 1 ? 'ult' : ''}" style="height:${(x.mensual / maxAnio * 100).toFixed(1)}%;--i:${i}" title="${etq(x.fecha)}: ${pct(x.mensual, 2)}"></i>`).join('')}</div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section class="sec">
+      <section class="cifras" aria-label="Otras cifras de ${largo(M)}">
+        <div class="cifras-in">
+        <div class="cifra"><h3>Interanual</h3><div class="valor">${pct(k.interanual, 1)}</div>
+          <p class="pie">${chip(k.interanual, k.interanual_previo)}<span>vs. ${etq(mesPrev)} · mide contra ${etq(shift(M, -12))}</span></p>
+          <div class="spark" id="sp2" role="img" aria-label="Inflación interanual, últimos 12 meses"></div></div>
+        <div class="cifra"><h3>Acumulada ${M.slice(0, 4)}</h3><div class="valor">${pct(k.acum_anio, 1)}</div>
+          <p class="pie"><span>desde dic-${String(+M.slice(0, 4) - 1).slice(2)}</span></p>
+          <div class="spark" id="sp3" role="img" aria-label="Acumulada del año, mes a mes"></div></div>
+        <div class="cifra"><h3>Acumulada del gobierno</h3><div class="valor">${pct(k.acum_gobierno, 1)}</div>
+          <p class="pie"><span>desde nov-23 · promedio ${pct(k.promedio_mensual, 2)} mensual</span></p>
+          <div class="spark" id="sp4" role="img" aria-label="Acumulada del gobierno, mes a mes"></div></div>
+        ${d.reponderado ? `<div class="cifra est"><h3>Con la canasta 2017/18</h3><div class="valor">${pct(d.reponderado.resumen.mensual.reponderado, 1)}</div>
+          <p class="pie"><span>Inflación de ${mesL(MS)}. Estimación de MECOPOL, no es dato oficial. <a href="#sec-canasta">Ver cómo se calcula</a></span></p></div>` : ''}
+        </div>
+      </section>
+
+      <section class="sec" id="sec-serie">
         <div class="sec-cab">
           <div><h2>Mes a mes</h2><p class="sub">IPC nacional desde diciembre de 2023, el primer mes del gobierno.</p></div>
-          <div class="seg" role="group" id="sel">${[['mensual', 'Mensual'], ['interanual', 'Interanual'], ['acumulada', 'Acumulada']]
+          <div class="seg" role="group" aria-label="Medida de la serie" id="sel">${[['mensual', 'Mensual'], ['interanual', 'Interanual'], ['acumulada', 'Acumulada']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
         </div>
-        <div class="caja"><div class="chart" id="ch-serie"></div></div>
+        <div class="caja"><div class="chart" id="ch-serie" role="img"></div></div>
         <p class="lectura">El pico fue <b>${largo(d.hitos.pico.fecha)}</b>, con <b>${pct(d.hitos.pico.mensual, 1)}</b> mensual. En los primeros 5 meses los precios subieron <b>${pct(d.hitos.primeros_5, 0)}</b>; en los ${d.hitos.meses_resto} meses siguientes, <b>${pct(d.hitos.resto, 0)}</b>.</p>
       </section>
 
       ${d.regiones ? `
-      <section class="sec">
+      <section class="sec" id="sec-regiones">
         <div class="sec-cab"><div><h2>Por región</h2>
           <p class="sub">El INDEC mide el IPC en seis regiones, no por provincia. Cada región tiene su propia canasta, así que el mismo aumento pega distinto según dónde se viva.</p></div>
-          <div class="seg" role="group" id="sel-reg">${[['mensual', `${Mayus(mesL(MR))}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
+          <div class="seg" role="group" aria-label="Período de las regiones" id="sel-reg">${[['mensual', `${Mayus(mesL(MR))}`], ['interanual', 'Interanual'], ['acum_gobierno', 'Desde nov-23']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
         ${esperaR}
         <div class="reg-grid">
           <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div></div>
           <div class="caja reg reg-der">
             <div class="tabla-wrap"><table>
-              <thead><tr><th>Región</th><th>${etq(MR)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+              <caption class="oculto">Inflación por región</caption>
+              <thead><tr><th scope="col">Región</th><th scope="col">${etq(MR)}</th><th scope="col">Interanual</th><th scope="col">Desde nov-23</th></tr></thead>
               <tbody id="tb-reg"></tbody></table></div>
             <p class="lectura" id="lectura-reg"></p>
           </div>
         </div>
         ${d.regiones.regiones.some(r => r.rubros && Object.keys(r.rubros).length) ? `
-        <div class="sec-cab" style="margin-top:14px"><div><h2 style="font-size:16px">Cada rubro en cada región</h2>
+        <div class="sec-cab sub-cab"><div><h3 class="sub-t">Cada rubro en cada región</h3>
           <p class="sub">Cuánto subió cada rubro en cada región, en el período elegido arriba. El color se compara dentro de cada fila: más intenso es la región donde ese rubro subió más.</p></div></div>
-        <div class="caja calor"><p class="desliza">Deslizá la tabla para ver todas las regiones →</p><div class="tabla-wrap"><table>
-          <thead><tr><th>Rubro</th><th>Nacional</th>${d.regiones.regiones.map(r => `<th>${r.region}</th>`).join('')}</tr></thead>
+        <div class="caja calor fija"><p class="desliza">Deslizá la tabla para ver todas las regiones.</p><div class="tabla-wrap" tabindex="0" role="region" aria-label="Tabla de rubros por región"><table>
+          <caption class="oculto">Variación de cada rubro en cada región</caption>
+          <thead><tr><th scope="col">Rubro</th><th scope="col">Nacional</th>${d.regiones.regiones.map(r => `<th scope="col">${r.region}</th>`).join('')}</tr></thead>
           <tbody id="tb-calor"></tbody></table></div></div>` : ''}
         <p class="nota-reg">GBA es la Ciudad de Buenos Aires y los 24 partidos del conurbano. El IPC mide cuánto suben los precios, no cuánto cuestan: que una región sea más cara no implica que tenga más inflación.</p>
       </section>` : ''}
 
-      <section class="sec">
+      <section class="sec" id="sec-rubros">
         <div class="sec-cab"><div><h2>Rubros</h2>
           <p class="sub">El precio relativo compara cuánto subió cada rubro desde nov-23 con el nivel general. Positivo: se encareció más que el promedio.</p></div></div>
         ${esperaR}
-        <div class="caja">
-          <div class="tabla-wrap"><table>
-            <thead><tr><th>Rubro</th><th class="rel">Precio relativo</th><th>${etq(MR)}</th><th>Interanual</th><th>Desde nov-23</th></tr></thead>
+        <div class="caja fija"><p class="desliza">Deslizá la tabla para ver todas las columnas.</p>
+          <div class="tabla-wrap" tabindex="0" role="region" aria-label="Tabla de rubros"><table>
+            <caption class="oculto">Precio relativo y variación de cada rubro</caption>
+            <thead><tr><th scope="col">Rubro</th><th scope="col" class="rel">Precio relativo</th><th scope="col">${etq(MR)}</th><th scope="col">Interanual</th><th scope="col">Desde nov-23</th></tr></thead>
             <tbody id="tb-rubros"></tbody>
           </table></div>
         </div>
-        <div class="leyenda"><span><i style="background:var(--sube)"></i>Se encareció más que el promedio</span><span><i style="background:var(--baja)"></i>Se encareció menos</span><span>Nivel general: ${pct(KR.mensual, dM)} en ${etq(MR)} · ${pct(KR.acum_gobierno, 1)} desde nov-23</span></div>
+        <div class="leyenda"><span><i style="background:var(--bordo)"></i>Se encareció más que el promedio</span><span><i style="background:var(--negro)"></i>Se encareció menos</span><span>Nivel general: ${pct(KR.mensual, dM)} en ${etq(MR)} · ${pct(KR.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
       ${d.reponderado ? `
-      <section class="sec">
+      <section class="sec tinta-negra" id="sec-canasta">
         <div class="sec-cab"><div><h2>Con la canasta de hoy</h2>
           <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. <b>Es una estimación de MECOPOL, no un dato oficial.</b></p></div>
-          <div class="seg" role="group" id="sel-rep">${[['acumulada', 'Acumulada'], ['interanual', 'Interanual'], ['mensual', 'Mensual']]
+          <div class="seg" role="group" aria-label="Medida de la canasta" id="sel-rep">${[['acumulada', 'Acumulada'], ['interanual', 'Interanual'], ['mensual', 'Mensual']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
         ${espera}
-        <div class="comp">${[['mensual', `Inflación de ${mesL(MS)}`, 2], ['interanual', 'Interanual', 1], ['acum_anio', `Acumulada ${MS.slice(0, 4)}`, 1], ['acum_gobierno', 'Desde nov-23', 1]].map(([c, t, dec]) => {
+        <div class="comp">${[['mensual', `Inflación de ${mesL(MS)}`, 1], ['interanual', 'Interanual', 1], ['acum_anio', `Acumulada ${MS.slice(0, 4)}`, 1], ['acum_gobierno', 'Desde nov-23', 1]].map(([c, t, dec]) => {
             const x = d.reponderado.resumen[c], df = x.reponderado - x.oficial;
             return `<div><h3>${t}</h3><div class="par"><b>${pct(x.reponderado, dec)}</b><span>oficial ${pct(x.oficial, dec)}</span></div>
               <div class="dif">${df >= 0 ? '+' : ''}${nf(df, 1)} pp con la canasta 2017/18</div></div>`; }).join('')}</div>
         <div class="dos-col">
-          <div class="caja"><div class="chart" id="ch-rep"></div></div>
+          <div class="caja"><div class="chart" id="ch-rep" role="img"></div></div>
           <div class="caja pond"><div class="tabla-wrap"><table>
-            <thead><tr><th>Rubro</th><th>Peso 2004/05</th><th>Peso 2017/18</th><th>Cambio</th></tr></thead>
+            <caption class="oculto">Peso de cada rubro en las dos canastas</caption>
+            <thead><tr><th scope="col">Rubro</th><th scope="col">Peso 2004/05</th><th scope="col">Peso 2017/18</th><th scope="col">Cambio</th></tr></thead>
             <tbody>${[...d.reponderado.ponderaciones].sort((a, b) => (b.engho_2017_18 - b.vigente) - (a.engho_2017_18 - a.vigente)).map(p => {
               const c = p.engho_2017_18 - p.vigente;
               return `<tr><td>${corto[p.rubro] || p.rubro}</td><td>${nf(p.vigente, 1)}</td><td>${nf(p.engho_2017_18, 1)}</td><td class="${c > 0.05 ? 'd-mas' : c < -0.05 ? 'd-menos' : ''}">${c > 0 ? '+' : ''}${nf(c, 1)}</td></tr>`; }).join('')}
             </tbody></table></div></div>
         </div>
-        <div class="leyenda"><span><i style="background:var(--accent)"></i>Canasta 2017/18 (estimación MECOPOL)</span><span><i style="background:var(--fg-2)"></i>IPC oficial</span><span>Pesos en % del gasto total</span></div>
+        <div class="leyenda"><span><i style="background:var(--rosa)"></i>Canasta 2017/18 (estimación MECOPOL)</span><span><i style="background:var(--crema)"></i>IPC oficial</span><span>Pesos en % del gasto total</span></div>
         ${(d.reponderado.otras || []).length ? `
-        <div class="sec-cab" style="margin-top:14px"><div><h2 style="font-size:16px">Cómo da en otras estimaciones</h2>
+        <div class="sec-cab sub-cab"><div><h3 class="sub-t">Cómo da en otras estimaciones</h3>
           <p class="sub">Lo que publicaron universidades, centros de estudio y consultoras con la misma idea, y la misma cuenta hecha con esta estimación. Las diferencias vienen sobre todo del nivel de detalle (rubros, capítulos o productos) y de cómo se actualizan los pesos por precios.</p></div></div>
-        <div class="caja pond"><div class="tabla-wrap"><table class="otras">
-          <thead><tr><th>Fuente</th><th>Qué mide</th><th>INDEC oficial</th><th>Su estimación</th><th>MECOPOL</th></tr></thead>
+        <div class="caja pond fija otras-caja"><p class="desliza">Deslizá la tabla para ver todas las columnas.</p><div class="tabla-wrap" tabindex="0" role="region" aria-label="Tabla de otras estimaciones"><table class="otras">
+          <caption class="oculto">Comparación con otras estimaciones</caption>
+          <thead><tr><th scope="col">Fuente</th><th scope="col">Qué mide</th><th scope="col">INDEC oficial</th><th scope="col">Su estimación</th><th scope="col">MECOPOL</th></tr></thead>
           <tbody>${d.reponderado.otras.map(o => {
             const dec = o.tipo === 'mensual' ? 2 : 1, dif = x => x == null || o.oficial == null ? '' : ` <span class="mute">(${x - o.oficial >= 0 ? '+' : ''}${nf(x - o.oficial, 1)})</span>`;
             const per = o.tipo === 'mensual' ? etq(o.hasta) : o.tipo === 'anual' ? o.hasta.slice(0, 4) : `${etq(o.desde)} a ${etq(o.hasta)}`;
             return `<tr><td><a href="${o.link}" target="_blank" rel="noopener">${o.fuente}</a></td><td class="txt">${o.tipo === 'mensual' ? 'Mensual' : o.tipo === 'anual' ? 'Año' : 'Acumulada'} ${per}</td>
-              <td>${pct(o.oficial, dec)}</td><td>${pct(o.reponderado, dec)}${dif(o.reponderado)}</td><td><b>${o.mecopol == null ? '—' : pct(o.mecopol, dec)}</b>${dif(o.mecopol)}</td></tr>`; }).join('')}
+              <td data-l="INDEC oficial">${pct(o.oficial, dec)}</td><td data-l="Su estimación">${pct(o.reponderado, dec)}${dif(o.reponderado)}</td><td data-l="MECOPOL"><b>${o.mecopol == null ? '—' : pct(o.mecopol, dec)}</b>${dif(o.mecopol)}</td></tr>`; }).join('')}
           </tbody></table></div></div>` : ''}
       </section>` : ''}
 
@@ -489,21 +548,35 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
         <div><h3>Series</h3><p><code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales del IPC.</p></div>
       </footer>`;
 
+    // ---- navegación ----
+    const enlaces = [...document.querySelectorAll('#secs a')];
+    enlaces[0].textContent = Mayus(mesL(M));
+    enlaces.forEach(a => { a.hidden = !document.getElementById(a.dataset.s); });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => {
+        if (!e.isIntersecting) return;
+        enlaces.forEach(a => {
+          if (a.dataset.s !== e.target.id) return a.removeAttribute('aria-current');
+          a.setAttribute('aria-current', 'true');
+          if (secs.scrollWidth > secs.clientWidth) secs.scrollLeft = a.offsetLeft - secs.offsetLeft - 12;
+        });
+      }), { rootMargin: '-30% 0px -65% 0px' });
+      enlaces.forEach(a => { const s = document.getElementById(a.dataset.s); if (s) io.observe(s); });
+    }
+
     // ---- sparklines ----
     const ult = d.serie.slice(-12);
-    const spark = (id, pares, dec, rgb) => {
+    const spark = (id, pares, dec) => {
       const el = document.getElementById(id);
       if (!el || pares.length < 3) return;
       nuevo(el, {
-        grid: { left: 1, right: 8, top: 6, bottom: 3 },
+        grid: { left: 1, right: 8, top: 6, bottom: 4 },
         tooltip: Object.assign(tip(), { axisPointer: { type: 'none' }, formatter: p => `${etq(p[0].name)}: <b>${pct(p[0].value, dec)}</b>` }),
         xAxis: { type: 'category', data: pares.map(p => p[0]), show: false, boundaryGap: false },
         yAxis: { type: 'value', show: false, scale: true },
-        series: [{ type: 'line', data: pares.map(p => p[1]), symbol: 'none', smooth: 0.22,
-          lineStyle: { width: 1.8, color: `rgb(${rgb})`, shadowColor: `rgba(${rgb},.5)`, shadowBlur: 10 },
-          areaStyle: { color: deg(rgb, 0.28) },
-          markPoint: { symbol: 'circle', symbolSize: 6, label: { show: false },
-            itemStyle: { color: '#fff', borderColor: `rgb(${rgb})`, borderWidth: 2, shadowColor: `rgba(${rgb},.9)`, shadowBlur: 10 },
+        series: [{ type: 'line', data: pares.map(p => p[1]), symbol: 'none',
+          lineStyle: { width: 2, color: BORDO },
+          markPoint: { symbol: 'rect', symbolSize: 7, label: { show: false }, itemStyle: { color: BORDO },
             data: [{ coord: [pares.length - 1, pares[pares.length - 1][1]] }] } }],
       });
     };
@@ -513,73 +586,62 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
     const ytd = d.serie.filter(x => x.fecha.slice(0, 4) === anio)
       .map(x => { acc *= 1 + x.mensual / 100; return [x.fecha, +((acc - 1) * 100).toFixed(2)]; });
     if (ytd.length) ytd[ytd.length - 1][1] = k.acum_anio;
-    spark('sp1', ult.map(x => [x.fecha, x.mensual]), 2, RGB_AC);
-    spark('sp2', ult.map(x => [x.fecha, x.interanual]), 1, RGB_N);
-    spark('sp3', ytd, 1, RGB_N);
-    spark('sp4', d.serie.map(x => [x.fecha, x.acumulada]), 0, RGB_N);
+    spark('sp2', ult.map(x => [x.fecha, x.interanual]), 1);
+    spark('sp3', ytd, 1);
+    spark('sp4', d.serie.map(x => [x.fecha, x.acumulada]), 0);
 
     // ---- serie ----
     const xs = d.serie.map(x => x.fecha);
-    const ch = nuevo(document.getElementById('ch-serie'), {});
+    const elSerie = document.getElementById('ch-serie');
+    const ch = nuevo(elSerie, {});
     const dibujar = medida => {
       const ys = d.serie.map(x => x[medida]), dec = medida === 'mensual' ? 2 : 1, ultI = ys.length - 1;
       const barras = medida === 'mensual';
+      elSerie.setAttribute('aria-label', `IPC nacional, ${medida}, de ${etq(xs[0])} a ${etq(xs[ultI])}. Último dato: ${pct(ys[ultI], dec)}.`);
       const serie = barras ? {
-        type: 'bar', data: ys.map((v, i) => ({ value: v, itemStyle: i === ultI
-          ? { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#ff8bae' }, { offset: 1, color: 'rgba(232,90,134,.55)' }]),
-              borderRadius: [4, 4, 0, 0], shadowColor: 'rgba(232,90,134,.55)', shadowBlur: 18 }
-          : { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(198,206,222,.72)' }, { offset: 1, color: 'rgba(198,206,222,.32)' }]),
-              borderRadius: [4, 4, 0, 0] } })),
-        barWidth: '62%',
-        label: { show: true, position: 'top', fontFamily: T.num, fontSize: 11, color: T.fg2,
+        type: 'bar', data: ys.map((v, i) => ({ value: v, itemStyle: { color: i === ultI ? BORDO : HIST } })),
+        barWidth: '68%',
+        label: { show: true, position: 'top', fontFamily: FONT, fontSize: 12, fontWeight: 600, color: NEGRO,
           formatter: p => (p.dataIndex === 0 || p.dataIndex === ultI) ? nf(p.value, 1) : '' },
       } : {
-        type: 'line', data: ys, symbol: 'none', lineStyle: { width: 2.8, color: T.accent, shadowColor: 'rgba(232,90,134,.5)', shadowBlur: 14 },
-        areaStyle: { color: deg(RGB_AC, 0.3) },
-        markPoint: { symbol: 'circle', symbolSize: 9, itemStyle: { color: '#fff', borderColor: T.accent, borderWidth: 2.5, shadowColor: 'rgba(232,90,134,.9)', shadowBlur: 12 },
-          label: { show: true, position: 'top', color: T.fg, fontFamily: T.num, fontSize: 11, formatter: () => pct(ys[ultI], dec) },
+        type: 'line', data: ys, symbol: 'none', lineStyle: { width: 3, color: BORDO },
+        markPoint: { symbol: 'rect', symbolSize: 9, itemStyle: { color: BORDO },
+          label: { show: true, position: 'top', color: NEGRO, fontFamily: FONT, fontSize: 12, fontWeight: 600, formatter: () => pct(ys[ultI], dec) },
           data: [{ coord: [ultI, ys[ultI]] }] },
       };
       ch.setOption({
         grid: { left: 4, right: 24, top: 28, bottom: 4, containLabel: true },
-        tooltip: Object.assign(tip(), barras ? { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(255,255,255,.055)' } } } : {},
+        tooltip: Object.assign(tip(), barras ? { axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(26,10,16,.07)' } } } : {},
           { formatter: p => `${largo(p[0].name)}<br>${medida[0].toUpperCase() + medida.slice(1)}: <b>${pct(p[0].value, dec)}</b>` }),
-        xAxis: ejeX({ type: 'category', data: xs, boundaryGap: barras, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
-        yAxis: ejeY({}),
+        xAxis: ejeX(PAPEL, { type: 'category', data: xs, boundaryGap: barras, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
+        yAxis: ejeY(PAPEL, {}),
         series: [serie],
       }, { replaceMerge: ['series', 'xAxis'] });
     };
     dibujar('mensual');
-    document.getElementById('sel').addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b) return;
-      e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
-      dibujar(b.dataset.v);
-    });
+    selector('sel', dibujar);
 
     // ---- canasta de hoy ----
     if (d.reponderado) {
-      const RS = d.reponderado.serie, chR = nuevo(document.getElementById('ch-rep'), {});
+      const RS = d.reponderado.serie, elRep = document.getElementById('ch-rep'), chR = nuevo(elRep, {});
       const dibR = med => {
-        const dec = med === 'mensual' ? 2 : 1;
+        const dec = 1, u = RS[RS.length - 1];   // la serie de la canasta viene con un decimal
+        elRep.setAttribute('aria-label', `Inflación ${med}, IPC oficial y canasta 2017/18. Último dato: oficial ${pct(u.oficial[med], dec)}, canasta 2017/18 ${pct(u.reponderado[med], dec)}.`);
         chR.setOption({
           grid: { left: 4, right: 60, top: 24, bottom: 4, containLabel: true },
-          tooltip: Object.assign(tip(), { formatter: p => `${largo(p[0].name)}<br>` + p.map(x =>
+          tooltip: Object.assign(tip(TINTA), { formatter: p => `${largo(p[0].name)}<br>` + p.map(x =>
             `${x.seriesName}: <b>${pct(x.value, dec)}</b>`).join('<br>') }),
-          xAxis: ejeX({ type: 'category', data: RS.map(x => x.fecha), boundaryGap: false, axisLabel: { color: T.fg3, fontFamily: T.num, fontSize: 11, formatter: etq, hideOverlap: true } }),
-          yAxis: ejeY({}),
+          xAxis: ejeX(TINTA, { type: 'category', data: RS.map(x => x.fecha), boundaryGap: false, axisLabel: { color: TINTA.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
+          yAxis: ejeY(TINTA, {}),
           series: [
-            { name: 'IPC oficial', type: 'line', symbol: 'none', data: RS.map(x => x.oficial[med]), lineStyle: { width: 1.8, color: T.fg2 } },
-            { name: 'Canasta 2017/18', type: 'line', symbol: 'none', data: RS.map(x => x.reponderado[med]), lineStyle: { width: 2.8, color: T.accent, shadowColor: 'rgba(232,90,134,.5)', shadowBlur: 14 },
-              endLabel: { show: true, color: T.fg, fontFamily: T.num, fontSize: 11, formatter: p => pct(p.value, dec) } },
+            { name: 'IPC oficial', type: 'line', symbol: 'none', data: RS.map(x => x.oficial[med]), lineStyle: { width: 2, color: CREMA } },
+            { name: 'Canasta 2017/18', type: 'line', symbol: 'none', data: RS.map(x => x.reponderado[med]), lineStyle: { width: 3, color: ROSA },
+              endLabel: { show: true, color: CREMA, fontFamily: FONT, fontSize: 12, fontWeight: 600, formatter: p => pct(p.value, dec) } },
           ],
         }, { replaceMerge: ['series'] });
       };
       dibR('acumulada');
-      document.getElementById('sel-rep').addEventListener('click', e => {
-        const b = e.target.closest('button'); if (!b) return;
-        e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
-        dibR(b.dataset.v);
-      });
+      selector('sel-rep', dibR);
     }
 
     // ---- regiones ----
@@ -593,9 +655,11 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
         tb.innerHTML = ordRub.map(rub => {
           const vals = RG.map(r => r.rubros && r.rubros[rub] ? r.rubros[rub][med] : null);
           const ok = vals.filter(v => v != null), mn = Math.min(...ok), mx = Math.max(...ok);
+          // la máxima de la fila va en bordó lleno; el resto, en cuatro tintas donde el texto negro se sigue leyendo
           const cel = v => { if (v == null) return '<td class="cel">—</td>';
-            const t = mx > mn ? (v - mn) / (mx - mn) : 0.5, a = (0.12 + 0.78 * t).toFixed(2);
-            return `<td class="cel${v === mx ? ' max' : ''}" style="background:rgba(232,90,134,${a})">${pct(v, dec)}</td>`; };
+            if (v === mx && mx > mn) return `<td class="cel max">${pct(v, dec)}</td>`;
+            const t = mx > mn ? (v - mn) / (mx - mn) : 0.5, a = [0.08, 0.24, 0.4, 0.56][Math.min(3, Math.floor(t * 4))];
+            return `<td class="cel" style="background:rgba(149,11,50,${a})">${pct(v, dec)}</td>`; };
           const n = nacRub[rub] ? nacRub[rub][med] : null;
           return `<tr><td>${corto[rub] || rub}</td><td class="nac">${pct(n, dec)}</td>${vals.map(cel).join('')}</tr>`;
         }).join('');
@@ -605,8 +669,12 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
         echarts.registerMap('regiones', geo);
         const pos = Object.fromEntries(geo.features.map(f => [f.properties.name, [f.properties.cx, f.properties.cy]]));
         pos.Patagonia = [-68.5, -44.5]; pos.Pampeana = [-61.6, -35.6]; pos.Cuyo = [-68.6, -32.6];
-        const ch = nuevo(document.getElementById('ch-mapa'), {});
+        const elMapa = document.getElementById('ch-mapa');
+        const ch = nuevo(elMapa, {});
+        const esChico = () => elMapa.clientWidth < 480;
+        let medActual = 'mensual', chicoActual = esChico();
         const dibujar = med => {
+          medActual = med; chicoActual = esChico();
           const dec = med === 'mensual' ? dM : med === 'interanual' ? 1 : 0, vals = RG.map(r => r[med]);
           const mn = Math.min(...vals), mx = Math.max(...vals);
           const ordenadas = [...RG].sort((a, b) => b[med] - a[med]);
@@ -619,32 +687,33 @@ code { font-family: var(--font-num); font-size: 12px; background: rgba(255,255,2
           document.getElementById('lectura-reg').innerHTML = `${queMide}, la inflación más alta fue la de <b>${alto.region}</b>, con <b>${pct(alto[med], dec)}</b>${masSubio(alto)}, y la más baja la de <b>${bajo.region}</b>, con <b>${pct(bajo[med], dec)}</b>. La diferencia entre las dos es de ${nf(alto[med] - bajo[med], dec === 2 ? 2 : 1)} puntos.`;
           calor(med, dec);
           ch.setOption({
-            tooltip: { trigger: 'item', backgroundColor: 'rgba(18,20,27,.82)', borderColor: 'rgba(255,255,255,.14)', extraCssText: VIDRIO, textStyle: { color: T.fg, fontSize: 12, fontFamily: T.ui },
+            tooltip: Object.assign({}, TIP, { trigger: 'item',
               formatter: p => { const r = RG.find(x => x.region === p.name); if (!r) return '';
-                return `<b>${r.region}</b><br>${etq(MR)}: <b>${pct(r.mensual, dM)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } },
-            visualMap: { type: 'continuous', min: mn, max: mx === mn ? mn + 0.01 : mx, calculable: false, orient: 'horizontal', left: 8, bottom: 8, itemWidth: 10, itemHeight: 120,
-              text: [pct(mx, dec), pct(mn, dec)], textStyle: { color: T.fg2, fontFamily: T.num, fontSize: 11 },
-              inRange: { color: ['#ffc9da', '#ff8bae', '#e85a86', '#9e1f47'] }, seriesIndex: 0 },
-            geo: { map: 'regiones', roam: false, aspectScale: 0.82, layoutCenter: ['50%', window.innerWidth < 560 ? '48%' : '46%'], layoutSize: window.innerWidth < 560 ? '134%' : '86%',
-              itemStyle: { areaColor: 'rgba(255,255,255,.055)', borderColor: 'rgba(10,11,16,.75)', borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
+                return `<b>${r.region}</b><br>${etq(MR)}: <b>${pct(r.mensual, dM)}</b> · interanual ${pct(r.interanual, 1)}<br>Desde nov-23: ${pct(r.acum_gobierno, 0)}`; } }),
+            visualMap: { type: 'piecewise', splitNumber: 4, min: mn, max: mx === mn ? mn + 0.01 : mx, selectedMode: false, showLabel: false, itemSymbol: 'rect', orient: 'horizontal', left: 8, bottom: 8, itemWidth: 28, itemHeight: 10, itemGap: 0,
+              text: [`\u00a0\u00a0${pct(mx, dec)}`, `${pct(mn, dec)}\u00a0\u00a0`], textStyle: { color: NEGRO, fontFamily: FONT, fontSize: 12 },
+              inRange: { color: ['#f4c9d6', '#e77f9f', '#c02a57', '#6d0623'] }, seriesIndex: 0 },
+            geo: { map: 'regiones', roam: false, aspectScale: 0.82, layoutCenter: ['50%', chicoActual ? '48%' : '46%'], layoutSize: chicoActual ? '130%' : '92%',
+              itemStyle: { areaColor: '#eadfd3', borderColor: CREMA, borderWidth: 1.5 }, emphasis: { disabled: true }, silent: true },
             series: [
               { type: 'map', geoIndex: 0, data: RG.map(r => ({ name: r.region, value: r[med] })) },
-              { type: 'lines', coordinateSystem: 'geo', silent: true, symbol: 'none', lineStyle: { color: T.fg2, width: 1 },
+              { type: 'lines', coordinateSystem: 'geo', silent: true, symbol: 'none', lineStyle: { color: NEGRO, width: 1 },
                 data: [{ coords: [[-58.45, -34.62], [centro.GBA[0] - 0.6, centro.GBA[1] + 0.3]] }] },
-              { type: 'scatter', coordinateSystem: 'geo', symbolSize: 0, silent: true,
+              { type: 'scatter', coordinateSystem: 'geo', symbolSize: 0, silent: true, itemStyle: { opacity: 1 },
                 data: RG.map(r => ({ name: r.region, value: [...(centro[r.region] || pos[r.region]), r[med]] })),
-                label: { show: true, formatter: p => `{n|${p.name}}\n{v|${pct(p.value[2], dec)}}`, align: 'center',
-                  rich: { n: { fontSize: window.innerWidth < 560 ? 10 : 11, fontFamily: T.ui, fontWeight: 600, lineHeight: 15, color: '#fff', textBorderColor: '#000', textBorderWidth: 3 },
-                          v: { fontSize: window.innerWidth < 560 ? 11 : 13, fontFamily: T.num, fontWeight: 600, lineHeight: 16, color: '#fff', textBorderColor: '#000', textBorderWidth: 3 } } } },
+                label: { show: true, formatter: p => `{n|${p.name}}
+{v|${pct(p.value[2], dec)}}`, align: 'center',
+                  // etiqueta plana de papel: se lee igual sobre cualquier tinta del mapa y sobre el fondo
+                  backgroundColor: CREMA, borderColor: NEGRO, borderWidth: 1, padding: [3, 5, 2],
+                  rich: { n: { fontSize: chicoActual ? 11 : 12, fontFamily: FONT, fontWeight: 600, lineHeight: 14, color: NEGRO },
+                          v: { fontSize: chicoActual ? 13 : 14, fontFamily: FONT, fontWeight: 800, lineHeight: 17, color: NEGRO } } } },
             ],
           }, { replaceMerge: ['series'] });
         };
         dibujar('mensual');
-        document.getElementById('sel-reg').addEventListener('click', e => {
-          const b = e.target.closest('button'); if (!b) return;
-          e.currentTarget.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
-          dibujar(b.dataset.v);
-        });
+        selector('sel-reg', dibujar);
+        // al girar el teléfono o cambiar de ancho, el mapa recalcula tamaño y etiquetas
+        new ResizeObserver(() => { if (esChico() !== chicoActual) dibujar(medActual); }).observe(elMapa);
       }).catch(err => { document.getElementById('ch-mapa').textContent = 'No se pudo cargar el mapa.'; console.error(err); });
     }
 
