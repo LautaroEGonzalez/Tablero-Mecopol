@@ -92,25 +92,25 @@ h1 { margin: 0; font: 800 19px/1.2 var(--ui); text-wrap: balance; }
   container-type: inline-size;
   background: var(--bordo); color: var(--crema); padding-inline: var(--m); overflow: hidden;
 }
-.hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); gap: 40px; align-items: stretch; min-height: 520px; }
+.hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); gap: 40px; align-items: stretch; min-height: 340px; }
 .num {
   --n: 4; align-self: end; margin: 0 0 -.041em; padding: 0;
-  font: 400 min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 430px)/1.16 var(--display);
+  font: 400 min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 270px)/1.16 var(--display);
   white-space: nowrap;
 }
 .num small { font-size: .5em; color: var(--rosa); }
-.hero-der { display: flex; flex-direction: column; padding-top: 28px; text-align: right; }
-.hero h2 { margin: 0 0 12px; font: 400 clamp(38px, 4cqw, 58px)/1.06 var(--display); text-wrap: balance; }
-.hero-der p { margin: 0; font-size: 17px; line-height: 1.4; }
-.mandato { margin-top: 20px; display: grid; gap: 6px; font-size: 13px; }
+.hero-der { display: flex; flex-direction: column; padding-top: 22px; text-align: right; }
+.hero h2 { margin: 0 0 12px; font: 400 clamp(32px, 3.2cqw, 46px)/1.06 var(--display); text-wrap: balance; }
+.hero-der p { margin: 0; font-size: 16px; line-height: 1.4; }
+.mandato { margin-top: 14px; display: grid; gap: 6px; font-size: 13px; }
 .mandato .barra { height: 6px; background: var(--bordo-osc); }
 .mandato .barra i { display: block; height: 100%; background: var(--crema); }
 .mandato .txt { display: flex; justify-content: space-between; gap: 12px; }
 .mandato .txt span:first-child, .mandato .txt span:last-child { white-space: nowrap; }
 .mandato b { font-weight: 700; }
-.anio { margin-top: auto; padding-top: 28px; }
+.anio { margin-top: auto; padding: 18px 0 20px; }
 .anio .ejes { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-.barras { display: flex; align-items: flex-end; gap: 6px; height: 170px; }
+.barras { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
 .barras i { flex: 1; background: var(--rosa-hist); transform-origin: bottom; }
 .barras i.ult { background: var(--crema); }
 @media (prefers-reduced-motion: no-preference) {
@@ -120,12 +120,12 @@ h1 { margin: 0; font: 800 19px/1.2 var(--ui); text-wrap: balance; }
 @media (max-width: 1040px) {
   .hero-in { display: flex; flex-direction: column; gap: 0; min-height: 0; }
   .hero-der { display: contents; text-align: left; }
-  .hero h2 { order: 1; margin: 24px 0 0; }
-  .num { order: 2; align-self: flex-start; margin: 0; padding: 4px 0 2px; font-size: min(calc(98cqw / (.44 * var(--n) + .25)), 300px); }
+  .hero h2 { order: 1; margin: 18px 0 0; }
+  .num { order: 2; align-self: flex-start; margin: 0; padding: 4px 0 2px; font-size: min(calc(72cqw / (.44 * var(--n) + .25)), 170px); }
   .hero-der > p { order: 3; }
   .mandato { order: 4; }
-  .anio { order: 5; margin-top: 0; padding-top: 22px; }
-  .barras { height: 110px; }
+  .anio { order: 5; margin-top: 0; padding: 16px 0 18px; }
+  .barras { height: 56px; }
 }
 
 /* ---- las otras cifras ---- */
