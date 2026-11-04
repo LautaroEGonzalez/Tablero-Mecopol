@@ -30,7 +30,7 @@ colors:
 typography:
   cifra-mes:
     fontFamily: "Anton, Arial Narrow, sans-serif"
-    fontSize: "min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 430px)"
+    fontSize: "min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 270px)"
     fontWeight: 400
     lineHeight: 1.16
   cifra:
@@ -224,10 +224,10 @@ Cuatro tintas de afiche (bordó, crema, negro y rosa) y unos pocos tintes sólid
 **Character:** Anton es la letra de cartel: angosta, un solo peso, hecha para verse de lejos. Public Sans es la voz institucional que explica, etiqueta y sostiene las tablas sin competir.
 
 ### Hierarchy
-- **Cifra del mes** (Anton 400, se ajusta a la cantidad de caracteres hasta 430px, 1,16): solo la inflación del último mes en el afiche. Hasta 300px en pantallas angostas. El signo % va a la mitad del tamaño y en rosa.
+- **Cifra del mes** (Anton 400, se ajusta a la cantidad de caracteres hasta 270px, 1,16): solo la inflación del último mes en el afiche. Hasta 170px en pantallas angostas. El signo % va a la mitad del tamaño y en rosa.
 - **Cifra** (Anton 400, clamp de 52 a 88px, 1,16): las cifras de la fila bajo el afiche. Baja a un clamp de 44 a 76px hasta 1040px.
 - **Cifra comparada** (Anton 400, clamp de 38 a 50px, 1,16): los cuatro valores de la canasta.
-- **Headline de afiche** (Anton 400, clamp de 38 a 58px, 1,06): título del mes dentro del campo bordó.
+- **Headline de afiche** (Anton 400, clamp de 32 a 46px, 1,06): título del mes dentro del campo bordó.
 - **Headline** (Anton 400, clamp de 38 a 62px, 1,08): títulos de sección, en la tinta de acento del contexto.
 - **Title** (Anton 400, clamp de 26 a 34px, 1,15; 24px en el pie): subtítulos de sección y del pie.
 - **Banda** (Public Sans 800, 19px, 1,2): el título del tablero en la banda fija. Es lo único titular que no va en Anton, porque la banda no compite con el afiche.
@@ -243,7 +243,7 @@ Cuatro tintas de afiche (bordó, crema, negro y rosa) y unos pocos tintes sólid
 
 ## Layout
 
-Una sola columna de bandas a todo el ancho, con margen lateral fluido de 16 a 48px que centra el contenido en 1344px. El afiche se divide en cifra flexible y columna de 300 a 400px, con 520px de alto mínimo. La fila de cifras reparte tres partes iguales y una de 1,2 para el bloque negro, que llega hasta el borde de la pantalla. Las secciones separan sus bloques con 22px; las columnas internas, con 36px.
+Una sola columna de bandas a todo el ancho, con margen lateral fluido de 16 a 48px que centra el contenido en 1344px. El afiche se divide en cifra flexible y columna de 300 a 400px, con 340px de alto mínimo. La fila de cifras reparte tres partes iguales y una de 1,2 para el bloque negro, que llega hasta el borde de la pantalla. Las secciones separan sus bloques con 22px; las columnas internas, con 36px.
 
 El orden se rearma por ancho: a 1040px o menos el afiche pasa a una columna con el título arriba de la cifra, las cifras van de a dos y solo queda fija la fila de secciones, que se desliza en horizontal. A 900px se apilan regiones y canasta, y los valores de la canasta van de a dos. A 700px aparece la indicación de deslizar y las tablas anchas mantienen fija la primera columna. A 560px los gráficos bajan de 400 a 300px, el mapa de 600 a 480px, y la tabla de otras estimaciones se rearma como fichas.
 
@@ -275,7 +275,7 @@ No hay tarjetas. La caja de contenido es un filete superior de 3px en la tinta d
 Banda fija en bordó con la placa del logo (50px), el título del tablero y las secciones en Public Sans 14px, con 44px de alto mínimo. El hover marca un subrayado crema de 2px; la sección activa, uno de 3px y peso 700. A 1040px o menos se esconde la fila del logo y queda fija solo la de secciones.
 
 ### Afiche (signature)
-El campo bordó a sangre con la cifra del mes en crema. A la derecha, alineados a la derecha: título del mes, comparación con el mes anterior, barra del mandato de 6px y 13 barras en rosa medio con la última en crema. Las barras suben desde la base en .7s (`cubic-bezier(.16, 1, .3, 1)`), con 35ms de escalonado por barra.
+El campo bordó a sangre con la cifra del mes en crema. A la derecha, alineados a la derecha: título del mes, comparación con el mes anterior, barra del mandato de 6px y 13 barras en rosa medio con la última en crema. Las barras suben desde la base en .7s (`cubic-bezier(.16, 1, .3, 1)`), con 35ms de escalonado por barra. El afiche es compacto a propósito: mide unos 360px de alto en escritorio y las barras 80px (56px en pantallas angostas), para que la fila de cifras entre en la primera pantalla. Un afiche de más de media pantalla se probó y resultó excesivo, sobre todo en el teléfono.
 
 ### Fila de cifras
 Cifras oficiales en bordó sobre papel, con comparación y una línea mínima de 2px en bordó terminada en un marcador cuadrado. La última celda es el bloque negro de la estimación, en rosa, que lleva escrito que no es dato oficial y enlaza a su método.
