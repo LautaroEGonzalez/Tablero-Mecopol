@@ -2423,6 +2423,774 @@
    }
   ]
  },
+ "actividad": {
+  "base": "2019-01",
+  "serie": [
+   {
+    "fecha": "2019-01",
+    "sal_privado": 100.0,
+    "sal_publico": 100.0,
+    "sal_total": 100.0,
+    "emae": 100.0,
+    "comercio": 100.0
+   },
+   {
+    "fecha": "2019-02",
+    "sal_privado": 99.0,
+    "sal_publico": 98.8,
+    "sal_total": 98.9,
+    "emae": 101.7,
+    "comercio": 99.1
+   },
+   {
+    "fecha": "2019-03",
+    "sal_privado": 98.0,
+    "sal_publico": 99.6,
+    "sal_total": 98.6,
+    "emae": 100.7,
+    "comercio": 97.6
+   },
+   {
+    "fecha": "2019-04",
+    "sal_privado": 97.3,
+    "sal_publico": 98.2,
+    "sal_total": 97.6,
+    "emae": 100.8,
+    "comercio": 96.6
+   },
+   {
+    "fecha": "2019-05",
+    "sal_privado": 98.4,
+    "sal_publico": 97.6,
+    "sal_total": 98.1,
+    "emae": 102.6,
+    "comercio": 95.8
+   },
+   {
+    "fecha": "2019-06",
+    "sal_privado": 98.4,
+    "sal_publico": 97.0,
+    "sal_total": 97.9,
+    "emae": 101.9,
+    "comercio": 95.1
+   },
+   {
+    "fecha": "2019-07",
+    "sal_privado": 100.4,
+    "sal_publico": 100.8,
+    "sal_total": 100.5,
+    "emae": 103.2,
+    "comercio": 94.9
+   },
+   {
+    "fecha": "2019-08",
+    "sal_privado": 99.2,
+    "sal_publico": 98.7,
+    "sal_total": 99.0,
+    "emae": 102.5,
+    "comercio": 94.2
+   },
+   {
+    "fecha": "2019-09",
+    "sal_privado": 96.2,
+    "sal_publico": 96.5,
+    "sal_total": 96.3,
+    "emae": 99.4,
+    "comercio": 93.8
+   },
+   {
+    "fecha": "2019-10",
+    "sal_privado": 96.6,
+    "sal_publico": 96.2,
+    "sal_total": 96.5,
+    "emae": 101.7,
+    "comercio": 93.6
+   },
+   {
+    "fecha": "2019-11",
+    "sal_privado": 95.3,
+    "sal_publico": 93.9,
+    "sal_total": 94.8,
+    "emae": 99.7,
+    "comercio": 93.2
+   },
+   {
+    "fecha": "2019-12",
+    "sal_privado": 93.2,
+    "sal_publico": 93.2,
+    "sal_total": 93.2,
+    "emae": 99.0,
+    "comercio": 93.2
+   },
+   {
+    "fecha": "2020-01",
+    "sal_privado": 99.0,
+    "sal_publico": 93.6,
+    "sal_total": 97.0,
+    "emae": 99.8,
+    "comercio": 93.4
+   },
+   {
+    "fecha": "2020-02",
+    "sal_privado": 101.5,
+    "sal_publico": 94.4,
+    "sal_total": 98.9,
+    "emae": 98.8,
+    "comercio": 93.1
+   },
+   {
+    "fecha": "2020-03",
+    "sal_privado": 100.5,
+    "sal_publico": 95.1,
+    "sal_total": 98.5,
+    "emae": 89.0,
+    "comercio": 91.9
+   },
+   {
+    "fecha": "2020-04",
+    "sal_privado": 98.8,
+    "sal_publico": 94.2,
+    "sal_total": 97.1,
+    "emae": 75.1,
+    "comercio": 90.1
+   },
+   {
+    "fecha": "2020-05",
+    "sal_privado": 97.0,
+    "sal_publico": 93.3,
+    "sal_total": 95.7,
+    "emae": 83.0,
+    "comercio": 88.5
+   },
+   {
+    "fecha": "2020-06",
+    "sal_privado": 95.0,
+    "sal_publico": 92.0,
+    "sal_total": 93.9,
+    "emae": 87.9,
+    "comercio": 87.9
+   },
+   {
+    "fecha": "2020-07",
+    "sal_privado": 94.4,
+    "sal_publico": 91.3,
+    "sal_total": 93.3,
+    "emae": 89.4,
+    "comercio": 87.4
+   },
+   {
+    "fecha": "2020-08",
+    "sal_privado": 93.8,
+    "sal_publico": 89.6,
+    "sal_total": 92.3,
+    "emae": 91.1,
+    "comercio": 87.0
+   },
+   {
+    "fecha": "2020-09",
+    "sal_privado": 93.2,
+    "sal_publico": 89.9,
+    "sal_total": 92.0,
+    "emae": 92.4,
+    "comercio": 87.5
+   },
+   {
+    "fecha": "2020-10",
+    "sal_privado": 94.7,
+    "sal_publico": 89.3,
+    "sal_total": 92.7,
+    "emae": 94.4,
+    "comercio": 87.4
+   },
+   {
+    "fecha": "2020-11",
+    "sal_privado": 94.2,
+    "sal_publico": 88.1,
+    "sal_total": 92.0,
+    "emae": 95.3,
+    "comercio": 87.5
+   },
+   {
+    "fecha": "2020-12",
+    "sal_privado": 92.0,
+    "sal_publico": 86.8,
+    "sal_total": 90.1,
+    "emae": 96.9,
+    "comercio": 88.3
+   },
+   {
+    "fecha": "2021-01",
+    "sal_privado": 92.0,
+    "sal_publico": 85.4,
+    "sal_total": 89.6,
+    "emae": 98.9,
+    "comercio": 88.6
+   },
+   {
+    "fecha": "2021-02",
+    "sal_privado": 93.4,
+    "sal_publico": 85.6,
+    "sal_total": 90.5,
+    "emae": 97.9,
+    "comercio": 88.9
+   },
+   {
+    "fecha": "2021-03",
+    "sal_privado": 92.6,
+    "sal_publico": 87.9,
+    "sal_total": 90.9,
+    "emae": 99.6,
+    "comercio": 90.5
+   },
+   {
+    "fecha": "2021-04",
+    "sal_privado": 93.2,
+    "sal_publico": 85.7,
+    "sal_total": 90.5,
+    "emae": 98.7,
+    "comercio": 93.0
+   },
+   {
+    "fecha": "2021-05",
+    "sal_privado": 93.4,
+    "sal_publico": 85.4,
+    "sal_total": 90.4,
+    "emae": 98.3,
+    "comercio": 94.7
+   },
+   {
+    "fecha": "2021-06",
+    "sal_privado": 92.1,
+    "sal_publico": 86.1,
+    "sal_total": 89.9,
+    "emae": 100.0,
+    "comercio": 95.9
+   },
+   {
+    "fecha": "2021-07",
+    "sal_privado": 94.0,
+    "sal_publico": 88.6,
+    "sal_total": 92.0,
+    "emae": 100.1,
+    "comercio": 96.8
+   },
+   {
+    "fecha": "2021-08",
+    "sal_privado": 94.8,
+    "sal_publico": 89.3,
+    "sal_total": 92.8,
+    "emae": 101.3,
+    "comercio": 97.8
+   },
+   {
+    "fecha": "2021-09",
+    "sal_privado": 94.9,
+    "sal_publico": 91.9,
+    "sal_total": 93.8,
+    "emae": 102.0,
+    "comercio": 98.5
+   },
+   {
+    "fecha": "2021-10",
+    "sal_privado": 95.1,
+    "sal_publico": 92.1,
+    "sal_total": 94.0,
+    "emae": 101.4,
+    "comercio": 98.8
+   },
+   {
+    "fecha": "2021-11",
+    "sal_privado": 96.9,
+    "sal_publico": 92.2,
+    "sal_total": 95.2,
+    "emae": 102.9,
+    "comercio": 99.6
+   },
+   {
+    "fecha": "2021-12",
+    "sal_privado": 94.6,
+    "sal_publico": 91.2,
+    "sal_total": 93.4,
+    "emae": 106.0,
+    "comercio": 100.2
+   },
+   {
+    "fecha": "2022-01",
+    "sal_privado": 95.3,
+    "sal_publico": 90.4,
+    "sal_total": 93.5,
+    "emae": 104.9,
+    "comercio": 100.4
+   },
+   {
+    "fecha": "2022-02",
+    "sal_privado": 94.6,
+    "sal_publico": 88.4,
+    "sal_total": 92.3,
+    "emae": 106.7,
+    "comercio": 101.0
+   },
+   {
+    "fecha": "2022-03",
+    "sal_privado": 93.4,
+    "sal_publico": 92.8,
+    "sal_total": 93.2,
+    "emae": 106.4,
+    "comercio": 101.3
+   },
+   {
+    "fecha": "2022-04",
+    "sal_privado": 93.0,
+    "sal_publico": 89.8,
+    "sal_total": 91.9,
+    "emae": 107.8,
+    "comercio": 101.9
+   },
+   {
+    "fecha": "2022-05",
+    "sal_privado": 94.7,
+    "sal_publico": 91.2,
+    "sal_total": 93.4,
+    "emae": 107.6,
+    "comercio": 102.9
+   },
+   {
+    "fecha": "2022-06",
+    "sal_privado": 94.5,
+    "sal_publico": 90.6,
+    "sal_total": 93.1,
+    "emae": 109.1,
+    "comercio": 103.7
+   },
+   {
+    "fecha": "2022-07",
+    "sal_privado": 92.7,
+    "sal_publico": 90.5,
+    "sal_total": 91.9,
+    "emae": 108.0,
+    "comercio": 104.3
+   },
+   {
+    "fecha": "2022-08",
+    "sal_privado": 93.8,
+    "sal_publico": 88.2,
+    "sal_total": 91.7,
+    "emae": 107.2,
+    "comercio": 105.1
+   },
+   {
+    "fecha": "2022-09",
+    "sal_privado": 93.4,
+    "sal_publico": 89.5,
+    "sal_total": 92.0,
+    "emae": 106.7,
+    "comercio": 105.7
+   },
+   {
+    "fecha": "2022-10",
+    "sal_privado": 92.5,
+    "sal_publico": 89.2,
+    "sal_total": 91.3,
+    "emae": 105.4,
+    "comercio": 106.1
+   },
+   {
+    "fecha": "2022-11",
+    "sal_privado": 94.7,
+    "sal_publico": 89.9,
+    "sal_total": 92.9,
+    "emae": 104.8,
+    "comercio": 106.3
+   },
+   {
+    "fecha": "2022-12",
+    "sal_privado": 94.1,
+    "sal_publico": 93.3,
+    "sal_total": 93.9,
+    "emae": 105.2,
+    "comercio": 106.2
+   },
+   {
+    "fecha": "2023-01",
+    "sal_privado": 92.9,
+    "sal_publico": 91.5,
+    "sal_total": 92.4,
+    "emae": 105.8,
+    "comercio": 106.6
+   },
+   {
+    "fecha": "2023-02",
+    "sal_privado": 93.1,
+    "sal_publico": 89.1,
+    "sal_total": 91.6,
+    "emae": 106.3,
+    "comercio": 106.7
+   },
+   {
+    "fecha": "2023-03",
+    "sal_privado": 93.3,
+    "sal_publico": 96.2,
+    "sal_total": 94.4,
+    "emae": 106.8,
+    "comercio": 107.1
+   },
+   {
+    "fecha": "2023-04",
+    "sal_privado": 92.0,
+    "sal_publico": 92.4,
+    "sal_total": 92.1,
+    "emae": 104.4,
+    "comercio": 107.2
+   },
+   {
+    "fecha": "2023-05",
+    "sal_privado": 92.3,
+    "sal_publico": 93.0,
+    "sal_total": 92.5,
+    "emae": 103.0,
+    "comercio": 107.4
+   },
+   {
+    "fecha": "2023-06",
+    "sal_privado": 92.1,
+    "sal_publico": 93.0,
+    "sal_total": 92.4,
+    "emae": 103.3,
+    "comercio": 107.6
+   },
+   {
+    "fecha": "2023-07",
+    "sal_privado": 95.9,
+    "sal_publico": 99.1,
+    "sal_total": 97.1,
+    "emae": 105.2,
+    "comercio": 107.5
+   },
+   {
+    "fecha": "2023-08",
+    "sal_privado": 92.4,
+    "sal_publico": 93.5,
+    "sal_total": 92.8,
+    "emae": 106.2,
+    "comercio": 107.6
+   },
+   {
+    "fecha": "2023-09",
+    "sal_privado": 92.8,
+    "sal_publico": 92.0,
+    "sal_total": 92.5,
+    "emae": 105.9,
+    "comercio": 107.4
+   },
+   {
+    "fecha": "2023-10",
+    "sal_privado": 93.2,
+    "sal_publico": 92.7,
+    "sal_total": 93.0,
+    "emae": 104.6,
+    "comercio": 107.5
+   },
+   {
+    "fecha": "2023-11",
+    "sal_privado": 90.8,
+    "sal_publico": 88.6,
+    "sal_total": 90.0,
+    "emae": 103.6,
+    "comercio": 107.2
+   },
+   {
+    "fecha": "2023-12",
+    "sal_privado": 80.4,
+    "sal_publico": 74.5,
+    "sal_total": 78.2,
+    "emae": 101.2,
+    "comercio": 106.4
+   },
+   {
+    "fecha": "2024-01",
+    "sal_privado": 79.9,
+    "sal_publico": 69.2,
+    "sal_total": 76.0,
+    "emae": 101.2,
+    "comercio": 105.8
+   },
+   {
+    "fecha": "2024-02",
+    "sal_privado": 80.5,
+    "sal_publico": 70.4,
+    "sal_total": 76.8,
+    "emae": 101.8,
+    "comercio": 105.4
+   },
+   {
+    "fecha": "2024-03",
+    "sal_privado": 79.8,
+    "sal_publico": 70.4,
+    "sal_total": 76.3,
+    "emae": 100.7,
+    "comercio": 103.9
+   },
+   {
+    "fecha": "2024-04",
+    "sal_privado": 82.1,
+    "sal_publico": 69.5,
+    "sal_total": 77.5,
+    "emae": 99.8,
+    "comercio": 102.6
+   },
+   {
+    "fecha": "2024-05",
+    "sal_privado": 84.8,
+    "sal_publico": 72.3,
+    "sal_total": 80.2,
+    "emae": 101.3,
+    "comercio": 101.3
+   },
+   {
+    "fecha": "2024-06",
+    "sal_privado": 86.5,
+    "sal_publico": 71.8,
+    "sal_total": 81.2,
+    "emae": 101.4,
+    "comercio": 99.5
+   },
+   {
+    "fecha": "2024-07",
+    "sal_privado": 88.4,
+    "sal_publico": 73.7,
+    "sal_total": 83.0,
+    "emae": 104.2,
+    "comercio": 99.1
+   },
+   {
+    "fecha": "2024-08",
+    "sal_privado": 89.1,
+    "sal_publico": 74.0,
+    "sal_total": 83.6,
+    "emae": 104.7,
+    "comercio": 98.5
+   },
+   {
+    "fecha": "2024-09",
+    "sal_privado": 89.4,
+    "sal_publico": 74.3,
+    "sal_total": 83.9,
+    "emae": 104.6,
+    "comercio": 97.9
+   },
+   {
+    "fecha": "2024-10",
+    "sal_privado": 90.5,
+    "sal_publico": 75.5,
+    "sal_total": 85.0,
+    "emae": 105.5,
+    "comercio": 97.9
+   },
+   {
+    "fecha": "2024-11",
+    "sal_privado": 91.3,
+    "sal_publico": 75.8,
+    "sal_total": 85.6,
+    "emae": 106.7,
+    "comercio": 98.0
+   },
+   {
+    "fecha": "2024-12",
+    "sal_privado": 91.3,
+    "sal_publico": 75.0,
+    "sal_total": 85.4,
+    "emae": 107.2,
+    "comercio": 98.7
+   },
+   {
+    "fecha": "2025-01",
+    "sal_privado": 91.4,
+    "sal_publico": 74.1,
+    "sal_total": 85.1,
+    "emae": 107.2,
+    "comercio": 99.4
+   },
+   {
+    "fecha": "2025-02",
+    "sal_privado": 91.3,
+    "sal_publico": 75.6,
+    "sal_total": 85.6,
+    "emae": 108.6,
+    "comercio": 99.9
+   },
+   {
+    "fecha": "2025-03",
+    "sal_privado": 90.0,
+    "sal_publico": 75.3,
+    "sal_total": 84.6,
+    "emae": 105.7,
+    "comercio": 100.5
+   },
+   {
+    "fecha": "2025-04",
+    "sal_privado": 89.7,
+    "sal_publico": 74.9,
+    "sal_total": 84.3,
+    "emae": 107.9,
+    "comercio": 101.6
+   },
+   {
+    "fecha": "2025-05",
+    "sal_privado": 90.2,
+    "sal_publico": 76.2,
+    "sal_total": 85.0,
+    "emae": 107.9,
+    "comercio": 102.3
+   },
+   {
+    "fecha": "2025-06",
+    "sal_privado": 90.3,
+    "sal_publico": 75.9,
+    "sal_total": 85.0,
+    "emae": 106.8,
+    "comercio": 103.2
+   },
+   {
+    "fecha": "2025-07",
+    "sal_privado": 90.5,
+    "sal_publico": 76.2,
+    "sal_total": 85.3,
+    "emae": 107.2,
+    "comercio": 103.2
+   },
+   {
+    "fecha": "2025-08",
+    "sal_privado": 90.8,
+    "sal_publico": 76.9,
+    "sal_total": 85.7,
+    "emae": 107.9,
+    "comercio": 103.0
+   },
+   {
+    "fecha": "2025-09",
+    "sal_privado": 90.2,
+    "sal_publico": 76.2,
+    "sal_total": 85.1,
+    "emae": 108.4,
+    "comercio": 103.0
+   },
+   {
+    "fecha": "2025-10",
+    "sal_privado": 90.0,
+    "sal_publico": 75.9,
+    "sal_total": 84.8,
+    "emae": 108.4,
+    "comercio": 103.0
+   },
+   {
+    "fecha": "2025-11",
+    "sal_privado": 89.7,
+    "sal_publico": 74.9,
+    "sal_total": 84.3,
+    "emae": 108.2,
+    "comercio": 102.5
+   },
+   {
+    "fecha": "2025-12",
+    "sal_privado": 89.4,
+    "sal_publico": 73.5,
+    "sal_total": 83.6,
+    "emae": 110.4,
+    "comercio": 102.4
+   },
+   {
+    "fecha": "2026-01",
+    "sal_privado": 88.7,
+    "sal_publico": 72.8,
+    "sal_total": 82.9,
+    "emae": 110.2,
+    "comercio": 102.3
+   },
+   {
+    "fecha": "2026-02",
+    "sal_privado": 87.6,
+    "sal_publico": 72.4,
+    "sal_total": 82.0,
+    "emae": 108.0,
+    "comercio": 102.0
+   },
+   {
+    "fecha": "2026-03",
+    "sal_privado": 86.5,
+    "sal_publico": 73.5,
+    "sal_total": 81.7,
+    "emae": 110.9,
+    "comercio": 102.4
+   },
+   {
+    "fecha": "2026-04",
+    "sal_privado": 87.7,
+    "sal_publico": 73.3,
+    "sal_total": 82.4,
+    "emae": 109.4,
+    "comercio": 102.3
+   },
+   {
+    "fecha": "2026-05",
+    "sal_privado": 87.5,
+    "sal_publico": 72.9,
+    "sal_total": 82.2,
+    "emae": 108.7,
+    "comercio": 102.1
+   },
+   {
+    "fecha": "2026-06",
+    "sal_privado": 87.6,
+    "sal_publico": 74.0,
+    "sal_total": 82.6,
+    "emae": 109.0,
+    "comercio": 102.4
+   },
+   {
+    "fecha": "2026-07",
+    "sal_privado": 87.7,
+    "sal_publico": 74.6,
+    "sal_total": 82.9,
+    "emae": 106.0,
+    "comercio": 102.0
+   },
+   {
+    "fecha": "2026-08",
+    "sal_privado": 88.7,
+    "sal_publico": 75.0,
+    "sal_total": 83.7,
+    "emae": 106.0,
+    "comercio": 101.7
+   }
+  ],
+  "resumen": {
+   "sal_privado": {
+    "ultimo": "2026-08",
+    "valor": 88.7,
+    "vs_inicio_gobierno": -2.3
+   },
+   "sal_publico": {
+    "ultimo": "2026-08",
+    "valor": 75.0,
+    "vs_inicio_gobierno": -15.3
+   },
+   "sal_total": {
+    "ultimo": "2026-08",
+    "valor": 83.7,
+    "vs_inicio_gobierno": -7.0
+   },
+   "emae": {
+    "ultimo": "2026-08",
+    "valor": 106.0,
+    "vs_inicio_gobierno": 2.4
+   },
+   "comercio": {
+    "ultimo": "2026-08",
+    "valor": 101.7,
+    "vs_inicio_gobierno": -5.2
+   }
+  }
+ },
  "fuentes": {
   "nivel_general": "148.3_INIVELNAL_DICI_M_26",
   "divisiones": {

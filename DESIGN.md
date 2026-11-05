@@ -243,7 +243,7 @@ Cuatro tintas de afiche (bordó, crema, negro y rosa) y unos pocos tintes sólid
 
 ## Layout
 
-Una sola columna de bandas a todo el ancho, con margen lateral fluido de 16 a 48px que centra el contenido en 1344px. El afiche se divide en cifra flexible y columna de 300 a 400px, con 340px de alto mínimo. La fila de cifras reparte tres partes iguales y una de 1,2 para el bloque negro, que llega hasta el borde de la pantalla. Las secciones separan sus bloques con 22px; las columnas internas, con 36px.
+Una sola columna de bandas a todo el ancho, con margen lateral fluido de 16 a 48px que centra el contenido en 1344px. El afiche se divide en cifra flexible y columna de 300 a 400px, con 340px de alto mínimo. La fila de cifras reparte tres partes iguales y una de 1,2 para el bloque negro, que llega hasta el borde de la pantalla. Las secciones separan sus bloques con 22px; las columnas internas, con 36px. Los dos gráficos de Salarios y actividad van en dos columnas iguales de 340px de alto (280px en pantallas angostas), cada uno con su leyenda debajo, y se apilan a 900px.
 
 El orden se rearma por ancho: a 1040px o menos el afiche pasa a una columna con el título arriba de la cifra, las cifras van de a dos y solo queda fija la fila de secciones, que se desliza en horizontal. A 900px se apilan regiones y canasta, y los valores de la canasta van de a dos. A 700px aparece la indicación de deslizar y las tablas anchas mantienen fija la primera columna. A 560px los gráficos bajan de 400 a 300px, el mapa de 600 a 480px, y la tabla de otras estimaciones se rearma como fichas.
 

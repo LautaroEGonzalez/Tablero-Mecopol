@@ -268,7 +268,12 @@ th.rel, td.rel { width: 38%; text-align: center; }
   .comp > div:nth-child(2n) { border-right: 0; }
 }
 .dos-col { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 36px; }
-@media (max-width: 900px) { .dos-col { grid-template-columns: 1fr; } }
+.dos-igual { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+.dos-igual .chart { height: 340px; }
+.dos-igual h3.sub-t { margin: 0 0 8px; }
+.dos-igual .leyenda { margin-top: 10px; }
+@media (max-width: 900px) { .dos-col, .dos-igual { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .dos-igual .chart { height: 280px; } }
 .otras td.txt { color: var(--txt-2); white-space: normal; text-align: left; }
 .otras th:nth-child(2) { text-align: left; }
 .otras th:last-child, .otras td:last-child b { color: var(--acento); }
@@ -317,6 +322,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     <a href="#sec-serie" data-s="sec-serie">Serie</a>
     <a href="#sec-regiones" data-s="sec-regiones">Regiones</a>
     <a href="#sec-rubros" data-s="sec-rubros">Rubros</a>
+    <a href="#sec-salarios" data-s="sec-salarios">Salarios</a>
     <a href="#sec-canasta" data-s="sec-canasta">Canasta 2017/18</a>
   </nav>
 </header>
@@ -505,6 +511,20 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <div class="leyenda"><span><i style="background:var(--bordo)"></i>Se encareció más que el promedio</span><span><i style="background:var(--negro)"></i>Se encareció menos</span><span>Nivel general: ${pct(KR.mensual, dM)} en ${etq(MR)} · ${pct(KR.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
+      ${d.actividad ? `
+      <section class="sec" id="sec-salarios">
+        <div class="sec-cab"><div><h2>Salarios y actividad</h2>
+          <p class="sub">Con la inflación descontada, desde enero de 2019. Todas las líneas arrancan en 100 ese mes, así que se leen como cuánto más o menos se tiene hoy que entonces.</p></div></div>
+        <div class="dos-igual">
+          <div class="caja"><h3 class="sub-t">Salario real</h3><div class="chart" id="ch-sal" role="img"></div>
+            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div></div>
+          <div class="caja"><h3 class="sub-t">Actividad</h3><div class="chart" id="ch-act" role="img"></div>
+            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Actividad general (EMAE)</span><span><i style="background:var(--negro)"></i>Comercio, promedio de 12 meses</span></div></div>
+        </div>
+        <p class="lectura" id="lec-act"></p>
+        <p class="nota-reg" id="nota-act"></p>
+      </section>` : ''}
+
       ${d.reponderado ? `
       <section class="sec tinta-negra" id="sec-canasta">
         <div class="sec-cab"><div><h2>Con la canasta de hoy</h2>
@@ -620,6 +640,48 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     };
     dibujar('mensual');
     selector('sel', dibujar);
+
+    // ---- salarios y actividad ----
+    if (d.actividad) {
+      const A = d.actividad, AS = A.serie, RSM = A.resumen, axs = AS.map(x => x.fecha);
+      const CORTES = [['2019-12', 'Dic-19'], ['2023-12', 'Dic-23']];
+      const refs = { symbol: 'none', silent: true, animation: false, lineStyle: { color: PAPEL.fg3, type: 'dashed', width: 1 },
+        label: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, position: 'insideEndTop' },
+        data: [...CORTES.filter(([f]) => axs.includes(f)).map(([f, t]) => ({ xAxis: f, label: { formatter: t } })),
+          { yAxis: 100, label: { show: false }, lineStyle: { type: 'solid', color: PAPEL.grid, width: 1 } }] };
+      const linea = (nombre, clave, color, ancho, conRefs) => Object.assign({
+        name: nombre, type: 'line', symbol: 'none', data: AS.map(x => x[clave]), lineStyle: { width: ancho, color },
+        endLabel: { show: true, color: PAPEL.fg, fontFamily: FONT, fontSize: 12, fontWeight: 600, formatter: p => nf(p.value, 1) } },
+        conRefs ? { markLine: refs } : {});
+      const dib = (id, series, etiqueta) => {
+        const el = document.getElementById(id);
+        el.setAttribute('aria-label', etiqueta);
+        nuevo(el, {
+          grid: { left: 4, right: 44, top: 20, bottom: 4, containLabel: true },
+          tooltip: Object.assign(tip(), { formatter: p => largo(p[0].name) + '<br>' + p.filter(x => x.value != null).map(x =>
+            `${x.seriesName}: <b>${nf(x.value, 1)}</b>`).join('<br>') }),
+          xAxis: ejeX(PAPEL, { type: 'category', data: axs, boundaryGap: false, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
+          yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) } }),
+          series,
+        });
+      };
+      const u = k => RSM[k];
+      dib('ch-sal', [linea('Total registrado', 'sal_total', HIST, 2, false), linea('Público', 'sal_publico', NEGRO, 2, false), linea('Privado registrado', 'sal_privado', BORDO, 3, true)],
+        `Salario real, base enero de 2019 = 100, hasta ${etq(u('sal_privado').ultimo)}. Privado registrado ${nf(u('sal_privado').valor, 1)}, público ${nf(u('sal_publico').valor, 1)}, total registrado ${nf(u('sal_total').valor, 1)}.`);
+      dib('ch-act', [linea('Comercio, promedio de 12 meses', 'comercio', NEGRO, 2, false), linea('Actividad general (EMAE)', 'emae', BORDO, 3, true)],
+        `Actividad económica, base enero de 2019 = 100, hasta ${etq(u('emae').ultimo)}. Actividad general ${nf(u('emae').valor, 1)}, comercio ${nf(u('comercio').valor, 1)}.`);
+      const vs = v => v == null ? '—' : Math.abs(v) < 0.05 ? 'igual' : `${nf(Math.abs(v), 1)}% ${v < 0 ? 'por debajo' : 'por encima'}`;
+      const f = (k, x) => ({ base: x[k].valor - 100, ini: x[k].vs_inicio_gobierno });
+      const sp = f('sal_privado', RSM), sb = f('sal_publico', RSM), ea = f('emae', RSM), co = f('comercio', RSM);
+      document.getElementById('lec-act').innerHTML =
+        `En <b>${etq(u('sal_privado').ultimo)}</b>, el salario real del sector privado registrado está <b>${vs(sp.base)}</b> de enero de 2019 y <b>${vs(sp.ini)}</b> de nov-23; el del sector público, <b>${vs(sb.base)}</b> y <b>${vs(sb.ini)}</b>. ` +
+        `La actividad general está <b>${vs(ea.base)}</b> de enero de 2019 y <b>${vs(ea.ini)}</b> de nov-23; el comercio, <b>${vs(co.base)}</b> y <b>${vs(co.ini)}</b>.`;
+      document.getElementById('nota-act').textContent =
+        'Salario real: índice de salarios del INDEC dividido por el IPC nacional. Llega hasta ' + largo(u('sal_privado').ultimo) +
+        ', un mes antes que el IPC. No incluye el sector no registrado, que el INDEC mide con otra fuente y con rezago. ' +
+        'Actividad: EMAE desestacionalizado. El INDEC no publica el comercio desestacionalizado, así que se muestra el promedio de 12 meses de su serie original, que va más atrasado que el dato del mes. ' +
+        'Las líneas punteadas marcan los cambios de gobierno (dic-19 y dic-23).';
+    }
 
     // ---- canasta de hoy ----
     if (d.reponderado) {

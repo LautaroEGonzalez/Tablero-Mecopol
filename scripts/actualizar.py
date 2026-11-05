@@ -443,6 +443,97 @@ def regiones(inicio, mes):
 
 
 # ------------------------------------------------------------------
+# Salarios y actividad (API del INDEC)
+# ------------------------------------------------------------------
+BASE_ACTIVIDAD = pd.Timestamp("2019-01-01")   # todas las series arrancan en 100 en este mes
+
+
+def indec_tabla(tabla, params):
+    """Una tabla de la API del INDEC, con todas sus páginas. Pide INDEC_API_TOKEN."""
+    if not INDEC_TOKEN:
+        raise RuntimeError("sin INDEC_API_TOKEN")
+    cab = {"Authorization": f"Bearer {INDEC_TOKEN}", "Accept": "application/json"}
+    filas, offset = [], 0
+    while True:
+        pagina = None
+        for i in range(4):
+            try:
+                resp = SESION.get(INDEC_API + tabla, params={**params, "limit": 1000, "offset": offset},
+                                  headers=cab, timeout=60)
+            except requests.RequestException as e:
+                print(f"  ⚠️ API del INDEC ({tabla}): {e.__class__.__name__} (intento {i + 1})")
+                time.sleep(5 * (i + 1))
+                continue
+            if resp.status_code == 200:
+                pagina = resp.json()
+                break
+            if resp.status_code in (401, 403):
+                raise RuntimeError("token rechazado: revisar el secreto INDEC_API_TOKEN")
+            print(f"  ⚠️ API del INDEC ({tabla}): HTTP {resp.status_code} (intento {i + 1})")
+            time.sleep(5 * (i + 1))
+        if pagina is None:
+            raise RuntimeError(f"la API del INDEC no respondió ({tabla})")
+        filas += pagina
+        if len(pagina) < 1000:
+            break
+        offset += 1000
+    return pd.DataFrame(filas)
+
+
+def serie_mensual(df):
+    """Serie mensual (índice = primer día del mes) a partir de las columnas periodo (AAAAMM) y valor."""
+    fecha = pd.to_datetime(df["periodo"].astype(str) + "01", format="%Y%m%d")
+    return pd.Series(pd.to_numeric(df["valor"], errors="coerce").to_numpy(), index=fecha).sort_index().dropna()
+
+
+def actividad_salarios(mes):
+    """Salarios reales y actividad desde enero de 2019, todo en base ene-2019 = 100.
+
+    Salario real = índice de salarios del INDEC ÷ IPC nacional. Actividad = EMAE desestacionalizado
+    y, para el comercio, el promedio móvil de 12 meses de la serie original (la original tiene
+    estacionalidad fuerte y el INDEC no publica el comercio desestacionalizado).
+    """
+    ipc = traer_completo([IPC_NAC], "2018-01-01", ym(mes) + "-01", "el IPC nacional (desde 2018)")[IPC_NAC]
+    desde = "gte.201801"
+
+    sal = indec_tabla("indice_salarios", {"tipo_de_indicador": "eq.Indice", "codigo": "in.(100,110,120)",
+                                          "periodo": desde, "order": "periodo.asc"})
+    sal["codigo"] = sal["codigo"].astype(str)
+    series = {}
+    for cod, clave in (("110", "sal_privado"), ("120", "sal_publico"), ("100", "sal_total")):
+        s = serie_mensual(sal[sal["codigo"] == cod])
+        series[clave] = (s / ipc.reindex(s.index)).dropna()
+
+    emae = indec_tabla("estimador-mensual-de-actividad-economica-nivel-general",
+                       {"tipo_de_indicador_descripcion": "eq.Índice serie desestacionalizada",
+                        "periodo": desde, "order": "periodo.asc"})
+    series["emae"] = serie_mensual(emae)
+
+    com = indec_tabla("estimador-mensual-de-actividad-economica-sectores",
+                      {"codigo": "eq.G", "periodo": desde, "order": "periodo.asc"})
+    com = com[com["tipo_de_indicador"].astype(str).str.startswith("Índice")]
+    series["comercio"] = serie_mensual(com).rolling(12).mean().dropna()
+
+    base = {}
+    for k, s in series.items():
+        if BASE_ACTIVIDAD not in s.index or len(s) < 60:
+            raise RuntimeError(f"la serie {k} no cubre desde {ym(BASE_ACTIVIDAD)} (tiene {len(s)} meses)")
+        base[k] = s / s[BASE_ACTIVIDAD] * 100
+
+    ultimo = max(max(s.index) for s in base.values())
+    inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
+    meses = pd.date_range(BASE_ACTIVIDAD, ultimo, freq="MS")
+    serie = [{"fecha": ym(f), **{k: (r(base[k][f], 1) if f in base[k].index else None) for k in base}} for f in meses]
+    resumen = {}
+    for k, s in base.items():
+        u = s.index.max()
+        resumen[k] = {"ultimo": ym(u), "valor": r(s[u], 1), "vs_inicio_gobierno": r(var(s, inicio, u), 1)}
+    print(f"   salarios y actividad: {len(serie)} meses, hasta " +
+          ", ".join(f"{k} {v['ultimo']}" for k, v in resumen.items()))
+    return {"base": ym(BASE_ACTIVIDAD), "serie": serie, "resumen": resumen}
+
+
+# ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
 def calcular():
@@ -536,6 +627,15 @@ def calcular():
     if por_region is None and SALIDA.exists():
         por_region = json.loads(SALIDA.read_text(encoding="utf-8")).get("regiones")
 
+    # 4b. Salarios y actividad (API del INDEC) ----------------------------
+    try:
+        actividad = actividad_salarios(mes)
+    except Exception as e:  # tampoco frena la portada: se conserva lo último que había
+        print(f"   ⚠️ salarios y actividad: {e}")
+        actividad = None
+    if actividad is None and SALIDA.exists():
+        actividad = json.loads(SALIDA.read_text(encoding="utf-8")).get("actividad")
+
     # 5. Controles de calidad -------------------------------------------
     assert serie and kpis["mensual"] is not None, "Serie vacía"
     assert all(x["relativo"] is not None for x in rubros), "Rubros incompletos"
@@ -558,6 +658,7 @@ def calcular():
         "rubros": rubros,
         "reponderado": reponderado,
         "regiones": por_region,
+        "actividad": actividad,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div,
                     "api": "INDEC (api.indec.gob.ar) y datos.gob.ar" if _INDEC else "datos.gob.ar"},
     }
