@@ -151,6 +151,7 @@ h1 { margin: 0; font: 800 19px/1.2 var(--ui); text-wrap: balance; }
   .cifra:first-child { padding-left: var(--m); }
   .cifra:nth-child(2n) { border-right: 0; }
   .cifra.est::after { display: none; }
+  .cifra { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 6px; align-content: start; }
   .cifra:nth-child(3) { padding-left: var(--m); }
   .cifra.est { padding-right: 16px; border-bottom: 0; }
   .cifra:last-child:nth-child(3) { grid-column: 1 / -1; border-right: 0; }
@@ -201,12 +202,12 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .div::after { content: ""; position: absolute; left: 50%; top: -6px; bottom: -6px; width: 1px; background: var(--txt); }
 .div .izq, .div .der { display: flex; align-items: center; gap: 6px; height: 100%; }
 .div .izq { justify-content: flex-end; }
-.div .pista { flex: 1; display: flex; height: 12px; }
+.div .pista { flex: 1; display: flex; align-items: center; gap: 6px; height: 12px; }
 .div .izq .pista { justify-content: flex-end; }
-.div i { display: block; height: 12px; min-width: 2px; }
+.div i { display: block; flex: none; height: 12px; min-width: 2px; width: calc((100% - 58px) * var(--w) / 100); }
 .div .izq i { background: var(--negro); }
 .div .der i { background: var(--bordo); }
-.div span { flex: none; width: 52px; font-size: 13px; color: var(--txt-2); }
+.div span { flex: none; width: 52px; font-size: 13px; font-weight: 400; color: var(--txt-2); }
 .div .der span { text-align: left; } .div .izq span { text-align: right; }
 
 /* ---- regiones ---- */
@@ -253,11 +254,12 @@ th.rel, td.rel { width: 38%; text-align: center; }
 }
 .tinta-negra ::selection { background: var(--rosa); color: var(--negro); }
 .comp { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--linea); }
-.comp > div { padding: 16px 20px 18px; display: grid; gap: 4px; min-width: 0; border-right: 1px solid var(--linea); }
+.comp > div { padding: 16px 20px 18px; display: grid; grid-template-rows: subgrid; grid-row: span 3; gap: 4px; align-content: start; min-width: 0; border-right: 1px solid var(--linea); }
 .comp > div:first-child { padding-left: 0; }
 .comp > div:last-child { border-right: 0; }
 .comp h3 { margin: 0; font-size: 14px; font-weight: 600; }
 .comp .par { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 1399px) { .comp .par { flex-direction: column; align-items: flex-start; gap: 0; } }
 .comp .par b { font: 400 clamp(38px, 3.6vw, 50px)/1.16 var(--display); color: var(--acento); }
 .comp .par span { font-size: 14px; color: var(--txt-2); }
 .comp .dif { font-size: 13px; font-weight: 500; color: var(--txt-2); }
@@ -273,7 +275,7 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .dos-igual h3.sub-t { margin: 0 0 8px; }
 .dos-igual .leyenda { margin-top: 10px; }
 .cap-graf { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--txt-2); }
-@media (min-width: 901px) { .dos-igual .cap-graf { min-height: 3em; } }
+@media (min-width: 901px) and (max-width: 959px) { .dos-igual .cap-graf { min-height: 3em; } }
 @media (max-width: 900px) { .dos-col, .dos-igual { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .dos-igual .chart { height: 280px; } }
 .otras td.txt { color: var(--txt-2); white-space: normal; text-align: left; }
@@ -520,13 +522,14 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <div class="sec-cab"><div><h2>Poder de compra</h2>
           <p class="sub">Qué se puede comprar con un sueldo, con el salario mínimo o con la jubilación mínima, una vez descontada la inflación. Desde enero de 2019.</p></div></div>
         <div class="dos-igual">
-          <div class="caja"><h3 class="sub-t">Salario real</h3><p class="cap-graf">Cuánto compra un sueldo registrado. Enero de 2019 = 100.</p><div class="chart" id="ch-sal" role="img"></div>
+          <div class="caja"><h3 class="sub-t">Salario real</h3><p class="cap-graf">Cuánto compra un sueldo registrado. Enero de 2019&nbsp;=&nbsp;100.</p><div class="chart" id="ch-sal" role="img"></div>
             <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div></div>
           <div class="caja"><h3 class="sub-t">Canastas básicas</h3><p class="cap-graf">Canastas básicas de un adulto que compra cada ingreso mínimo.</p><div class="chart" id="ch-can" role="img"></div>
             <div class="leyenda"><span><i style="background:var(--bordo)"></i>Salario mínimo</span><span><i style="background:var(--negro)"></i>Jubilación mínima</span></div></div>
         </div>
         <p class="lectura" id="lec-sal"></p>
         <p class="lectura" id="lec-can"></p>
+        <p class="nota-reg" id="nota-serr"></p>
         <p class="nota-reg" id="nota-can"></p>
         <p class="nota-reg" id="nota-sal"></p>
       </section>` : ''}
@@ -682,10 +685,15 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       const sp = { b: RS_.sal_privado.valor - 100, i: RS_.sal_privado.vs_inicio_gobierno }, sb = { b: RS_.sal_publico.valor - 100, i: RS_.sal_publico.vs_inicio_gobierno };
       document.getElementById('lec-sal').innerHTML =
         `El salario real es el poder de compra del sueldo: cuántas cosas se pueden comprar con él. En <b>${etq(RS_.sal_privado.ultimo)}</b>, un sueldo privado registrado compra <b>${vs(sp.b)}</b> que en enero de 2019 y <b>${vs(sp.i)}</b> que en nov-23; uno público, <b>${vs(sb.b)}</b> y <b>${vs(sb.i)}</b>.`;
-      const en = f => CS.find(x => x.fecha === f), c0 = en('2019-12'), c1 = en('2023-11');
-      document.getElementById('lec-can').innerHTML = (c0 && c1)
-        ? `En <b>dic-19</b>, el salario mínimo alcanzaba para <b>${nf(c0.smvm, 2)}</b> canastas básicas de un adulto; en <b>nov-23</b>, para <b>${nf(c1.smvm, 2)}</b>; en <b>${etq(uc.fecha)}</b>, para <b>${nf(uc.smvm, 2)}</b>. La jubilación mínima pasó de <b>${nf(c0.jubilacion, 2)}</b> a <b>${nf(c1.jubilacion, 2)}</b> y a <b>${nf(uc.jubilacion, 2)}</b>.`
+      const prom = (xs, k) => xs.length ? xs.reduce((s, x) => s + x[k], 0) / xs.length : null;
+      const anio = y => CS.filter(x => x.fecha.startsWith(y)), ult12 = CS.slice(-12);
+      const pr = { a: anio('2019'), b: anio('2023'), c: ult12 };
+      const ok = pr.a.length === 12 && pr.b.length === 12 && ult12.length === 12;
+      document.getElementById('lec-can').innerHTML = ok
+        ? `Promediando cada período, el salario mínimo alcanzaba para <b>${nf(prom(pr.a, 'smvm'), 2)}</b> canastas básicas de un adulto en <b>2019</b>, <b>${nf(prom(pr.b, 'smvm'), 2)}</b> en <b>2023</b> y <b>${nf(prom(pr.c, 'smvm'), 2)}</b> en los <b>últimos 12 meses</b> (${etq(ult12[0].fecha)} a ${etq(uc.fecha)}). La jubilación mínima: <b>${nf(prom(pr.a, 'jubilacion'), 2)}</b>, <b>${nf(prom(pr.b, 'jubilacion'), 2)}</b> y <b>${nf(prom(pr.c, 'jubilacion'), 2)}</b>.`
         : `En <b>${etq(uc.fecha)}</b>, el salario mínimo alcanza para <b>${nf(uc.smvm, 2)}</b> canastas básicas de un adulto y la jubilación mínima, para <b>${nf(uc.jubilacion, 2)}</b>.`;
+      document.getElementById('nota-serr').innerHTML =
+        '<b>Por qué la línea hace serrucho.</b> El salario mínimo y la jubilación se ajustan por escalones y la canasta sube todos los meses: cada aumento levanta la línea y la inflación la va bajando hasta el siguiente. Por eso se comparan promedios y no un mes puntual, que puede caer justo antes o después de un ajuste.';
       document.getElementById('nota-can').innerHTML =
         `<b>Qué incluye la canasta.</b> Es la canasta básica total del INDEC para el Gran Buenos Aires, la que define la línea de pobreza. Parte de una canasta de alimentos que cubre lo necesario para un varón adulto de 30 a 60 años con actividad moderada y la multiplica por la inversa del coeficiente de Engel, que suma el resto de los gastos: vivienda, transporte, ropa, salud y educación. En ${etq(RC.ultimo)} vale <b>$${nf(RC.cbt, 0)}</b> por adulto, y un hogar necesita varias: acá se compara con la de una sola persona. El salario mínimo es el vital y móvil; la jubilación, el haber mínimo sin bono.`;
       document.getElementById('nota-sal').textContent =
@@ -794,8 +802,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     document.getElementById('tb-rubros').innerHTML = rs.map(r => {
       const w = (Math.abs(r.relativo) / maxRel * 100).toFixed(1);
       const barra = r.relativo >= 0
-        ? `<div class="izq"></div><div class="der"><b class="pista"><i style="width:${w}%"></i></b><span>${pct(r.relativo, 1, true)}</span></div>`
-        : `<div class="izq"><span>${pct(r.relativo, 1, true)}</span><b class="pista"><i style="width:${w}%"></i></b></div><div class="der"></div>`;
+        ? `<div class="izq"></div><div class="der"><b class="pista"><i style="--w:${w}"></i><span>${pct(r.relativo, 1, true)}</span></b></div>`
+        : `<div class="izq"><b class="pista"><span>${pct(r.relativo, 1, true)}</span><i style="--w:${w}"></i></b></div><div class="der"></div>`;
       return `<tr><td>${corto[r.rubro] || r.rubro}</td><td class="rel"><div class="div">${barra}</div></td>` +
         `<td>${pct(r.mensual, 1)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`;
     }).join('');
