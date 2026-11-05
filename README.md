@@ -7,7 +7,7 @@ Versión enfocada en el gobierno de Milei:
 - Inflación mensual, interanual y acumulada desde diciembre de 2023
 - Precios relativos y variación por rubro
 - Inflación por región, con mapa y la variación de cada rubro en cada región
-- Salarios reales y actividad económica desde enero de 2019 (INDEC)
+- Poder de compra desde enero de 2019: salarios reales y cuántas canastas básicas alcanzan a comprar el salario mínimo y la jubilación mínima
 - IPC recalculado con la canasta de la ENGHo 2017/18 (estimación propia)
 
 Las páginas **Mirada larga** (inflación por gobierno desde 2003) y **Universidades y Ley 27.795** se mudaron al repositorio [Análisis Económicos](https://github.com/LautaroEGonzalez/Analisis-Economicos).
@@ -76,5 +76,5 @@ En Wix o Google Sites se puede incrustar con un iframe apuntando a la URL de Pag
 
 - IPC Nacional, INDEC, base diciembre 2016 = 100, vía la [API de Series de Tiempo](https://datos.gob.ar/series).
 - Base: noviembre de 2023, último mes completo antes de la asunción del 10 de diciembre.
-- Salarios y actividad, desde la API del INDEC (`indice_salarios` y las tablas del EMAE), con base enero de 2019 = 100. El salario real es el índice de salarios dividido por el IPC nacional; incluye solo los sectores registrados. Del comercio, que el INDEC publica sin desestacionalizar, se muestra el promedio móvil de 12 meses. Estas series llegan un mes antes que el IPC, y si la API falla se conserva la última versión del tablero.
+- Poder de compra. Salarios reales: índice de salarios del INDEC (API del INDEC, tabla `indice_salarios`) dividido por el IPC nacional, con enero de 2019 = 100; incluye solo los sectores registrados y llega un mes antes que el IPC. Canastas: salario mínimo vital y móvil y haber mínimo jubilatorio (sin bono), de datos.gob.ar, divididos por la canasta básica total por adulto del INDEC para el Gran Buenos Aires (`valorizacion_canastas_cba_cbt`). Si la API falla, se conserva la última versión de la sección.
 - Mirada larga: serie oficial del INDEC (IPC GBA hasta 2013, IPCNu 2014–oct 2015, IPC GBA may–dic 2016, IPC Nacional desde 2017; de nov-2015 a abr-2016, sin IPC del INDEC, el IPC de la Ciudad de Buenos Aires). Para comparar, la estimación alternativa del IPC Provincias de [CIFRA-CTA](https://centrocifra.org.ar/estadisticas/ipc-provincias/) entre 2007 y 2016. Detalle en `fuentes/LEEME.md`.

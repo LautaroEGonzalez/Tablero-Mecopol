@@ -272,6 +272,7 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .dos-igual .chart { height: 340px; }
 .dos-igual h3.sub-t { margin: 0 0 8px; }
 .dos-igual .leyenda { margin-top: 10px; }
+.cap-graf { margin: 0 0 10px; font-size: 14px; color: var(--txt-2); max-width: 46ch; }
 @media (max-width: 900px) { .dos-col, .dos-igual { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .dos-igual .chart { height: 280px; } }
 .otras td.txt { color: var(--txt-2); white-space: normal; text-align: left; }
@@ -513,18 +514,20 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <div class="leyenda"><span><i style="background:var(--bordo)"></i>Se encareció más que el promedio</span><span><i style="background:var(--negro)"></i>Se encareció menos</span><span>Nivel general: ${pct(KR.mensual, dM)} en ${etq(MR)} · ${pct(KR.acum_gobierno, 1)} desde nov-23</span></div>
       </section>
 
-      ${d.actividad ? `
+      ${d.poder_compra ? `
       <section class="sec" id="sec-salarios">
-        <div class="sec-cab"><div><h2>Salarios y actividad</h2>
-          <p class="sub">Con la inflación descontada, desde enero de 2019. Todas las líneas arrancan en 100 ese mes, así que se leen como cuánto más o menos se tiene hoy que entonces.</p></div></div>
+        <div class="sec-cab"><div><h2>Poder de compra</h2>
+          <p class="sub">Qué se puede comprar con un sueldo, con el salario mínimo o con la jubilación mínima, una vez descontada la inflación. Desde enero de 2019.</p></div></div>
         <div class="dos-igual">
-          <div class="caja"><h3 class="sub-t">Salario real</h3><div class="chart" id="ch-sal" role="img"></div>
+          <div class="caja"><h3 class="sub-t">Salario real</h3><p class="cap-graf">Cuánto compra un sueldo registrado. Enero de 2019 = 100.</p><div class="chart" id="ch-sal" role="img"></div>
             <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div></div>
-          <div class="caja"><h3 class="sub-t">Actividad</h3><div class="chart" id="ch-act" role="img"></div>
-            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Actividad general (EMAE)</span><span><i style="background:var(--negro)"></i>Comercio, promedio de 12 meses</span></div></div>
+          <div class="caja"><h3 class="sub-t">Canastas básicas</h3><p class="cap-graf">Cuántas canastas básicas de un adulto alcanza a comprar cada ingreso mínimo.</p><div class="chart" id="ch-can" role="img"></div>
+            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Salario mínimo</span><span><i style="background:var(--negro)"></i>Jubilación mínima</span></div></div>
         </div>
-        <p class="lectura" id="lec-act"></p>
-        <p class="nota-reg" id="nota-act"></p>
+        <p class="lectura" id="lec-sal"></p>
+        <p class="lectura" id="lec-can"></p>
+        <p class="nota-reg" id="nota-can"></p>
+        <p class="nota-reg" id="nota-sal"></p>
       </section>` : ''}
 
       ${d.reponderado ? `
@@ -643,46 +646,49 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     dibujar('mensual');
     selector('sel', dibujar);
 
-    // ---- salarios y actividad ----
-    if (d.actividad) {
-      const A = d.actividad, AS = A.serie, RSM = A.resumen, axs = AS.map(x => x.fecha);
+    // ---- poder de compra ----
+    if (d.poder_compra) {
+      const PC = d.poder_compra, SL = PC.salarios, CN = PC.canastas;
       const CORTES = [['2019-12', 'Dic-19'], ['2023-12', 'Dic-23']];
-      const refs = { symbol: 'none', silent: true, animation: false, lineStyle: { color: PAPEL.fg3, type: 'dashed', width: 1 },
+      const marcas = (xs, y, etiqueta) => ({ symbol: 'none', silent: true, animation: false, lineStyle: { color: PAPEL.fg3, type: 'dashed', width: 1 },
         label: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, position: 'insideEndTop' },
-        data: [...CORTES.filter(([f]) => axs.includes(f)).map(([f, t]) => ({ xAxis: f, label: { formatter: t } })),
-          { yAxis: 100, label: { show: false }, lineStyle: { type: 'solid', color: PAPEL.grid, width: 1 } }] };
-      const linea = (nombre, clave, color, ancho, conRefs) => Object.assign({
-        name: nombre, type: 'line', symbol: 'none', data: AS.map(x => x[clave]), lineStyle: { width: ancho, color },
-        endLabel: { show: true, color: PAPEL.fg, fontFamily: FONT, fontSize: 12, fontWeight: 600, formatter: p => nf(p.value, 1) } },
-        conRefs ? { markLine: refs } : {});
-      const dib = (id, series, etiqueta) => {
+        data: [...CORTES.filter(([f]) => xs.includes(f)).map(([f, t]) => ({ xAxis: f, label: { formatter: t } })),
+          { yAxis: y, lineStyle: { type: 'solid', color: PAPEL.fg3, width: 1 }, label: etiqueta ? { formatter: etiqueta, position: 'insideEndTop' } : { show: false } }] });
+      const dib = (id, xs, series, dec, etiqueta) => {
         const el = document.getElementById(id);
         el.setAttribute('aria-label', etiqueta);
         nuevo(el, {
           grid: { left: 4, right: 44, top: 20, bottom: 4, containLabel: true },
           tooltip: Object.assign(tip(), { formatter: p => largo(p[0].name) + '<br>' + p.filter(x => x.value != null).sort((a, b) => b.value - a.value).map(x =>
-            `${raya(series.find(s => s.name === x.seriesName).lineStyle.color, CREMA)}${x.seriesName}: <b>${nf(x.value, 1)}</b>`).join('<br>') }),
-          xAxis: ejeX(PAPEL, { type: 'category', data: axs, boundaryGap: false, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
-          yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) } }),
+            `${raya(series.find(s => s.name === x.seriesName).lineStyle.color, CREMA)}${x.seriesName}: <b>${nf(x.value, dec)}</b>`).join('<br>') }),
+          xAxis: ejeX(PAPEL, { type: 'category', data: xs, boundaryGap: false, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
+          yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, dec === 2 ? 1 : 0) } }),
           series,
         });
       };
-      const u = k => RSM[k];
-      dib('ch-sal', [linea('Total registrado', 'sal_total', HIST, 2, false), linea('Público', 'sal_publico', NEGRO, 2, false), linea('Privado registrado', 'sal_privado', BORDO, 3, true)],
-        `Salario real, base enero de 2019 = 100, hasta ${etq(u('sal_privado').ultimo)}. Privado registrado ${nf(u('sal_privado').valor, 1)}, público ${nf(u('sal_publico').valor, 1)}, total registrado ${nf(u('sal_total').valor, 1)}.`);
-      dib('ch-act', [linea('Comercio, promedio de 12 meses', 'comercio', NEGRO, 2, false), linea('Actividad general (EMAE)', 'emae', BORDO, 3, true)],
-        `Actividad económica, base enero de 2019 = 100, hasta ${etq(u('emae').ultimo)}. Actividad general ${nf(u('emae').valor, 1)}, comercio ${nf(u('comercio').valor, 1)}.`);
-      const vs = v => v == null ? '—' : Math.abs(v) < 0.05 ? 'igual' : `${nf(Math.abs(v), 1)}% ${v < 0 ? 'por debajo' : 'por encima'}`;
-      const f = (k, x) => ({ base: x[k].valor - 100, ini: x[k].vs_inicio_gobierno });
-      const sp = f('sal_privado', RSM), sb = f('sal_publico', RSM), ea = f('emae', RSM), co = f('comercio', RSM);
-      document.getElementById('lec-act').innerHTML =
-        `En <b>${etq(u('sal_privado').ultimo)}</b>, el salario real del sector privado registrado está <b>${vs(sp.base)}</b> de enero de 2019 y <b>${vs(sp.ini)}</b> de nov-23; el del sector público, <b>${vs(sb.base)}</b> y <b>${vs(sb.ini)}</b>. ` +
-        `La actividad general está <b>${vs(ea.base)}</b> de enero de 2019 y <b>${vs(ea.ini)}</b> de nov-23; el comercio, <b>${vs(co.base)}</b> y <b>${vs(co.ini)}</b>.`;
-      document.getElementById('nota-act').textContent =
-        'Salario real: índice de salarios del INDEC dividido por el IPC nacional. Llega hasta ' + largo(u('sal_privado').ultimo) +
-        ', un mes antes que el IPC. No incluye el sector no registrado, que el INDEC mide con otra fuente y con rezago. ' +
-        'Actividad: EMAE desestacionalizado. El INDEC no publica el comercio desestacionalizado, así que se muestra el promedio de 12 meses de su serie original, que va más atrasado que el dato del mes. ' +
-        'Las líneas punteadas marcan los cambios de gobierno (dic-19 y dic-23).';
+      const linea = (nombre, datos, color, ancho, dec, mk) => Object.assign({
+        name: nombre, type: 'line', symbol: 'none', data: datos, lineStyle: { width: ancho, color },
+        endLabel: { show: true, color: PAPEL.fg, fontFamily: FONT, fontSize: 12, fontWeight: 600, formatter: p => nf(p.value, dec) } }, mk ? { markLine: mk } : {});
+      const SS = SL.serie, sxs = SS.map(x => x.fecha), CS = CN.serie, cxs = CS.map(x => x.fecha), RS_ = SL.resumen, RC = CN.resumen;
+      dib('ch-sal', sxs, [linea('Total registrado', SS.map(x => x.sal_total), HIST, 2, 1), linea('Público', SS.map(x => x.sal_publico), NEGRO, 2, 1),
+        linea('Privado registrado', SS.map(x => x.sal_privado), BORDO, 3, 1, marcas(sxs, 100))], 1,
+        `Salario real, enero de 2019 = 100, hasta ${etq(RS_.sal_privado.ultimo)}. Privado registrado ${nf(RS_.sal_privado.valor, 1)}, público ${nf(RS_.sal_publico.valor, 1)}, total registrado ${nf(RS_.sal_total.valor, 1)}.`);
+      const uc = CS[CS.length - 1];
+      dib('ch-can', cxs, [linea('Jubilación mínima', CS.map(x => x.jubilacion), NEGRO, 2, 2), linea('Salario mínimo', CS.map(x => x.smvm), BORDO, 3, 2, marcas(cxs, 1, 'Una canasta'))], 2,
+        `Canastas básicas de un adulto que compra cada ingreso mínimo, hasta ${etq(uc.fecha)}. Salario mínimo ${nf(uc.smvm, 2)}, jubilación mínima ${nf(uc.jubilacion, 2)}.`);
+
+      const vs = v => v == null ? '—' : Math.abs(v) < 0.05 ? 'igual' : `${nf(Math.abs(v), 1)}% ${v < 0 ? 'menos' : 'más'}`;
+      const sp = { b: RS_.sal_privado.valor - 100, i: RS_.sal_privado.vs_inicio_gobierno }, sb = { b: RS_.sal_publico.valor - 100, i: RS_.sal_publico.vs_inicio_gobierno };
+      document.getElementById('lec-sal').innerHTML =
+        `El salario real es el poder de compra del sueldo: cuántas cosas se pueden comprar con él. En <b>${etq(RS_.sal_privado.ultimo)}</b>, un sueldo privado registrado compra <b>${vs(sp.b)}</b> que en enero de 2019 y <b>${vs(sp.i)}</b> que en nov-23; uno público, <b>${vs(sb.b)}</b> y <b>${vs(sb.i)}</b>.`;
+      const en = f => CS.find(x => x.fecha === f), c0 = en('2019-12'), c1 = en('2023-11');
+      document.getElementById('lec-can').innerHTML = (c0 && c1)
+        ? `En <b>dic-19</b>, el salario mínimo alcanzaba para <b>${nf(c0.smvm, 2)}</b> canastas básicas de un adulto; en <b>nov-23</b>, para <b>${nf(c1.smvm, 2)}</b>; en <b>${etq(uc.fecha)}</b>, para <b>${nf(uc.smvm, 2)}</b>. La jubilación mínima pasó de <b>${nf(c0.jubilacion, 2)}</b> a <b>${nf(c1.jubilacion, 2)}</b> y a <b>${nf(uc.jubilacion, 2)}</b>.`
+        : `En <b>${etq(uc.fecha)}</b>, el salario mínimo alcanza para <b>${nf(uc.smvm, 2)}</b> canastas básicas de un adulto y la jubilación mínima, para <b>${nf(uc.jubilacion, 2)}</b>.`;
+      document.getElementById('nota-can').innerHTML =
+        `<b>Qué incluye la canasta.</b> Es la canasta básica total del INDEC para el Gran Buenos Aires, la que define la línea de pobreza. Parte de una canasta de alimentos que cubre lo necesario para un varón adulto de 30 a 60 años con actividad moderada y la multiplica por la inversa del coeficiente de Engel, que suma el resto de los gastos: vivienda, transporte, ropa, salud y educación. En ${etq(RC.ultimo)} vale <b>$${nf(RC.cbt, 0)}</b> por adulto, y un hogar necesita varias: acá se compara con la de una sola persona. El salario mínimo es el vital y móvil; la jubilación, el haber mínimo sin bono.`;
+      document.getElementById('nota-sal').textContent =
+        `Salario real: índice de salarios del INDEC dividido por el IPC nacional; llega hasta ${largo(RS_.sal_privado.ultimo)}, un mes antes que el IPC, e incluye solo el sector registrado. Las líneas punteadas verticales marcan los cambios de gobierno (dic-19 y dic-23).`;
     }
 
     // ---- canasta de hoy ----

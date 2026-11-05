@@ -443,9 +443,11 @@ def regiones(inicio, mes):
 
 
 # ------------------------------------------------------------------
-# Salarios y actividad (API del INDEC)
+# Poder de compra: salarios y canastas (API del INDEC)
 # ------------------------------------------------------------------
-BASE_ACTIVIDAD = pd.Timestamp("2019-01-01")   # todas las series arrancan en 100 en este mes
+BASE_PODER = pd.Timestamp("2019-01-01")   # los salarios reales arrancan en 100 en este mes
+SMVM = "57.1_SMVMM_0_M_34"        # salario mínimo, vital y móvil, mensual, pesos corrientes
+HABER_MIN = "58.1_MP_0_M_13"      # haber mínimo jubilatorio, pesos corrientes (sin bono)
 
 
 def indec_tabla(tabla, params):
@@ -486,51 +488,52 @@ def serie_mensual(df):
     return pd.Series(pd.to_numeric(df["valor"], errors="coerce").to_numpy(), index=fecha).sort_index().dropna()
 
 
-def actividad_salarios(mes):
-    """Salarios reales y actividad desde enero de 2019, todo en base ene-2019 = 100.
+def poder_de_compra(mes):
+    """Salarios reales y canastas básicas desde enero de 2019.
 
-    Salario real = índice de salarios del INDEC ÷ IPC nacional. Actividad = EMAE desestacionalizado
-    y, para el comercio, el promedio móvil de 12 meses de la serie original (la original tiene
-    estacionalidad fuerte y el INDEC no publica el comercio desestacionalizado).
+    Salarios: índice de salarios del INDEC (privado registrado, público y total registrado)
+    dividido por el IPC nacional, con enero de 2019 = 100.
+    Canastas: cuántas canastas básicas totales (por adulto, Gran Buenos Aires, INDEC) alcanzan a
+    comprar el salario mínimo vital y móvil y el haber mínimo jubilatorio (sin bono).
     """
     ipc = traer_completo([IPC_NAC], "2018-01-01", ym(mes) + "-01", "el IPC nacional (desde 2018)")[IPC_NAC]
-    desde = "gte.201801"
 
     sal = indec_tabla("indice_salarios", {"tipo_de_indicador": "eq.Indice", "codigo": "in.(100,110,120)",
-                                          "periodo": desde, "order": "periodo.asc"})
+                                          "periodo": "gte.201801", "order": "periodo.asc"})
     sal["codigo"] = sal["codigo"].astype(str)
-    series = {}
+    base = {}
     for cod, clave in (("110", "sal_privado"), ("120", "sal_publico"), ("100", "sal_total")):
         s = serie_mensual(sal[sal["codigo"] == cod])
-        series[clave] = (s / ipc.reindex(s.index)).dropna()
+        real = (s / ipc.reindex(s.index)).dropna()
+        if BASE_PODER not in real.index or len(real) < 60:
+            raise RuntimeError(f"la serie {clave} no cubre desde {ym(BASE_PODER)} (tiene {len(real)} meses)")
+        base[clave] = real / real[BASE_PODER] * 100
 
-    emae = indec_tabla("estimador-mensual-de-actividad-economica-nivel-general",
-                       {"tipo_de_indicador_descripcion": "eq.Índice serie desestacionalizada",
-                        "periodo": desde, "order": "periodo.asc"})
-    series["emae"] = serie_mensual(emae)
-
-    com = indec_tabla("estimador-mensual-de-actividad-economica-sectores",
-                      {"codigo": "eq.G", "periodo": desde, "order": "periodo.asc"})
-    com = com[com["tipo_de_indicador"].astype(str).str.startswith("Índice")]
-    series["comercio"] = serie_mensual(com).rolling(12).mean().dropna()
-
-    base = {}
-    for k, s in series.items():
-        if BASE_ACTIVIDAD not in s.index or len(s) < 60:
-            raise RuntimeError(f"la serie {k} no cubre desde {ym(BASE_ACTIVIDAD)} (tiene {len(s)} meses)")
-        base[k] = s / s[BASE_ACTIVIDAD] * 100
-
-    ultimo = max(max(s.index) for s in base.values())
+    ultimo = max(s.index.max() for s in base.values())
     inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
-    meses = pd.date_range(BASE_ACTIVIDAD, ultimo, freq="MS")
-    serie = [{"fecha": ym(f), **{k: (r(base[k][f], 1) if f in base[k].index else None) for k in base}} for f in meses]
-    resumen = {}
-    for k, s in base.items():
-        u = s.index.max()
-        resumen[k] = {"ultimo": ym(u), "valor": r(s[u], 1), "vs_inicio_gobierno": r(var(s, inicio, u), 1)}
-    print(f"   salarios y actividad: {len(serie)} meses, hasta " +
-          ", ".join(f"{k} {v['ultimo']}" for k, v in resumen.items()))
-    return {"base": ym(BASE_ACTIVIDAD), "serie": serie, "resumen": resumen}
+    meses = pd.date_range(BASE_PODER, ultimo, freq="MS")
+    salarios = {
+        "serie": [{"fecha": ym(f), **{k: (r(base[k][f], 1) if f in base[k].index else None) for k in base}} for f in meses],
+        "resumen": {k: {"ultimo": ym(s.index.max()), "valor": r(s.iloc[-1], 1),
+                        "vs_inicio_gobierno": r(var(s, inicio, s.index.max()), 1)} for k, s in base.items()},
+    }
+
+    cbt = serie_mensual(indec_tabla("valorizacion_canastas_cba_cbt",
+                                    {"tipo_de_indicador": "eq.CBT", "order": "periodo.asc"})).loc[BASE_PODER:]
+    hasta = cbt.index.max()
+    ref = traer_completo([SMVM, HABER_MIN], ym(BASE_PODER) + "-01", ym(hasta) + "-01",
+                         "el salario mínimo y el haber mínimo")
+    ref.columns = ["smvm", "jubilacion"]
+    serie_c = [{"fecha": ym(f), "smvm": r(ref.loc[f, "smvm"] / cbt[f], 2), "jubilacion": r(ref.loc[f, "jubilacion"] / cbt[f], 2)}
+               for f in cbt.index if f in ref.index]
+    if len(serie_c) < 60:
+        raise RuntimeError(f"las canastas cubren solo {len(serie_c)} meses")
+    canastas = {"serie": serie_c,
+                "resumen": {"ultimo": ym(hasta), "cbt": r(cbt[hasta], 0),
+                            "smvm": r(ref.loc[hasta, "smvm"], 0), "jubilacion": r(ref.loc[hasta, "jubilacion"], 0)}}
+    print(f"   poder de compra: salarios hasta {ym(ultimo)}, canastas hasta {ym(hasta)} "
+          f"(salario mínimo = {serie_c[-1]['smvm']} canastas, jubilación mínima = {serie_c[-1]['jubilacion']})")
+    return {"base": ym(BASE_PODER), "salarios": salarios, "canastas": canastas}
 
 
 # ------------------------------------------------------------------
@@ -627,14 +630,14 @@ def calcular():
     if por_region is None and SALIDA.exists():
         por_region = json.loads(SALIDA.read_text(encoding="utf-8")).get("regiones")
 
-    # 4b. Salarios y actividad (API del INDEC) ----------------------------
+    # 4b. Poder de compra: salarios reales y canastas (API del INDEC y datos.gob.ar) ---
     try:
-        actividad = actividad_salarios(mes)
+        poder_compra = poder_de_compra(mes)
     except Exception as e:  # tampoco frena la portada: se conserva lo último que había
-        print(f"   ⚠️ salarios y actividad: {e}")
-        actividad = None
-    if actividad is None and SALIDA.exists():
-        actividad = json.loads(SALIDA.read_text(encoding="utf-8")).get("actividad")
+        print(f"   ⚠️ poder de compra: {e}")
+        poder_compra = None
+    if poder_compra is None and SALIDA.exists():
+        poder_compra = json.loads(SALIDA.read_text(encoding="utf-8")).get("poder_compra")
 
     # 5. Controles de calidad -------------------------------------------
     assert serie and kpis["mensual"] is not None, "Serie vacía"
@@ -658,7 +661,7 @@ def calcular():
         "rubros": rubros,
         "reponderado": reponderado,
         "regiones": por_region,
-        "actividad": actividad,
+        "poder_compra": poder_compra,
         "fuentes": {"nivel_general": IPC_NAC, "divisiones": ids_div,
                     "api": "INDEC (api.indec.gob.ar) y datos.gob.ar" if _INDEC else "datos.gob.ar"},
     }
