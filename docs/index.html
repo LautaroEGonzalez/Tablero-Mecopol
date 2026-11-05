@@ -272,7 +272,8 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .dos-igual .chart { height: 340px; }
 .dos-igual h3.sub-t { margin: 0 0 8px; }
 .dos-igual .leyenda { margin-top: 10px; }
-.cap-graf { margin: 0 0 10px; font-size: 14px; color: var(--txt-2); max-width: 46ch; }
+.cap-graf { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--txt-2); }
+@media (min-width: 901px) { .dos-igual .cap-graf { min-height: 3em; } }
 @media (max-width: 900px) { .dos-col, .dos-igual { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .dos-igual .chart { height: 280px; } }
 .otras td.txt { color: var(--txt-2); white-space: normal; text-align: left; }
@@ -521,7 +522,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <div class="dos-igual">
           <div class="caja"><h3 class="sub-t">Salario real</h3><p class="cap-graf">Cuánto compra un sueldo registrado. Enero de 2019 = 100.</p><div class="chart" id="ch-sal" role="img"></div>
             <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div></div>
-          <div class="caja"><h3 class="sub-t">Canastas básicas</h3><p class="cap-graf">Cuántas canastas básicas de un adulto alcanza a comprar cada ingreso mínimo.</p><div class="chart" id="ch-can" role="img"></div>
+          <div class="caja"><h3 class="sub-t">Canastas básicas</h3><p class="cap-graf">Canastas básicas de un adulto que compra cada ingreso mínimo.</p><div class="chart" id="ch-can" role="img"></div>
             <div class="leyenda"><span><i style="background:var(--bordo)"></i>Salario mínimo</span><span><i style="background:var(--negro)"></i>Jubilación mínima</span></div></div>
         </div>
         <p class="lectura" id="lec-sal"></p>
