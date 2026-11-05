@@ -362,6 +362,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
   const ejeY = (t, extra) => Object.assign({ type: 'value', axisLine: { show: false }, axisTick: { show: false },
     axisLabel: { color: t.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) + '%' },
     splitLine: { lineStyle: { color: t.grid, width: 1 } } }, extra);
+  // rayita del color de cada línea para los cuadros de datos; el filete la separa del fondo del cuadro
+  const raya = (color, borde) => `<i style="display:inline-block;width:22px;height:7px;margin-right:8px;vertical-align:middle;box-sizing:border-box;border:1px solid ${borde};background:${color}"></i>`;
   const nuevo = (el, opt) => {
     const c = echarts.init(el);
     c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: FONT, color: NEGRO },
@@ -658,8 +660,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         el.setAttribute('aria-label', etiqueta);
         nuevo(el, {
           grid: { left: 4, right: 44, top: 20, bottom: 4, containLabel: true },
-          tooltip: Object.assign(tip(), { formatter: p => largo(p[0].name) + '<br>' + p.filter(x => x.value != null).map(x =>
-            `${x.seriesName}: <b>${nf(x.value, 1)}</b>`).join('<br>') }),
+          tooltip: Object.assign(tip(), { formatter: p => largo(p[0].name) + '<br>' + p.filter(x => x.value != null).sort((a, b) => b.value - a.value).map(x =>
+            `${raya(series.find(s => s.name === x.seriesName).lineStyle.color, CREMA)}${x.seriesName}: <b>${nf(x.value, 1)}</b>`).join('<br>') }),
           xAxis: ejeX(PAPEL, { type: 'category', data: axs, boundaryGap: false, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
           yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) } }),
           series,
@@ -692,7 +694,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         chR.setOption({
           grid: { left: 4, right: 60, top: 24, bottom: 4, containLabel: true },
           tooltip: Object.assign(tip(TINTA), { formatter: p => `${largo(p[0].name)}<br>` + p.map(x =>
-            `${x.seriesName}: <b>${pct(x.value, dec)}</b>`).join('<br>') }),
+            `${raya({ 'IPC oficial': CREMA, 'Canasta 2017/18': ROSA }[x.seriesName], NEGRO)}${x.seriesName}: <b>${pct(x.value, dec)}</b>`).join('<br>') }),
           xAxis: ejeX(TINTA, { type: 'category', data: RS.map(x => x.fecha), boundaryGap: false, axisLabel: { color: TINTA.fg3, fontFamily: FONT, fontSize: 12, formatter: etq, hideOverlap: true } }),
           yAxis: ejeY(TINTA, {}),
           series: [
