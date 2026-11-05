@@ -94,7 +94,7 @@ h1 { margin: 0; font: 800 19px/1.2 var(--ui); text-wrap: balance; }
 }
 .hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); gap: 40px; align-items: stretch; min-height: 340px; }
 .num {
-  --n: 4; align-self: end; margin: 0 0 -.041em; padding: 0;
+  --n: 4; align-self: end; margin: 0 0 calc(20px - .041em); padding: 0;
   font: 400 min(calc((100cqw - 440px) * .92 / (.44 * var(--n) + .25)), 270px)/1.16 var(--display);
   white-space: nowrap;
 }
