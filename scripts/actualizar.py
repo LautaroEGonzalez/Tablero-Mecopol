@@ -794,10 +794,88 @@ def completar_divisiones(datos):
     return datos
 
 
+def indec_variaciones():
+    """Variaciones oficiales del IPC (mensual, interanual, acumulada del año), con el decimal
+    que publica el INDEC. Devuelve {(clave_indec, tipo): serie} o {} si no hay API."""
+    if not INDEC_TOKEN:
+        return {}
+    try:
+        filas = indec_tabla("ipc_nacional", {
+            "tipo_de_indicador": "in.(v_m,v_ia,v_acum)", "nivel": 'in.("Nivel General","División")',
+            "anio": "gte.2023", "select": "periodo,region,codigo,tipo_de_indicador,valor",
+            "order": "periodo.asc,region.asc,codigo.asc,tipo_de_indicador.asc"})
+    except RuntimeError as e:
+        print(f"::warning::API del INDEC (variaciones oficiales): {e}. Se muestran las calculadas.")
+        return {}
+    df = pd.DataFrame(filas)
+    if df.empty:
+        return {}
+    df["fecha"] = pd.to_datetime(df["periodo"].astype(str) + "01", format="%Y%m%d")
+    df["valor"] = pd.to_numeric(df["valor"].astype(str).str.replace(",", "."), errors="coerce")
+    out = {}
+    for (reg, cod, tipo), g in df.groupby(["region", "codigo", "tipo_de_indicador"]):
+        out[(clave_indec(reg, cod), tipo)] = g.groupby("fecha")["valor"].last()
+    return out
+
+
+def oficializar(datos):
+    """Reemplaza las variaciones que se muestran por las que publica el INDEC (un decimal).
+
+    Las calculadas desde los índices pueden diferir en una décima de las del informe, porque
+    el INDEC calcula con los índices sin redondear. Las acumuladas desde nov-23 no las publica
+    el INDEC: siguen calculadas. La serie mensual guarda las dos (mensual para encadenar,
+    mensual_ind e interanual_ind para mostrar).
+    """
+    V = indec_variaciones()
+    if not V:
+        return datos
+    mes = pd.Timestamp(datos["ultimo_mes"] + "-01")
+    previo = mes - pd.DateOffset(months=1)
+
+    def of(reg, cod, tipo, f=mes):
+        s = V.get((clave_indec(reg, cod), tipo))
+        v = s.get(f) if s is not None else None
+        return None if v is None or pd.isna(v) else float(v)
+
+    cambios = 0
+
+    def poner(d, campo, v):
+        nonlocal cambios
+        if v is not None:
+            cambios += d.get(campo) != v
+            d[campo] = v
+
+    k = datos["kpis"]
+    poner(k, "mensual", of("Nacional", "0", "v_m"))
+    poner(k, "mensual_previo", of("Nacional", "0", "v_m", previo))
+    poner(k, "interanual", of("Nacional", "0", "v_ia"))
+    poner(k, "interanual_previo", of("Nacional", "0", "v_ia", previo))
+    poner(k, "acum_anio", of("Nacional", "0", "v_acum"))
+    for x in datos.get("serie", []):
+        f = pd.Timestamp(x["fecha"] + "-01")
+        for campo, tipo in (("mensual_ind", "v_m"), ("interanual_ind", "v_ia")):
+            v = of("Nacional", "0", tipo, f)
+            if v is not None:
+                x[campo] = v
+    for rb in datos.get("rubros", []):
+        poner(rb, "mensual", of("Nacional", rb["rubro"], "v_m"))
+        poner(rb, "interanual", of("Nacional", rb["rubro"], "v_ia"))
+    for g in (datos.get("regiones") or {}).get("regiones", []):
+        poner(g, "mensual", of(g["region"], "0", "v_m"))
+        poner(g, "interanual", of(g["region"], "0", "v_ia"))
+        poner(g, "acum_anio", of(g["region"], "0", "v_acum"))
+        for nombre, v in g.get("rubros", {}).items():
+            poner(v, "mensual", of(g["region"], nombre, "v_m"))
+            poner(v, "interanual", of(g["region"], nombre, "v_ia"))
+    datos.setdefault("fuentes", {})["variaciones"] = "publicadas por el INDEC (un decimal)"
+    print(f"   variaciones oficiales del INDEC: {cambios} valores con el decimal del informe")
+    return datos
+
+
 def main():
     previo_txt = SALIDA.read_text(encoding="utf-8") if SALIDA.exists() else None
     try:
-        datos = calcular()
+        datos = oficializar(calcular())
     except DatosIncompletos as e:
         print(f"::warning::{e} (se está actualizando). Se publica lo que haya y se reintenta en la próxima corrida.")
         if previo_txt is None:
