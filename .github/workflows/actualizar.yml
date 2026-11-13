@@ -7,6 +7,11 @@ on:
   schedule:
     - cron: "30 21 * * *"
   workflow_dispatch:
+    inputs:
+      probar_telegram:
+        description: "Mandar un mensaje de prueba por Telegram"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -98,3 +103,14 @@ jobs:
           Detalle: ${RUN_URL}"
           curl -sS -o /dev/null -w "Telegram: HTTP %{http_code}\n" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "text=${TXT}" --data-urlencode "disable_web_page_preview=true"
+
+      - name: Mensaje de prueba por Telegram
+        if: always() && inputs.probar_telegram
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ]; then echo "::error::Faltan los secretos TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID"; exit 1; fi
+          code=$(curl -sS -o /tmp/tg.json -w "%{http_code}" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "text=✅ Prueba: los avisos del Tablero MECOPOL llegan bien.")
+          echo "Telegram: HTTP $code"; [ "$code" = 200 ] || { python -c 'import json;print(json.load(open("/tmp/tg.json")).get("description"))'; exit 1; }
