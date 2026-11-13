@@ -107,7 +107,7 @@ def indec_ipc():
     try:
         while True:
             params = {"tipo_de_indicador": "eq.Indice", "nivel": 'in.("Nivel General","División")',
-                      "select": "periodo,region,descripcion,valor",
+                      "select": "periodo,region,codigo,descripcion,valor",
                       "order": "periodo.asc,region.asc,codigo.asc", "limit": 1000, "offset": offset}
             for i in range(4):
                 try:
@@ -141,11 +141,34 @@ def indec_ipc():
         return _INDEC
     df["fecha"] = pd.to_datetime(df["periodo"].astype(str) + "01", format="%Y%m%d")
     df["valor"] = df["valor"].map(num)
-    for (reg, desc), g in df.groupby(["region", "descripcion"]):
-        _INDEC[(reg, desc)] = g.set_index("fecha")["valor"].sort_index()
+    # Clave por región y código COICOP (no por nombre): el INDEC a veces carga un mes
+    # nuevo con la etiqueta escrita distinto ("Nivel General" vs. "Nivel general").
+    df["clave"] = [clave_indec(r, c) for r, c in zip(df["region"], df["codigo"])]
+    for clave, g in df.groupby("clave"):
+        s = g.groupby("fecha")["valor"].last().sort_index()   # si hay dos etiquetas, una sola serie
+        _INDEC[clave] = s
+    ult = df["fecha"].max()
+    atrasadas = sorted(f"{k[0]}|{k[1]} ({etiqueta(v.index.max())})" for k, v in _INDEC.items() if v.index.max() < ult)
     print(f"🆕 API del INDEC: {len(df)} índices, {len(_INDEC)} series, "
-          f"de {etiqueta(df['fecha'].min())} a {etiqueta(df['fecha'].max())}")
+          f"de {etiqueta(df['fecha'].min())} a {etiqueta(ult)}")
+    if atrasadas:
+        print(f"   ⚠️ series sin {etiqueta(ult)} en la API del INDEC: {', '.join(atrasadas[:12])}"
+              f"{' …' if len(atrasadas) > 12 else ''}")
     return _INDEC
+
+
+def clave_indec(region, codigo_o_nombre):
+    """(región, código) normalizados: 'Nacional'/'GBA'… en minúscula y sin tildes; código '0' o '01'…'12'.
+    Acepta el nombre del rubro (como en DIVISIONES) en lugar del código."""
+    import unicodedata
+    norm = lambda x: unicodedata.normalize("NFKD", str(x)).encode("ascii", "ignore").decode().strip().lower()
+    c = str(codigo_o_nombre).strip()
+    if norm(c) == "nivel general":
+        c = "0"
+    elif c in DIVISIONES:
+        c = str(list(DIVISIONES).index(c) + 1)
+    c = "0" if c.strip("0") == "" else c.zfill(2)
+    return (norm(region), c)
 
 
 def traer(ids, desde, hasta, sin_cache=False):
@@ -169,13 +192,14 @@ def traer(ids, desde, hasta, sin_cache=False):
         df = pd.concat(partes, axis=1).apply(pd.to_numeric, errors="coerce")
         df.index = pd.to_datetime(df.index)
     except RuntimeError:
-        if not I or not all(MAPA_INDEC.get(c) in I for c in ids):
+        if not I or not all(c in MAPA_INDEC and clave_indec(*MAPA_INDEC[c]) in I for c in ids):
             raise
         print("  ⚠️ datos.gob.ar no respondió: se usa solo la API del INDEC")
         df = pd.DataFrame(columns=ids, dtype=float)
     if I:
         for c in ids:
-            s = I.get(MAPA_INDEC.get(c))
+            k = MAPA_INDEC.get(c)
+            s = I.get(clave_indec(*k)) if k else None
             if s is None:
                 continue
             s = s.loc[pd.Timestamp(desde):pd.Timestamp(hasta)]

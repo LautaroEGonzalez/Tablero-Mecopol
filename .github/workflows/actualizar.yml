@@ -37,6 +37,10 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
+      - name: Mes publicado antes de actualizar
+        id: antes
+        run: echo "mes=$(python -c 'import json;print(json.load(open("docs/data/dashboard.json"))["ultimo_mes"])')" >> "$GITHUB_OUTPUT"
+
       - name: Bajar datos y calcular indicadores
         env:
           INDEC_API_TOKEN: ${{ secrets.INDEC_API_TOKEN }}   # API del INDEC (secreto del repositorio)
@@ -60,3 +64,37 @@ jobs:
             echo "::error::La API del INDEC rechazó el token (vencido o revocado). Generá uno nuevo en api.indec.gob.ar y actualizá el secreto INDEC_API_TOKEN en Settings → Secrets and variables → Actions."
             exit 1
           fi
+
+      # ---- Avisos por Telegram (secretos TELEGRAM_BOT_TOKEN y TELEGRAM_CHAT_ID) ----
+      - name: Avisar por Telegram si hay un mes nuevo
+        if: success()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MES_ANTES: ${{ steps.antes.outputs.mes }}
+        run: |
+          [ -n "$TG_TOKEN" ] && [ -n "$TG_CHAT" ] || exit 0
+          read -r MES MENS IA <<< "$(python -c 'import json;d=json.load(open("docs/data/dashboard.json"));k=d["kpis"];print(d["ultimo_mes"],k["mensual"],k["interanual"])')"
+          [ "$MES" != "$MES_ANTES" ] || exit 0
+          TXT="📊 Tablero MECOPOL actualizado: IPC $MES = ${MENS}% mensual, ${IA}% interanual.
+          https://lautaroegonzalez.github.io/Tablero-Mecopol/"
+          curl -sS -o /dev/null -w "Telegram: HTTP %{http_code}\n" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "text=${TXT}" --data-urlencode "disable_web_page_preview=true"
+
+      - name: Avisar por Telegram si algo falló
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TG_TOKEN" ] && [ -n "$TG_CHAT" ] || exit 0
+          if [ -f "$RUNNER_TEMP/indec_token_rechazado" ]; then
+            MOTIVO="La API del INDEC rechazó el token (vencido o revocado). Generá uno nuevo en api.indec.gob.ar y actualizá el secreto INDEC_API_TOKEN."
+          else
+            MOTIVO="La actualización del tablero falló. La página sigue con los últimos datos buenos."
+          fi
+          TXT="⚠️ Tablero MECOPOL: ${MOTIVO}
+          Detalle: ${RUN_URL}"
+          curl -sS -o /dev/null -w "Telegram: HTTP %{http_code}\n" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "text=${TXT}" --data-urlencode "disable_web_page_preview=true"
