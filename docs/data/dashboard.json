@@ -1,18 +1,18 @@
 {
- "actualizado": "2026-11-03T17:28+00:00",
- "ultimo_mes": "2026-09",
+ "actualizado": "2026-11-13T11:57+00:00",
+ "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
- "mes_gobierno": 34,
- "meses_restantes": 14,
+ "mes_gobierno": 35,
+ "meses_restantes": 13,
  "kpis": {
-  "mensual": 1.93,
-  "mensual_previo": 1.66,
-  "interanual": 33.4,
-  "interanual_previo": 33.5,
-  "acum_anio": 23.6,
-  "acum_gobierno": 344.4,
-  "promedio_mensual": 4.48
+  "mensual": 2.17,
+  "mensual_previo": 1.93,
+  "interanual": 33.1,
+  "interanual_previo": 33.4,
+  "acum_anio": 26.3,
+  "acum_gobierno": 354.0,
+  "promedio_mensual": 4.42
  },
  "serie": [
   {
@@ -218,6 +218,12 @@
    "mensual": 1.93,
    "interanual": 33.4,
    "acumulada": 344.4
+  },
+  {
+   "fecha": "2026-10",
+   "mensual": 2.17,
+   "interanual": 33.1,
+   "acumulada": 354.0
   }
  ],
  "hitos": {
@@ -228,112 +234,112 @@
    "acumulada": 25.5
   },
   "primeros_5": 107.0,
-  "resto": 114.6,
-  "meses_resto": 29
+  "resto": 119.3,
+  "meses_resto": 30
  },
  "rubros": [
   {
    "rubro": "Alimentos y bebidas no alcohólicas",
-   "mensual": 2.0,
-   "interanual": 35.1,
-   "acum_gobierno": 315.9,
-   "relativo": -6.4
+   "mensual": 1.97,
+   "interanual": 34.6,
+   "acum_gobierno": 324.1,
+   "relativo": -6.6
   },
   {
    "rubro": "Bebidas alcohólicas y tabaco",
-   "mensual": 1.41,
-   "interanual": 22.4,
-   "acum_gobierno": 290.2,
-   "relativo": -12.2
+   "mensual": 0.81,
+   "interanual": 20.6,
+   "acum_gobierno": 293.4,
+   "relativo": -13.4
   },
   {
    "rubro": "Prendas de vestir y calzado",
-   "mensual": 1.38,
-   "interanual": 10.3,
-   "acum_gobierno": 164.4,
+   "mensual": 2.17,
+   "interanual": 10.0,
+   "acum_gobierno": 170.1,
    "relativo": -40.5
   },
   {
    "rubro": "Vivienda, agua, electricidad, gas y otros combustibles",
-   "mensual": 3.14,
-   "interanual": 49.1,
-   "acum_gobierno": 661.1,
-   "relativo": 71.3
+   "mensual": 4.21,
+   "interanual": 51.1,
+   "acum_gobierno": 693.1,
+   "relativo": 74.7
   },
   {
    "rubro": "Equipamiento y mantenimiento del hogar",
-   "mensual": 1.65,
-   "interanual": 23.7,
-   "acum_gobierno": 241.4,
-   "relativo": -23.2
+   "mensual": 1.44,
+   "interanual": 23.5,
+   "acum_gobierno": 246.4,
+   "relativo": -23.7
   },
   {
    "rubro": "Salud",
-   "mensual": 2.38,
-   "interanual": 33.3,
-   "acum_gobierno": 366.3,
-   "relativo": 4.9
+   "mensual": 1.7,
+   "interanual": 33.1,
+   "acum_gobierno": 374.2,
+   "relativo": 4.4
   },
   {
    "rubro": "Transporte",
-   "mensual": 1.53,
-   "interanual": 36.2,
-   "acum_gobierno": 407.6,
-   "relativo": 14.2
+   "mensual": 2.07,
+   "interanual": 34.4,
+   "acum_gobierno": 418.1,
+   "relativo": 14.1
   },
   {
    "rubro": "Comunicación",
-   "mensual": 2.51,
-   "interanual": 37.3,
-   "acum_gobierno": 465.7,
-   "relativo": 27.3
+   "mensual": 1.97,
+   "interanual": 36.9,
+   "acum_gobierno": 476.8,
+   "relativo": 27.0
   },
   {
    "rubro": "Recreación y cultura",
-   "mensual": 1.86,
-   "interanual": 32.2,
-   "acum_gobierno": 309.1,
-   "relativo": -8.0
+   "mensual": 3.27,
+   "interanual": 34.3,
+   "acum_gobierno": 322.4,
+   "relativo": -7.0
   },
   {
    "rubro": "Educación",
-   "mensual": 2.99,
-   "interanual": 39.9,
-   "acum_gobierno": 484.1,
-   "relativo": 31.4
+   "mensual": 1.34,
+   "interanual": 39.4,
+   "acum_gobierno": 491.9,
+   "relativo": 30.4
   },
   {
    "rubro": "Restaurantes y hoteles",
-   "mensual": 1.06,
-   "interanual": 34.6,
-   "acum_gobierno": 387.3,
-   "relativo": 9.6
+   "mensual": 1.5,
+   "interanual": 33.6,
+   "acum_gobierno": 394.6,
+   "relativo": 8.9
   },
   {
    "rubro": "Bienes y servicios varios",
-   "mensual": 1.9,
-   "interanual": 32.5,
-   "acum_gobierno": 431.8,
-   "relativo": 19.7
+   "mensual": 2.28,
+   "interanual": 32.3,
+   "acum_gobierno": 443.9,
+   "relativo": 19.8
   }
  ],
  "reponderado": {
   "resumen": {
    "mensual": {
-    "oficial": 1.9,
-    "reponderado": 2.0
+    "oficial": 2.2,
+    "reponderado": 2.3
    },
    "interanual": {
-    "oficial": 33.4,
-    "reponderado": 34.4
+    "oficial": 33.1,
+    "reponderado": 34.3
    },
    "acum_anio": {
-    "oficial": 23.6,
-    "reponderado": 24.4
+    "oficial": 26.3,
+    "reponderado": 27.2
    },
    "acum_gobierno": {
-    "oficial": 344.4,
-    "reponderado": 360.0
+    "oficial": 354.0,
+    "reponderado": 370.5
    }
   },
   "anios": {
@@ -935,6 +941,19 @@
      "interanual": 34.4,
      "acumulada": 360.0
     }
+   },
+   {
+    "fecha": "2026-10",
+    "oficial": {
+     "mensual": 2.2,
+     "interanual": 33.1,
+     "acumulada": 354.0
+    },
+    "reponderado": {
+     "mensual": 2.3,
+     "interanual": 34.3,
+     "acumulada": 370.5
+    }
    }
   ],
   "ponderaciones": [
@@ -999,7 +1018,7 @@
     "engho_2017_18": 4.3
    }
   ],
-  "control_error_pct": 0.06,
+  "control_error_pct": 0.07,
   "periodo_encuesta": [
    "2017-11",
    "2018-11"
@@ -1092,10 +1111,10 @@
    {
     "region": "GBA",
     "peso": 44.7,
-    "mensual": 2.01,
-    "interanual": 33.5,
-    "acum_anio": 23.8,
-    "acum_gobierno": 353.2,
+    "mensual": 1.98,
+    "interanual": 33.0,
+    "acum_anio": 26.3,
+    "acum_gobierno": 362.1,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -1232,6 +1251,10 @@
      {
       "fecha": "2026-09",
       "valor": 2.01
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 1.98
      }
     ],
     "ponderaciones": {
@@ -1250,74 +1273,74 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 2.23,
-      "interanual": 34.6,
-      "acum_gobierno": 320.2
+      "mensual": 1.87,
+      "interanual": 33.9,
+      "acum_gobierno": 328.0
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.52,
-      "interanual": 22.7,
-      "acum_gobierno": 304.2
+      "mensual": 0.86,
+      "interanual": 21.0,
+      "acum_gobierno": 307.6
      },
      "Prendas de vestir y calzado": {
-      "mensual": 1.89,
-      "interanual": 9.2,
-      "acum_gobierno": 158.8
+      "mensual": 3.37,
+      "interanual": 9.4,
+      "acum_gobierno": 167.5
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 2.72,
-      "interanual": 45.2,
-      "acum_gobierno": 600.6
+      "mensual": 3.06,
+      "interanual": 46.3,
+      "acum_gobierno": 622.0
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 1.68,
-      "interanual": 24.7,
-      "acum_gobierno": 237.5
+      "mensual": 1.44,
+      "interanual": 24.0,
+      "acum_gobierno": 242.4
      },
      "Salud": {
-      "mensual": 2.44,
+      "mensual": 1.47,
       "interanual": 33.9,
-      "acum_gobierno": 374.3
+      "acum_gobierno": 381.2
      },
      "Transporte": {
-      "mensual": 1.75,
-      "interanual": 37.0,
-      "acum_gobierno": 455.2
+      "mensual": 2.22,
+      "interanual": 35.5,
+      "acum_gobierno": 467.5
      },
      "Comunicación": {
-      "mensual": 2.5,
-      "interanual": 38.7,
-      "acum_gobierno": 485.3
+      "mensual": 2.12,
+      "interanual": 38.4,
+      "acum_gobierno": 497.7
      },
      "Recreación y cultura": {
-      "mensual": 1.25,
-      "interanual": 32.1,
-      "acum_gobierno": 312.8
+      "mensual": 2.65,
+      "interanual": 33.6,
+      "acum_gobierno": 323.8
      },
      "Educación": {
-      "mensual": 2.89,
-      "interanual": 41.1,
-      "acum_gobierno": 437.7
+      "mensual": 1.1,
+      "interanual": 40.5,
+      "acum_gobierno": 443.6
      },
      "Restaurantes y hoteles": {
-      "mensual": 1.27,
-      "interanual": 35.6,
-      "acum_gobierno": 384.5
+      "mensual": 0.95,
+      "interanual": 33.3,
+      "acum_gobierno": 389.1
      },
      "Bienes y servicios varios": {
-      "mensual": 2.01,
-      "interanual": 35.0,
-      "acum_gobierno": 442.7
+      "mensual": 2.42,
+      "interanual": 35.2,
+      "acum_gobierno": 455.9
      }
     }
    },
    {
     "region": "Pampeana",
     "peso": 34.2,
-    "mensual": 1.96,
-    "interanual": 33.1,
-    "acum_anio": 23.3,
-    "acum_gobierno": 337.0,
+    "mensual": 2.57,
+    "interanual": 33.4,
+    "acum_anio": 26.5,
+    "acum_gobierno": 348.2,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -1454,6 +1477,10 @@
      {
       "fecha": "2026-09",
       "valor": 1.96
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 2.57
      }
     ],
     "ponderaciones": {
@@ -1472,74 +1499,74 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 2.02,
-      "interanual": 35.3,
-      "acum_gobierno": 316.0
+      "mensual": 2.05,
+      "interanual": 35.2,
+      "acum_gobierno": 324.5
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.35,
-      "interanual": 21.9,
-      "acum_gobierno": 283.8
+      "mensual": 0.94,
+      "interanual": 20.2,
+      "acum_gobierno": 287.4
      },
      "Prendas de vestir y calzado": {
-      "mensual": 0.73,
-      "interanual": 10.6,
-      "acum_gobierno": 164.8
+      "mensual": 1.24,
+      "interanual": 10.3,
+      "acum_gobierno": 168.1
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 3.77,
-      "interanual": 49.3,
-      "acum_gobierno": 690.8
+      "mensual": 6.42,
+      "interanual": 53.9,
+      "acum_gobierno": 741.6
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 1.73,
-      "interanual": 23.8,
-      "acum_gobierno": 252.7
+      "mensual": 1.57,
+      "interanual": 24.0,
+      "acum_gobierno": 258.3
      },
      "Salud": {
-      "mensual": 2.35,
-      "interanual": 33.4,
-      "acum_gobierno": 365.9
+      "mensual": 1.95,
+      "interanual": 33.0,
+      "acum_gobierno": 375.0
      },
      "Transporte": {
-      "mensual": 1.48,
-      "interanual": 35.4,
-      "acum_gobierno": 362.8
+      "mensual": 2.04,
+      "interanual": 33.0,
+      "acum_gobierno": 372.2
      },
      "Comunicación": {
-      "mensual": 2.56,
-      "interanual": 36.4,
-      "acum_gobierno": 450.1
+      "mensual": 1.88,
+      "interanual": 36.3,
+      "acum_gobierno": 460.4
      },
      "Recreación y cultura": {
-      "mensual": 2.32,
-      "interanual": 34.2,
-      "acum_gobierno": 316.9
+      "mensual": 4.89,
+      "interanual": 38.3,
+      "acum_gobierno": 337.3
      },
      "Educación": {
-      "mensual": 3.77,
-      "interanual": 37.1,
-      "acum_gobierno": 482.2
+      "mensual": 1.74,
+      "interanual": 36.7,
+      "acum_gobierno": 492.3
      },
      "Restaurantes y hoteles": {
-      "mensual": 0.82,
-      "interanual": 35.3,
-      "acum_gobierno": 388.0
+      "mensual": 2.36,
+      "interanual": 35.7,
+      "acum_gobierno": 399.5
      },
      "Bienes y servicios varios": {
-      "mensual": 1.86,
-      "interanual": 31.1,
-      "acum_gobierno": 428.5
+      "mensual": 2.34,
+      "interanual": 30.7,
+      "acum_gobierno": 440.8
      }
     }
    },
    {
     "region": "Noreste",
     "peso": 4.5,
-    "mensual": 1.7,
-    "interanual": 36.9,
-    "acum_anio": 26.6,
-    "acum_gobierno": 326.6,
+    "mensual": 1.46,
+    "interanual": 35.9,
+    "acum_anio": 28.4,
+    "acum_gobierno": 332.9,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -1676,6 +1703,10 @@
      {
       "fecha": "2026-09",
       "valor": 1.7
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 1.46
      }
     ],
     "ponderaciones": {
@@ -1694,74 +1725,74 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 1.19,
-      "interanual": 40.8,
-      "acum_gobierno": 296.2
+      "mensual": 2.28,
+      "interanual": 41.0,
+      "acum_gobierno": 305.2
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.01,
-      "interanual": 21.9,
-      "acum_gobierno": 246.1
+      "mensual": 0.93,
+      "interanual": 19.8,
+      "acum_gobierno": 249.3
      },
      "Prendas de vestir y calzado": {
-      "mensual": 0.42,
-      "interanual": 10.0,
-      "acum_gobierno": 168.5
+      "mensual": 1.41,
+      "interanual": 9.7,
+      "acum_gobierno": 172.3
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 4.1,
-      "interanual": 76.9,
-      "acum_gobierno": 790.5
+      "mensual": -0.9,
+      "interanual": 71.8,
+      "acum_gobierno": 782.5
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 1.63,
-      "interanual": 19.6,
-      "acum_gobierno": 205.9
+      "mensual": 0.96,
+      "interanual": 20.0,
+      "acum_gobierno": 208.8
      },
      "Salud": {
-      "mensual": 2.15,
-      "interanual": 31.6,
-      "acum_gobierno": 338.4
+      "mensual": 1.78,
+      "interanual": 31.1,
+      "acum_gobierno": 346.2
      },
      "Transporte": {
-      "mensual": 1.17,
-      "interanual": 29.2,
-      "acum_gobierno": 377.0
+      "mensual": 1.36,
+      "interanual": 26.8,
+      "acum_gobierno": 383.5
      },
      "Comunicación": {
-      "mensual": 3.03,
-      "interanual": 35.6,
-      "acum_gobierno": 448.3
+      "mensual": 1.77,
+      "interanual": 35.1,
+      "acum_gobierno": 457.9
      },
      "Recreación y cultura": {
-      "mensual": 1.84,
-      "interanual": 30.3,
-      "acum_gobierno": 290.4
+      "mensual": 1.67,
+      "interanual": 29.4,
+      "acum_gobierno": 296.9
      },
      "Educación": {
-      "mensual": 2.84,
-      "interanual": 45.3,
-      "acum_gobierno": 626.2
+      "mensual": 1.63,
+      "interanual": 47.1,
+      "acum_gobierno": 638.0
      },
      "Restaurantes y hoteles": {
-      "mensual": 0.74,
-      "interanual": 38.2,
-      "acum_gobierno": 376.5
+      "mensual": 1.6,
+      "interanual": 36.9,
+      "acum_gobierno": 384.1
      },
      "Bienes y servicios varios": {
-      "mensual": 2.19,
-      "interanual": 28.2,
-      "acum_gobierno": 376.5
+      "mensual": 2.18,
+      "interanual": 27.8,
+      "acum_gobierno": 386.9
      }
     }
    },
    {
     "region": "Noroeste",
     "peso": 6.9,
-    "mensual": 1.88,
-    "interanual": 33.6,
-    "acum_anio": 24.6,
-    "acum_gobierno": 336.2,
+    "mensual": 1.66,
+    "interanual": 33.0,
+    "acum_anio": 26.7,
+    "acum_gobierno": 343.5,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -1898,6 +1929,10 @@
      {
       "fecha": "2026-09",
       "valor": 1.88
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 1.66
      }
     ],
     "ponderaciones": {
@@ -1916,74 +1951,74 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 1.37,
-      "interanual": 36.8,
-      "acum_gobierno": 305.3
+      "mensual": 1.79,
+      "interanual": 36.2,
+      "acum_gobierno": 312.5
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.15,
-      "interanual": 22.3,
-      "acum_gobierno": 262.2
+      "mensual": 0.45,
+      "interanual": 19.2,
+      "acum_gobierno": 263.9
      },
      "Prendas de vestir y calzado": {
-      "mensual": 2.05,
-      "interanual": 11.7,
-      "acum_gobierno": 166.8
+      "mensual": 1.27,
+      "interanual": 10.6,
+      "acum_gobierno": 170.2
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 3.29,
-      "interanual": 52.0,
-      "acum_gobierno": 759.6
+      "mensual": 2.45,
+      "interanual": 52.2,
+      "acum_gobierno": 780.7
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 1.86,
-      "interanual": 23.5,
-      "acum_gobierno": 235.3
+      "mensual": 1.38,
+      "interanual": 23.4,
+      "acum_gobierno": 240.0
      },
      "Salud": {
-      "mensual": 2.62,
-      "interanual": 31.7,
-      "acum_gobierno": 351.2
+      "mensual": 1.59,
+      "interanual": 31.9,
+      "acum_gobierno": 358.3
      },
      "Transporte": {
-      "mensual": 0.45,
-      "interanual": 37.7,
-      "acum_gobierno": 420.5
+      "mensual": 1.51,
+      "interanual": 36.6,
+      "acum_gobierno": 428.3
      },
      "Comunicación": {
-      "mensual": 2.11,
-      "interanual": 35.6,
-      "acum_gobierno": 432.3
+      "mensual": 2.06,
+      "interanual": 35.2,
+      "acum_gobierno": 443.3
      },
      "Recreación y cultura": {
-      "mensual": 3.92,
-      "interanual": 30.3,
-      "acum_gobierno": 308.8
+      "mensual": 2.31,
+      "interanual": 31.0,
+      "acum_gobierno": 318.2
      },
      "Educación": {
-      "mensual": 2.68,
-      "interanual": 41.9,
-      "acum_gobierno": 682.9
+      "mensual": 1.11,
+      "interanual": 41.2,
+      "acum_gobierno": 691.5
      },
      "Restaurantes y hoteles": {
-      "mensual": 1.65,
-      "interanual": 31.8,
-      "acum_gobierno": 390.1
+      "mensual": 0.87,
+      "interanual": 30.2,
+      "acum_gobierno": 394.3
      },
      "Bienes y servicios varios": {
-      "mensual": 2.26,
-      "interanual": 29.7,
-      "acum_gobierno": 395.1
+      "mensual": 1.94,
+      "interanual": 29.2,
+      "acum_gobierno": 404.7
      }
     }
    },
    {
     "region": "Cuyo",
     "peso": 5.2,
-    "mensual": 1.87,
+    "mensual": 2.3,
     "interanual": 33.0,
-    "acum_anio": 22.8,
-    "acum_gobierno": 340.2,
+    "acum_anio": 25.6,
+    "acum_gobierno": 350.4,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -2120,6 +2155,10 @@
      {
       "fecha": "2026-09",
       "valor": 1.87
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 2.3
      }
     ],
     "ponderaciones": {
@@ -2138,74 +2177,74 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 1.73,
-      "interanual": 34.7,
-      "acum_gobierno": 305.3
+      "mensual": 2.58,
+      "interanual": 34.6,
+      "acum_gobierno": 315.8
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.43,
-      "interanual": 22.9,
-      "acum_gobierno": 274.6
+      "mensual": 0.36,
+      "interanual": 20.4,
+      "acum_gobierno": 275.9
      },
      "Prendas de vestir y calzado": {
-      "mensual": 2.34,
-      "interanual": 15.7,
-      "acum_gobierno": 184.8
+      "mensual": 0.67,
+      "interanual": 13.6,
+      "acum_gobierno": 186.7
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 2.63,
-      "interanual": 49.1,
-      "acum_gobierno": 670.4
+      "mensual": 6.63,
+      "interanual": 52.1,
+      "acum_gobierno": 721.4
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 1.5,
-      "interanual": 21.8,
-      "acum_gobierno": 248.1
+      "mensual": 1.01,
+      "interanual": 21.7,
+      "acum_gobierno": 251.7
      },
      "Salud": {
-      "mensual": 2.22,
-      "interanual": 31.4,
-      "acum_gobierno": 338.0
+      "mensual": 1.89,
+      "interanual": 31.2,
+      "acum_gobierno": 346.3
      },
      "Transporte": {
-      "mensual": 2.08,
-      "interanual": 41.2,
-      "acum_gobierno": 413.5
+      "mensual": 1.63,
+      "interanual": 39.4,
+      "acum_gobierno": 421.9
      },
      "Comunicación": {
-      "mensual": 2.41,
-      "interanual": 35.4,
-      "acum_gobierno": 458.6
+      "mensual": 1.58,
+      "interanual": 33.7,
+      "acum_gobierno": 467.5
      },
      "Recreación y cultura": {
-      "mensual": 1.71,
-      "interanual": 28.5,
-      "acum_gobierno": 289.5
+      "mensual": 2.0,
+      "interanual": 29.6,
+      "acum_gobierno": 297.3
      },
      "Educación": {
-      "mensual": 1.05,
-      "interanual": 37.3,
-      "acum_gobierno": 462.2
+      "mensual": 1.84,
+      "interanual": 37.1,
+      "acum_gobierno": 472.5
      },
      "Restaurantes y hoteles": {
-      "mensual": 1.11,
-      "interanual": 27.7,
-      "acum_gobierno": 383.1
+      "mensual": 0.53,
+      "interanual": 28.6,
+      "acum_gobierno": 385.7
      },
      "Bienes y servicios varios": {
-      "mensual": 1.1,
-      "interanual": 30.8,
-      "acum_gobierno": 445.6
+      "mensual": 1.69,
+      "interanual": 30.3,
+      "acum_gobierno": 454.8
      }
     }
    },
    {
     "region": "Patagonia",
     "peso": 4.6,
-    "mensual": 1.38,
-    "interanual": 30.3,
-    "acum_anio": 21.2,
-    "acum_gobierno": 350.1,
+    "mensual": 2.49,
+    "interanual": 30.4,
+    "acum_anio": 24.2,
+    "acum_gobierno": 361.4,
     "serie_mensual": [
      {
       "fecha": "2023-12",
@@ -2342,6 +2381,10 @@
      {
       "fecha": "2026-09",
       "valor": 1.38
+     },
+     {
+      "fecha": "2026-10",
+      "valor": 2.49
      }
     ],
     "ponderaciones": {
@@ -2360,64 +2403,64 @@
     },
     "rubros": {
      "Alimentos y bebidas no alcohólicas": {
-      "mensual": 1.71,
-      "interanual": 29.8,
-      "acum_gobierno": 322.1
+      "mensual": 1.65,
+      "interanual": 30.0,
+      "acum_gobierno": 329.0
      },
      "Bebidas alcohólicas y tabaco": {
-      "mensual": 1.59,
-      "interanual": 24.2,
-      "acum_gobierno": 316.5
+      "mensual": 0.25,
+      "interanual": 21.3,
+      "acum_gobierno": 317.6
      },
      "Prendas de vestir y calzado": {
-      "mensual": 0.03,
-      "interanual": 12.1,
-      "acum_gobierno": 193.9
+      "mensual": 0.57,
+      "interanual": 10.4,
+      "acum_gobierno": 195.6
      },
      "Vivienda, agua, electricidad, gas y otros combustibles": {
-      "mensual": 2.13,
-      "interanual": 48.6,
-      "acum_gobierno": 758.8
+      "mensual": 7.12,
+      "interanual": 52.2,
+      "acum_gobierno": 819.9
      },
      "Equipamiento y mantenimiento del hogar": {
-      "mensual": 0.67,
-      "interanual": 20.0,
-      "acum_gobierno": 237.7
+      "mensual": 1.52,
+      "interanual": 19.7,
+      "acum_gobierno": 242.9
      },
      "Salud": {
-      "mensual": 2.09,
-      "interanual": 32.9,
-      "acum_gobierno": 384.4
+      "mensual": 1.94,
+      "interanual": 33.5,
+      "acum_gobierno": 393.8
      },
      "Transporte": {
-      "mensual": 1.05,
-      "interanual": 34.0,
-      "acum_gobierno": 359.1
+      "mensual": 2.81,
+      "interanual": 32.8,
+      "acum_gobierno": 371.9
      },
      "Comunicación": {
-      "mensual": 2.36,
-      "interanual": 34.6,
-      "acum_gobierno": 467.2
+      "mensual": 1.54,
+      "interanual": 34.0,
+      "acum_gobierno": 475.9
      },
      "Recreación y cultura": {
-      "mensual": 1.75,
-      "interanual": 25.9,
-      "acum_gobierno": 255.4
+      "mensual": 1.59,
+      "interanual": 26.4,
+      "acum_gobierno": 261.1
      },
      "Educación": {
-      "mensual": 1.63,
-      "interanual": 38.9,
-      "acum_gobierno": 702.0
+      "mensual": 0.94,
+      "interanual": 37.4,
+      "acum_gobierno": 709.5
      },
      "Restaurantes y hoteles": {
-      "mensual": 0.13,
-      "interanual": 28.6,
-      "acum_gobierno": 422.2
+      "mensual": 2.35,
+      "interanual": 29.1,
+      "acum_gobierno": 434.4
      },
      "Bienes y servicios varios": {
-      "mensual": 1.21,
-      "interanual": 28.4,
-      "acum_gobierno": 455.2
+      "mensual": 1.65,
+      "interanual": 26.7,
+      "acum_gobierno": 464.3
      }
     }
    }
