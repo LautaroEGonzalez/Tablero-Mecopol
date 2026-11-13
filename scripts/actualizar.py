@@ -83,6 +83,12 @@ def pedir(url, params, intentos=4):
     raise RuntimeError(f"La API no respondió: {url} {params}")
 
 
+def marcar_token_rechazado():
+    """Deja una marca para que la Action termine en error (y GitHub avise por mail)
+    después de publicar lo que se pudo con datos.gob.ar."""
+    Path(os.environ.get("RUNNER_TEMP", "/tmp"), "indec_token_rechazado").touch()
+
+
 def indec_ipc():
     """Índices del IPC (nivel general y 12 divisiones, 7 regiones) desde la API del INDEC.
 
@@ -114,6 +120,7 @@ def indec_ipc():
                     break
                 print(f"  ⚠️ API del INDEC: HTTP {r.status_code} (intento {i + 1}) {r.text[:200]}")
                 if r.status_code in (401, 403):
+                    marcar_token_rechazado()
                     raise RuntimeError("token rechazado: revisar el secreto INDEC_API_TOKEN")
                 time.sleep(5 * (i + 1))
             else:
@@ -470,6 +477,7 @@ def indec_tabla(tabla, params):
                 pagina = resp.json()
                 break
             if resp.status_code in (401, 403):
+                marcar_token_rechazado()
                 raise RuntimeError("token rechazado: revisar el secreto INDEC_API_TOKEN")
             print(f"  ⚠️ API del INDEC ({tabla}): HTTP {resp.status_code} (intento {i + 1})")
             time.sleep(5 * (i + 1))

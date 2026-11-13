@@ -53,3 +53,10 @@ jobs:
             git commit -m "Datos actualizados $(date -u +%Y-%m-%d)"
             git push
           fi
+
+      - name: Avisar si el token del INDEC fue rechazado
+        run: |
+          if [ -f "$RUNNER_TEMP/indec_token_rechazado" ]; then
+            echo "::error::La API del INDEC rechazó el token (vencido o revocado). Generá uno nuevo en api.indec.gob.ar y actualizá el secreto INDEC_API_TOKEN en Settings → Secrets and variables → Actions."
+            exit 1
+          fi
