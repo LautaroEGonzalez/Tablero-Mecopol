@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-13T12:11+00:00",
+ "actualizado": "2026-11-14T01:32+00:00",
  "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -3093,21 +3093,27 @@
      "sal_privado": 88.7,
      "sal_publico": 75.0,
      "sal_total": 83.7
+    },
+    {
+     "fecha": "2026-09",
+     "sal_privado": 88.7,
+     "sal_publico": 74.9,
+     "sal_total": 83.7
     }
    ],
    "resumen": {
     "sal_privado": {
-     "ultimo": "2026-08",
+     "ultimo": "2026-09",
      "valor": 88.7,
      "vs_inicio_gobierno": -2.3
     },
     "sal_publico": {
-     "ultimo": "2026-08",
-     "valor": 75.0,
-     "vs_inicio_gobierno": -15.3
+     "ultimo": "2026-09",
+     "valor": 74.9,
+     "vs_inicio_gobierno": -15.4
     },
     "sal_total": {
-     "ultimo": "2026-08",
+     "ultimo": "2026-09",
      "valor": 83.7,
      "vs_inicio_gobierno": -7.0
     }
@@ -3579,13 +3585,18 @@
      "fecha": "2026-09",
      "smvm": 0.73,
      "jubilacion": 0.81
+    },
+    {
+     "fecha": "2026-10",
+     "smvm": 0.72,
+     "jubilacion": 0.8
     }
    ],
    "resumen": {
-    "ultimo": "2026-09",
-    "cbt": 528319.0,
-    "smvm": 383800.0,
-    "jubilacion": 428633.0
+    "ultimo": "2026-10",
+    "cbt": 546926.0,
+    "smvm": 391200.0,
+    "jubilacion": 435749.0
    }
   }
  },
