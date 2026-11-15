@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-15T12:58+00:00",
+ "actualizado": "2026-11-15T16:35+00:00",
  "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -3688,5 +3688,308 @@
   },
   "api": "INDEC (api.indec.gob.ar) y datos.gob.ar",
   "variaciones": "publicadas por el INDEC (un decimal)"
+ },
+ "dato_del_mes": {
+  "edicion": "2026-11",
+  "tema": "recesion",
+  "titulo": "La recesión que se viene",
+  "bajada": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
+  "agenda": [
+   {
+    "fecha": "2026-11-24",
+    "que": "EMAE de septiembre",
+    "detalle": "Completa el tercer trimestre en el dato mensual."
+   },
+   {
+    "fecha": "2026-12-16",
+    "que": "PIB del tercer trimestre",
+    "detalle": "Informe de avance del nivel de actividad. Es el dato oficial que confirma la recesión."
+   }
+  ],
+  "pib": null
+ },
+ "actividad": {
+  "fuente": "INDEC (api.indec.gob.ar)",
+  "serie_id": "143.3_NO_PR_2004_A_31",
+  "base": "2023-11",
+  "ultimo": "2026-08",
+  "serie": [
+   {
+    "fecha": "2023-11",
+    "nivel": 100.0,
+    "mensual": null
+   },
+   {
+    "fecha": "2023-12",
+    "nivel": 97.706,
+    "mensual": -2.29
+   },
+   {
+    "fecha": "2024-01",
+    "nivel": 97.721,
+    "mensual": 0.02
+   },
+   {
+    "fecha": "2024-02",
+    "nivel": 98.315,
+    "mensual": 0.61
+   },
+   {
+    "fecha": "2024-03",
+    "nivel": 97.231,
+    "mensual": -1.1
+   },
+   {
+    "fecha": "2024-04",
+    "nivel": 96.401,
+    "mensual": -0.85
+   },
+   {
+    "fecha": "2024-05",
+    "nivel": 97.786,
+    "mensual": 1.44
+   },
+   {
+    "fecha": "2024-06",
+    "nivel": 97.911,
+    "mensual": 0.13
+   },
+   {
+    "fecha": "2024-07",
+    "nivel": 100.584,
+    "mensual": 2.73
+   },
+   {
+    "fecha": "2024-08",
+    "nivel": 101.131,
+    "mensual": 0.54
+   },
+   {
+    "fecha": "2024-09",
+    "nivel": 100.987,
+    "mensual": -0.14
+   },
+   {
+    "fecha": "2024-10",
+    "nivel": 101.859,
+    "mensual": 0.86
+   },
+   {
+    "fecha": "2024-11",
+    "nivel": 103.071,
+    "mensual": 1.19
+   },
+   {
+    "fecha": "2024-12",
+    "nivel": 103.478,
+    "mensual": 0.39
+   },
+   {
+    "fecha": "2025-01",
+    "nivel": 103.489,
+    "mensual": 0.01
+   },
+   {
+    "fecha": "2025-02",
+    "nivel": 104.88,
+    "mensual": 1.34
+   },
+   {
+    "fecha": "2025-03",
+    "nivel": 102.088,
+    "mensual": -2.66
+   },
+   {
+    "fecha": "2025-04",
+    "nivel": 104.202,
+    "mensual": 2.07
+   },
+   {
+    "fecha": "2025-05",
+    "nivel": 104.158,
+    "mensual": -0.04
+   },
+   {
+    "fecha": "2025-06",
+    "nivel": 103.137,
+    "mensual": -0.98
+   },
+   {
+    "fecha": "2025-07",
+    "nivel": 103.52,
+    "mensual": 0.37
+   },
+   {
+    "fecha": "2025-08",
+    "nivel": 104.21,
+    "mensual": 0.67
+   },
+   {
+    "fecha": "2025-09",
+    "nivel": 104.658,
+    "mensual": 0.43
+   },
+   {
+    "fecha": "2025-10",
+    "nivel": 104.693,
+    "mensual": 0.03
+   },
+   {
+    "fecha": "2025-11",
+    "nivel": 104.502,
+    "mensual": -0.18
+   },
+   {
+    "fecha": "2025-12",
+    "nivel": 106.578,
+    "mensual": 1.99
+   },
+   {
+    "fecha": "2026-01",
+    "nivel": 106.452,
+    "mensual": -0.12
+   },
+   {
+    "fecha": "2026-02",
+    "nivel": 104.331,
+    "mensual": -1.99
+   },
+   {
+    "fecha": "2026-03",
+    "nivel": 107.109,
+    "mensual": 2.66
+   },
+   {
+    "fecha": "2026-04",
+    "nivel": 105.657,
+    "mensual": -1.36
+   },
+   {
+    "fecha": "2026-05",
+    "nivel": 104.979,
+    "mensual": -0.64
+   },
+   {
+    "fecha": "2026-06",
+    "nivel": 105.291,
+    "mensual": 0.3
+   },
+   {
+    "fecha": "2026-07",
+    "nivel": 102.336,
+    "mensual": -2.81
+   },
+   {
+    "fecha": "2026-08",
+    "nivel": 102.404,
+    "mensual": 0.07
+   }
+  ],
+  "trimestres": [
+   {
+    "trimestre": "2024T1",
+    "desde": "2024-01",
+    "hasta": "2024-03",
+    "meses": 3,
+    "promedio": 97.756,
+    "variacion": null
+   },
+   {
+    "trimestre": "2024T2",
+    "desde": "2024-04",
+    "hasta": "2024-06",
+    "meses": 3,
+    "promedio": 97.366,
+    "variacion": -0.4
+   },
+   {
+    "trimestre": "2024T3",
+    "desde": "2024-07",
+    "hasta": "2024-09",
+    "meses": 3,
+    "promedio": 100.901,
+    "variacion": 3.63
+   },
+   {
+    "trimestre": "2024T4",
+    "desde": "2024-10",
+    "hasta": "2024-12",
+    "meses": 3,
+    "promedio": 102.803,
+    "variacion": 1.89
+   },
+   {
+    "trimestre": "2025T1",
+    "desde": "2025-01",
+    "hasta": "2025-03",
+    "meses": 3,
+    "promedio": 103.486,
+    "variacion": 0.66
+   },
+   {
+    "trimestre": "2025T2",
+    "desde": "2025-04",
+    "hasta": "2025-06",
+    "meses": 3,
+    "promedio": 103.832,
+    "variacion": 0.33
+   },
+   {
+    "trimestre": "2025T3",
+    "desde": "2025-07",
+    "hasta": "2025-09",
+    "meses": 3,
+    "promedio": 104.129,
+    "variacion": 0.29
+   },
+   {
+    "trimestre": "2025T4",
+    "desde": "2025-10",
+    "hasta": "2025-12",
+    "meses": 3,
+    "promedio": 105.258,
+    "variacion": 1.08
+   },
+   {
+    "trimestre": "2026T1",
+    "desde": "2026-01",
+    "hasta": "2026-03",
+    "meses": 3,
+    "promedio": 105.964,
+    "variacion": 0.67
+   },
+   {
+    "trimestre": "2026T2",
+    "desde": "2026-04",
+    "hasta": "2026-06",
+    "meses": 3,
+    "promedio": 105.309,
+    "variacion": -0.62
+   },
+   {
+    "trimestre": "2026T3",
+    "desde": "2026-07",
+    "hasta": "2026-09",
+    "meses": 2,
+    "promedio": 102.37,
+    "variacion": -2.79
+   }
+  ],
+  "racha": 2,
+  "racha_completa": 1,
+  "estado": "riesgo",
+  "necesario": {
+   "meses": [
+    "2026-09"
+   ],
+   "variacion": 8.58,
+   "nivel": [
+    111.187
+   ]
+  },
+  "mayor_subida": {
+   "fecha": "2024-07",
+   "variacion": 2.73
+  }
  }
 }
