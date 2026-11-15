@@ -10,7 +10,7 @@
 
 ## Actividad económica (tema «recesion»)
 
-`scripts/actualizar.py` baja el EMAE desestacionalizado (base 2004 = 100) de la API del INDEC y, si falla, de datos.gob.ar (`143.3_NO_PR_2004_A_31`). Lo lleva a noviembre de 2023 = 100, promedia cada trimestre y lo compara con el anterior. La recesión técnica es dos trimestres seguidos en baja. Si el trimestre en curso está incompleto, calcula cuánto tendrían que crecer los meses que faltan (todos lo mismo) para que su promedio iguale al del trimestre anterior: esa cifra es una estimación de MECOPOL. También proyecta los 8 meses siguientes con la variación mensual promedio de los últimos 12 meses (otra estimación de MECOPOL) y promedia los trimestres que completa, para ver si la racha sigue.
+`scripts/actualizar.py` baja el EMAE desestacionalizado (base 2004 = 100) de la API del INDEC y, si falla, de datos.gob.ar (`143.3_NO_PR_2004_A_31`). Lo lleva a noviembre de 2023 = 100, promedia cada trimestre y lo compara con el anterior. La recesión técnica es dos trimestres seguidos en baja. Si el trimestre en curso está incompleto, calcula cuánto tendrían que crecer los meses que faltan (todos lo mismo) para que su promedio iguale al del trimestre anterior: esa cifra es una estimación de MECOPOL. También proyecta los 8 meses siguientes (otra estimación de MECOPOL) con el ritmo de caída desde el trimestre alto: la variación mensual promedio entre el promedio del último trimestre anterior a la racha en baja (ubicado en su mes del medio) y el último dato. Si no hay racha, usa la variación promedio de los últimos 12 meses. Promedia los trimestres que completa, para ver si la racha sigue.
 
 ## IPC con la canasta 2017/18 (estimación MECOPOL)
 

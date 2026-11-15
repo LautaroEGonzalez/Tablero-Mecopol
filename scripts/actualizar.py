@@ -717,11 +717,21 @@ def actividad():
         necesario = {"meses": [ym(f) for f in faltan], "variacion": r((y - 1) * 100, 2),
                      "nivel": [r(x * y ** (k + 1) / base * 100, 3) for k in range(len(faltan))]}
 
-    # proyección (estimación de MECOPOL): sigue la variación mensual promedio de los últimos 12 meses
-    # durante 8 meses, lo que completa el trimestre en curso y los dos siguientes
+    # proyección (estimación de MECOPOL): sigue el ritmo de caída desde el trimestre alto (el último
+    # antes de la racha en baja) durante 8 meses, lo que completa el trimestre en curso y los dos
+    # siguientes. Si no hay racha, sigue la variación promedio de los últimos 12 meses.
     proyeccion = None
     if len(s) >= 13:
-        g = (s.iloc[-1] / s.iloc[-13]) ** (1 / 12) - 1
+        i_ref = len(lista) - 1 - racha
+        if racha and i_ref >= 0:
+            ref = trims[i_ref][1]
+            centro = ref.index[1]                        # el promedio del trimestre se ubica en su mes del medio
+            n = meses_entre(centro, s.index[-1])
+            g = (s.iloc[-1] / ref.mean()) ** (1 / n) - 1
+            base_txt, desde_txt = "ritmo desde el trimestre alto", lista[i_ref]["trimestre"]
+        else:
+            g = (s.iloc[-1] / s.iloc[-13]) ** (1 / 12) - 1
+            base_txt, desde_txt = "variación promedio de los últimos 12 meses", None
         fechas = pd.date_range(s.index[-1] + pd.DateOffset(months=1), periods=8, freq="MS")
         p = pd.Series([s.iloc[-1] * (1 + g) ** (k + 1) for k in range(len(fechas))], index=fechas)
         junto = pd.concat([s, p])
@@ -733,7 +743,7 @@ def actividad():
             prev = qj[i - 1][1].mean()
             tp.append({"trimestre": f"{per.year}T{per.quarter}", "desde": ym(gr.index[0]), "hasta": ym(gr.index[-1]),
                        "promedio": r(gr.mean() / base * 100, 3), "variacion": r((gr.mean() / prev - 1) * 100, 2)})
-        proyeccion = {"tendencia_mensual": r(g * 100, 3), "base": "variación promedio de los últimos 12 meses",
+        proyeccion = {"tendencia_mensual": r(g * 100, 3), "base": base_txt, "desde": desde_txt,
                       "serie": [{"fecha": ym(f), "nivel": r(v / base * 100, 3)} for f, v in p.items()], "trimestres": tp}
 
     gob = mensual.loc[inicio + pd.DateOffset(months=1):]
