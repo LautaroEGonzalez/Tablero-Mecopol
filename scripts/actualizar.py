@@ -294,6 +294,11 @@ def var(s, a, b):
 # ------------------------------------------------------------------
 PONDERACIONES = RAIZ / "fuentes" / "ponderaciones_ipc.csv"
 ENCUESTA = ("2017-11-01", "2018-11-01")   # período de relevamiento de la ENGHo 2017/18
+# Canasta 2017/18 "mixta": para estos rubros se suponen cantidades fijas (la gente usa el mismo
+# gas o la misma conexión aunque el precio cambie: tarifas reguladas que quedaron congeladas
+# entre 2019 y 2023); para el resto, participaciones fijas en el gasto (si la ropa se encarece,
+# se compra menos y el gasto queda parecido). Ver la nota de la página.
+GRUPO_CANTIDADES = ["Vivienda, agua, electricidad, gas y otros combustibles", "Comunicación", "Educación"]
 
 
 def reponderar(ids_div, nac_corta, inicio, mes):
@@ -328,6 +333,29 @@ def reponderar(ids_div, nac_corta, inicio, mes):
     # agrega por regiones). Para no arrastrar ese desvío, se aplica al índice oficial
     # solo el efecto del cambio de ponderaciones: oficial × (reponderado / control).
     rep = nac * rep / control
+    lowe = rep
+
+    # Variantes desde el inicio del gobierno, con la misma corrección contra el control.
+    # Cantidades fijas (lowe) = participaciones efectivas en nov-23; participaciones fijas
+    # (young, el supuesto de CEPA) = pesos de la ENGHo aplicados directo en nov-23; mixta =
+    # cantidades fijas para GRUPO_CANTIDADES y participaciones fijas para el resto.
+    rel_ini = div.div(div.loc[inicio])
+    ctrl_ini = control / control[inicio]
+    g0 = w_new * div.loc[inicio] / div.loc[ENCUESTA[0]:ENCUESTA[1]].mean()
+    s_lowe = g0 / g0.sum()
+    grupo = [n for n in GRUPO_CANTIDADES if n in div.columns]
+    resto = [n for n in div.columns if n not in grupo]
+    s_mix = s_lowe.copy()
+    s_mix[resto] = (1 - s_lowe[grupo].sum()) * w_new[resto] / w_new[resto].sum()
+
+    def desde_inicio(sh):
+        idx = (rel_ini * sh).sum(axis=1)
+        out = lowe.copy()
+        tramo = nac / nac[inicio] * idx / ctrl_ini
+        out[out.index >= inicio] = lowe[inicio] * tramo[tramo.index >= inicio]
+        return out
+    young, mixto = desde_inicio(w_new), desde_inicio(s_mix)
+    rep = mixto   # la estimación que se muestra
 
     def v(s, a, b):
         return r((s[b] / s[a] - 1) * 100, 1)
@@ -347,6 +375,8 @@ def reponderar(ids_div, nac_corta, inicio, mes):
              for a in range(2017, mes.year) if pd.Timestamp(a, 12, 1) <= mes}
     print(f"   reponderado: acumulada {resumen['acum_gobierno']['reponderado']}% vs. "
           f"{resumen['acum_gobierno']['oficial']}% oficial · 2024: {anios.get('2024')}")
+    print(f"   variantes desde nov-23: mixta {v(mixto, inicio, mes)}% · cantidades fijas {v(lowe, inicio, mes)}% · "
+          f"participaciones fijas {v(young, inicio, mes)}%")
     serie = [{"fecha": ym(f),
               "oficial": {"mensual": v(nac, f - un_mes, f), "interanual": v(nac, f - un_anio, f), "acumulada": v(nac, inicio, f)},
               "reponderado": {"mensual": v(rep, f - un_mes, f), "interanual": v(rep, f - un_anio, f), "acumulada": v(rep, inicio, f)}}
@@ -365,7 +395,14 @@ def reponderar(ids_div, nac_corta, inicio, mes):
         "anios": anios,
         "otras": otras,
         "serie": serie,
+        "variantes": {
+            "mixta": {"acum_gobierno": v(mixto, inicio, mes), "interanual": v(mixto, mes - un_anio, mes), "mensual": v(mixto, mes - un_mes, mes)},
+            "cantidades_fijas": {"acum_gobierno": v(lowe, inicio, mes), "interanual": v(lowe, mes - un_anio, mes), "mensual": v(lowe, mes - un_mes, mes)},
+            "participaciones_fijas": {"acum_gobierno": v(young, inicio, mes), "interanual": v(young, mes - un_anio, mes), "mensual": v(young, mes - un_mes, mes)},
+            "grupo_cantidades": grupo,
+        },
         "ponderaciones": [{"rubro": n, "vigente": r(w_vig[n] * 100, 1), "engho_2017_18": r(w_new[n] * 100, 1),
+                           "mixta_inicio": r(s_mix[n] * 100, 1),
                            "efectivo_inicio": r(pe_ini[n] * 100, 1), "efectivo_mes": r(pe_mes[n] * 100, 1),
                            "relativo_encuesta_a_inicio": r(rel_enc[n], 1)}
                           for n in div.columns],

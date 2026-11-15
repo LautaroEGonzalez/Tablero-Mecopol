@@ -310,6 +310,7 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .notas p { margin: 0; font-size: 14px; max-width: 62ch; }
 code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+.rango { margin: 4px 0 0; font-size: 14px; line-height: 1.55; color: inherit; opacity: .85; max-width: 90ch; }
 </style>
 </head>
 <body>
@@ -537,7 +538,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       ${d.reponderado ? `
       <section class="sec tinta-negra" id="sec-canasta">
         <div class="sec-cab"><div><h2>Con la canasta de hoy</h2>
-          <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. <b>Es una estimación de MECOPOL.</b></p></div>
+          <p class="sub">El IPC oficial todavía pondera los rubros con la encuesta de gastos de 2004/05. Acá se recalcula con las ponderaciones de la encuesta 2017/18, que dan más peso a tarifas, transporte y comunicación, y menos a restaurantes y ropa. Como entre 2018 y 2023 las tarifas estuvieron congeladas, se combinan dos supuestos: para tarifas, comunicación y educación, la gente consume lo mismo aunque cambie el precio; para el resto, ajusta lo que compra y gasta una proporción parecida. <b>Es una estimación de MECOPOL.</b></p></div>
           <div class="seg" role="group" aria-label="Medida de la canasta" id="sel-rep">${[['acumulada', 'Acumulada'], ['interanual', 'Interanual'], ['mensual', 'Mensual']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
         ${espera}
@@ -545,17 +546,19 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
             const x = d.reponderado.resumen[c], df = x.reponderado - x.oficial;
             return `<div><h3>${t}</h3><div class="par"><b>${pct(x.reponderado, dec)}</b><span>oficial ${pct(x.oficial, dec)}</span></div>
               <div class="dif">${df >= 0 ? '+' : ''}${nf(df, 1)} pp con la canasta 2017/18</div></div>`; }).join('')}</div>
+        ${d.reponderado.variantes ? (() => { const V = d.reponderado.variantes;
+          return `<p class="rango">Según cómo se suponga que cambió el consumo desde 2018, la inflación desde nov-23 con la canasta 2017/18 va de <b>${pct(V.cantidades_fijas.acum_gobierno, 1)}</b> (mismas cantidades en todos los rubros) a <b>${pct(V.participaciones_fijas.acum_gobierno, 1)}</b> (misma proporción del gasto en todos los rubros, el supuesto de CEPA). La estimación de MECOPOL combina los dos: <b>${pct(V.mixta.acum_gobierno, 1)}</b>. Oficial: ${pct(d.reponderado.resumen.acum_gobierno.oficial, 1)}.</p>`; })() : ''}
         <div class="dos-col">
           <div class="caja"><div class="chart" id="ch-rep" role="img"></div></div>
           <div class="caja pond"><div class="tabla-wrap"><table>
             <caption class="oculto">Peso de cada rubro en las dos canastas</caption>
-            <thead><tr><th scope="col">Rubro</th><th scope="col">Peso 2004/05</th><th scope="col">Peso 2017/18</th><th scope="col">Cambio</th></tr></thead>
+            <thead><tr><th scope="col">Rubro</th><th scope="col">Peso 2004/05</th><th scope="col">Peso 2017/18</th><th scope="col">Cambio</th><th scope="col" title="Peso en el gasto en noviembre de 2023 con la canasta mixta de MECOPOL">Nov-23</th></tr></thead>
             <tbody>${[...d.reponderado.ponderaciones].sort((a, b) => (b.engho_2017_18 - b.vigente) - (a.engho_2017_18 - a.vigente)).map(p => {
               const c = p.engho_2017_18 - p.vigente;
-              return `<tr><td>${corto[p.rubro] || p.rubro}</td><td>${nf(p.vigente, 1)}</td><td>${nf(p.engho_2017_18, 1)}</td><td class="${c > 0.05 ? 'd-mas' : c < -0.05 ? 'd-menos' : ''}">${c > 0 ? '+' : ''}${nf(c, 1)}</td></tr>`; }).join('')}
+              return `<tr><td>${corto[p.rubro] || p.rubro}</td><td>${nf(p.vigente, 1)}</td><td>${nf(p.engho_2017_18, 1)}</td><td class="${c > 0.05 ? 'd-mas' : c < -0.05 ? 'd-menos' : ''}">${c > 0 ? '+' : ''}${nf(c, 1)}</td><td>${p.mixta_inicio == null ? '—' : nf(p.mixta_inicio, 1)}</td></tr>`; }).join('')}
             </tbody></table></div></div>
         </div>
-        <div class="leyenda"><span><i style="background:var(--rosa)"></i>Canasta 2017/18 (estimación MECOPOL)</span><span><i style="background:var(--crema)"></i>IPC oficial</span><span>Pesos en % del gasto total</span></div>
+        <div class="leyenda"><span><i style="background:var(--rosa)"></i>Canasta 2017/18 (estimación MECOPOL)</span><span><i style="background:var(--crema)"></i>IPC oficial</span><span>Pesos en % del gasto total. Nov-23: peso con la canasta mixta al inicio del gobierno</span></div>
         ${(d.reponderado.otras || []).length ? `
         <div class="sec-cab sub-cab"><div><h3 class="sub-t">Cómo da en otras estimaciones</h3>
           <p class="sub">Lo que publicaron universidades, centros de estudio y consultoras con la misma idea, y la misma cuenta hecha con esta estimación. Las diferencias vienen sobre todo del nivel de detalle (rubros, capítulos o productos) y de cómo se actualizan los pesos por precios.</p></div></div>
@@ -573,7 +576,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       <footer class="notas">
         <div><h3>Fuente</h3><p>IPC Nacional del INDEC (base diciembre 2016 = 100), desde la API del INDEC (api.indec.gob.ar), con la API de Series de Tiempo de datos.gob.ar de respaldo y para la serie larga. El tablero se revisa todos los días; el INDEC publica a mediados de cada mes.</p></div>
         <div><h3>Punto de partida</h3><p>El gobierno asumió el 10 de diciembre de 2023, así que la base es noviembre de 2023. Eso incluye diciembre (${pct(d.hitos.pico.mensual, 1)}), el mes de la devaluación.</p></div>
-        ${d.reponderado ? `<div><h3>Canasta 2017/18</h3><p>Se toma la canasta de la ENGHo 2017/18 por rubro y se calcula cuánto cuesta en cada mes con los índices de cada división del IPC. Al índice oficial se le aplica solo esa diferencia de ponderaciones. El INDEC tenía previsto publicar su IPC con estas ponderaciones desde enero de 2026 y lo postergó; su índice nuevo también cambia productos y regiones, así que puede dar distinto.</p></div>` : ''}
+        ${d.reponderado ? `<div><h3>Canasta 2017/18</h3><p>Se parte de los pesos de la ENGHo 2017/18 por rubro. Entre la encuesta y nov-23 las tarifas quedaron casi a mitad de precio frente al resto, así que hay que suponer cómo cambió el gasto. Para vivienda y servicios, comunicación y educación (precios regulados, consumo que casi no cambia con el precio) se mantienen las cantidades de 2017/18. Para los demás rubros se mantiene su proporción del gasto, como hace CEPA. Desde nov-23 esa canasta se valúa con los índices de cada división del IPC, y al índice oficial se le aplica solo esa diferencia de ponderaciones. Con un solo supuesto para todos los rubros, el resultado queda en el rango que se muestra arriba. El INDEC tenía previsto publicar su IPC con estas ponderaciones desde enero de 2026 y lo postergó; su índice nuevo también cambia productos y regiones, así que puede dar distinto.</p></div>` : ''}
         <div><h3>Series</h3><p><code>${d.fuentes.nivel_general}</code> y ${Object.keys(d.fuentes.divisiones).length} divisiones nacionales del IPC.</p></div>
       </footer>`;
 
