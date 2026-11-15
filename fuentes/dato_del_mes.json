@@ -1,0 +1,21 @@
+{
+  "_comentario": "Recuadro «Qué mirar este mes» de la portada. Se edita una vez por mes (también desde la web de GitHub); al guardar, la Action regenera el tablero. Los números del tema «recesion» se calculan solos todos los días con el EMAE: acá va solo lo que escribe el equipo.",
+  "_campos": "edicion: mes de la edición (AAAA-MM). tema: por ahora «recesion». titulo y bajada: texto libre. agenda: fechas a mirar (AAAA-MM-DD); cuando pasan, la página las marca como publicadas. pib: cuando el INDEC publique el PIB del trimestre, cargar {trimestre: AAAATn, variacion: % contra el trimestre anterior sin estacionalidad, link}; mientras tanto, null.",
+  "edicion": "2026-11",
+  "tema": "recesion",
+  "titulo": "La recesión que se viene",
+  "bajada": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
+  "agenda": [
+    {
+      "fecha": "2026-11-24",
+      "que": "EMAE de septiembre",
+      "detalle": "Completa el tercer trimestre en el dato mensual."
+    },
+    {
+      "fecha": "2026-12-16",
+      "que": "PIB del tercer trimestre",
+      "detalle": "Informe de avance del nivel de actividad. Es el dato oficial que confirma la recesión."
+    }
+  ],
+  "pib": null
+}

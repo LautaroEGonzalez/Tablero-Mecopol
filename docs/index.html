@@ -301,6 +301,65 @@ th.rel, td.rel { width: 38%; text-align: center; }
 }
 .reg th:first-child, .reg td:first-child, .pond th:first-child, .pond td:first-child, .calor th:first-child { padding-left: 0; }
 
+/* ---- qué mirar este mes: recuadro que se renueva cada mes ----
+   La banda va en negro con rosa porque es la lectura propia de MECOPOL; adentro, lo oficial sigue en bordó. */
+.mirar { gap: 0; }
+.marco { border: 3px solid var(--negro); min-width: 0; }
+.marco-cab {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 6px 24px;
+  background: var(--negro); color: var(--crema); padding: 14px 22px 16px;
+}
+.mirar .marco-cab h2 { margin: 0; font: 400 clamp(32px, 3.6vw, 46px)/1.06 var(--display); color: var(--rosa); }
+.edicion { margin: 0; display: flex; flex-direction: column; align-items: flex-end; text-align: right; font-size: 14px; color: #c9b7bc; }
+.edicion b { font: 400 24px/1.15 var(--display); color: var(--crema); }
+.marco-in { display: grid; gap: 22px; padding: 26px 22px 30px; }
+.tema h3 { margin: 0; font: 400 clamp(32px, 3.6vw, 50px)/1.08 var(--display); color: var(--bordo); text-wrap: balance; }
+.tema p { margin: 8px 0 0; color: var(--txt-2); max-width: 72ch; }
+.tema p b { color: var(--txt); font-weight: 700; }
+.act-cuerpo { display: grid; grid-template-columns: minmax(250px, 310px) minmax(0, 1fr); }
+.act-cuerpo.solo { grid-template-columns: minmax(0, 1fr); }
+.falta { background: var(--negro); color: var(--crema); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+.falta h4 { margin: 0; font-size: 15px; font-weight: 600; }
+.falta .falta-num { font: 400 clamp(72px, 8.6vw, 116px)/1.05 var(--display); color: var(--rosa); }
+.falta p { margin: 0; font-size: 15px; line-height: 1.45; }
+.falta .est { margin-top: auto; padding-top: 14px; font-size: 13px; color: #c9b7bc; }
+.falta .est b { color: var(--rosa); font-weight: 700; }
+.act-graf { display: grid; gap: 10px; padding-left: 22px; }
+.act-cuerpo.solo .act-graf { padding-left: 0; }
+.graf-cab { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
+.graf-cab p { margin: 0; font-size: 14px; font-weight: 600; }
+.seg.zoom button { padding: 0 14px; }
+.chart.act { height: 400px; }
+.ayuda { margin: 0; font-size: 13px; color: var(--txt-2); }
+.leyenda i.prom { height: 0; border-top: 2px solid var(--negro); width: 22px; vertical-align: middle; }
+.leyenda i.lin { height: 0; border-top: 3px solid var(--bordo); width: 22px; vertical-align: middle; }
+.leyenda i.falta-l { height: 0; border-top: 2px dashed var(--negro); width: 22px; vertical-align: middle; }
+.leyenda i.zona { background: rgba(149,11,50,.14); }
+.act-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 8px; }
+.act-cols h4 { margin: 0 0 8px; font: 400 26px/1.15 var(--display); }
+.act-cols p { margin: 0 0 10px; font-size: 16px; max-width: 62ch; }
+.act-cols b { font-weight: 700; }
+.fechas { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 14px; }
+.fechas li { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 15px; line-height: 1.4; }
+.fechas .dia { background: var(--bordo); color: var(--crema); text-align: center; padding: 5px 0 7px; line-height: 1; }
+.fechas .dia b { display: block; font: 400 30px/1.05 var(--display); }
+.fechas .dia span { font-size: 13px; font-weight: 600; }
+.fechas .salio .dia { background: transparent; color: var(--bordo); box-shadow: inset 0 0 0 2px var(--bordo); }
+.fechas .ya { display: block; font-size: 13px; font-weight: 600; color: var(--txt-2); }
+@media (max-width: 900px) {
+  .act-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .act-graf { padding: 14px 0 0; }
+  .act-cols { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .chart.act { height: 340px; }
+  .edicion { align-items: flex-start; text-align: left; }
+}
+@media (max-width: 560px) {
+  .marco-cab { padding: 12px 16px 14px; }
+  .marco-in { padding: 20px 16px 24px; }
+  .seg.zoom { width: 100%; }
+  .seg.zoom button { flex: 1 1 auto; padding: 0 10px; }
+}
+
 /* ---- pie ---- */
 .notas {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px 36px;
@@ -324,6 +383,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
   </div>
   <nav class="secs" aria-label="Secciones" id="secs">
     <a href="#sec-mes" data-s="sec-mes">Último mes</a>
+    <a href="#sec-mirar" data-s="sec-mirar">Qué mirar</a>
     <a href="#sec-serie" data-s="sec-serie">Serie</a>
     <a href="#sec-regiones" data-s="sec-regiones">Regiones</a>
     <a href="#sec-rubros" data-s="sec-rubros">Rubros</a>
@@ -426,6 +486,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     const comparacion = trend == null ? '' : `${Mayus(mesL(mesPrev))} fue ${pct(k.mensual_previo, 1)}. ` +
       (trend === 'igual' ? 'Sin cambios.' : `${trend === 'sube' ? 'Sube' : 'Baja'} ${difMes} ${difMes === '1,0' ? 'punto' : 'puntos'}.`);
     const anio13 = d.serie.slice(-13), maxAnio = Math.max(...anio13.map(x => x.mensual));
+    const mirar = seccionMirar(d.dato_del_mes, d.actividad);
 
     app.innerHTML = `
       ${d.simulado ? '<div class="aviso">Vista previa con datos de prueba (los de la planilla del equipo). En GitHub Pages se reemplazan solos por los datos reales del INDEC.</div>' : ''}
@@ -466,6 +527,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
           <p class="pie"><span>Inflación de ${mesL(MS)}. Estimación de MECOPOL. <a href="#sec-canasta">Ver cómo se calcula</a></span></p></div>` : ''}
         </div>
       </section>
+
+      ${mirar}
 
       <section class="sec" id="sec-serie">
         <div class="sec-cab">
@@ -621,6 +684,9 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     spark('sp2', ult.map(x => [x.fecha, x.interanual_ind ?? x.interanual]), 1);
     spark('sp3', ytd, 1);
     spark('sp4', d.serie.map(x => [x.fecha, x.acumulada]), 0);
+
+    // ---- qué mirar este mes ----
+    if (document.getElementById('ch-act')) graficoActividad(d.actividad);
 
     // ---- serie ----
     const xs = d.serie.map(x => x.fecha);
@@ -811,6 +877,180 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         `<td>${pct(r.mensual, 1)}</td><td>${pct(r.interanual, 1)}</td><td>${pct(r.acum_gobierno, 0)}</td></tr>`;
     }).join('');
 
+  }
+
+  // ------------------------------------------------------------------
+  // Qué mirar este mes. El tema y la agenda los escribe el equipo en fuentes/dato_del_mes.json;
+  // los números de la actividad se recalculan solos con el EMAE (d.actividad).
+  // ------------------------------------------------------------------
+  const ORD = ['primer', 'segundo', 'tercer', 'cuarto'];
+  const nomT = t => `${ORD[+t.trimestre.slice(5) - 1]} trimestre de ${t.trimestre.slice(0, 4)}`;
+  const cortoT = t => `${t.trimestre.slice(5)}T-${t.trimestre.slice(2, 4)}`;
+  const abajo = v => `${nf(Math.abs(v), 1)}% ${v < 0 ? 'abajo' : 'arriba'}`;
+  const verbo = v => v < 0 ? `cayó ${nf(-v, 1)}%` : v > 0 ? `subió ${nf(v, 1)}%` : 'no cambió';
+  const Mayus1 = s => s[0].toUpperCase() + s.slice(1);
+  const lista = xs => xs.length > 1 ? `${xs.slice(0, -1).join(', ')} y ${xs[xs.length - 1]}` : xs[0];
+
+  // la racha de trimestres en baja y el trimestre de referencia (el último antes de la caída)
+  function rachaActividad(A) {
+    const L = A.trimestres, n = A.racha || 0;
+    return { L, racha: n ? L.slice(-n) : [], ref: n && L.length > n ? L[L.length - 1 - n] : null };
+  }
+
+  function seccionMirar(D, A) {
+    if (!D) return '';
+    const hoy = new Date().toISOString().slice(0, 10);
+    const agenda = (D.agenda || []).filter(x => x && x.fecha && x.que);
+    const agendaHtml = agenda.length ? `
+      <div class="caja"><h4>A qué estar atento</h4>
+        <ul class="fechas">${agenda.map(x => { const ya = x.fecha < hoy, [a, m, dd] = x.fecha.split('-');
+          return `<li class="${ya ? 'salio' : ''}"><div class="dia" aria-hidden="true"><b>${+dd}</b><span>${MES[+m - 1]}</span></div>
+            <div><span class="oculto">${+dd} de ${MESL[+m - 1]} de ${a}: </span><b>${x.que}.</b> ${x.detalle || ''}${ya ? '<span class="ya">Ya salió.</span>' : ''}</div></li>`; }).join('')}
+        </ul></div>` : '';
+    const cab = `<header class="marco-cab"><h2 id="mirar-t">Qué mirar este mes</h2>
+      <p class="edicion"><b>${D.edicion ? Mayus1(largo(D.edicion)) : ''}</b><span>Lectura de MECOPOL. Cambia cada mes.</span></p></header>`;
+    const enMarco = cuerpo => `
+      <section class="sec mirar" id="sec-mirar" aria-labelledby="mirar-t"><article class="marco">${cab}<div class="marco-in">${cuerpo}</div></article></section>`;
+
+    if (D.tema !== 'recesion' || !A) {
+      return enMarco(`<div class="tema"><h3>${D.titulo || ''}</h3>${D.bajada ? `<p>${D.bajada}</p>` : ''}</div>
+        ${D.tema === 'recesion' ? '<div class="espera">Los datos de actividad del INDEC no se pudieron cargar. Se muestran en la próxima actualización.</div>' : ''}
+        ${agendaHtml ? `<div class="act-cols">${agendaHtml}</div>` : ''}`);
+    }
+
+    const { L, racha, ref } = rachaActividad(A);
+    const ult = L[L.length - 1], completos = L.filter(t => t.meses === 3), uc = completos[completos.length - 1];
+    const N = A.necesario && A.necesario.variacion > 0 ? A.necesario : null;
+    const titulo = D.titulo || { riesgo: 'La recesión que se viene', recesion: 'La economía en recesión', crece: 'La actividad económica' }[A.estado];
+    const fuente = A.fuente.startsWith('INDEC') ? 'API del INDEC' : 'INDEC, vía datos.gob.ar';
+
+    // dónde estamos: todo sale de los datos, así que se actualiza solo
+    const parcial = ult.meses < 3 ? ult : null;
+    const mesesQ = parcial ? A.serie.filter(x => x.fecha >= parcial.desde) : [];
+    let p1 = `El ${nomT(uc)} quedó <b>${abajo(uc.variacion)}</b> del anterior`;
+    p1 += uc.variacion < 0 ? (A.racha_completa === 1 ? ': es el primer trimestre en baja.' : `: van <b>${A.racha_completa} trimestres seguidos</b> en baja.`) : '.';
+    if (mesesQ.length) p1 += ` ${Mayus1(mesesQ.map((x, i) => `${i ? 'en' : 'En'} ${MESL[+x.fecha.slice(5) - 1]} la actividad ${verbo(x.mensual)}`).join(' y '))}.`;
+    let p2 = '';
+    if (parcial) {
+      const prev = L[L.length - 2];
+      p2 = `Con ${parcial.meses === 1 ? 'ese mes' : 'esos dos meses'}, el ${ORD[+parcial.trimestre.slice(5) - 1]} trimestre viene <b>${abajo(parcial.variacion)}</b> del ${ORD[+prev.trimestre.slice(5) - 1]}.`;
+      if (N && A.mayor_subida && N.variacion > A.mayor_subida.variacion) p2 += ' Para emparejarlo haría falta un salto que no se vio en todo el gobierno.';
+    }
+    const pib = D.pib && D.pib.trimestre ? `<p><b>Dato oficial:</b> el INDEC publicó el PIB del ${nomT({ trimestre: D.pib.trimestre })}, que ${verbo(D.pib.variacion)} contra el trimestre anterior${D.pib.link ? ` (<a href="${D.pib.link}" target="_blank" rel="noopener">informe</a>)` : ''}.</p>` : '';
+
+    const mesesN = N ? lista(N.meses.map(f => MESL[+f.slice(5) - 1])) : '';
+    const falta = N ? `
+      <div class="falta">
+        <h4>${A.racha_completa >= 2 ? 'Para cortar la racha de trimestres en baja' : A.racha_completa === 1 ? 'Para no entrar en recesión' : 'Para que el trimestre no caiga'}, la economía tendría que crecer en ${mesesN}</h4>
+        <div class="falta-num">${pct(N.variacion, 1)}</div>
+        <p>${N.meses.length === 1 ? 'en un solo mes' : 'en cada uno de esos meses'}.${A.mayor_subida ? ` Desde que asumió el gobierno, el mes que más creció fue ${largo(A.mayor_subida.fecha)}, con ${pct(A.mayor_subida.variacion, 1)}.` : ''}</p>
+        <p class="est"><b>Estimación de MECOPOL</b> con datos del INDEC.</p>
+      </div>` : '';
+    const zooms = [['todo', 'Todo el gobierno'], ['anio', 'Último año']].concat(racha.length && ref ? [['caida', A.estado === 'crece' ? 'La caída' : 'La recesión']] : []);
+
+    return enMarco(`
+      <div class="tema"><h3>${titulo}</h3>
+        <p>${D.bajada ? `<b>${D.bajada}</b> ` : ''}Actividad económica sin estacionalidad (EMAE), ${fuente}, hasta ${largo(A.ultimo)}.</p></div>
+      <div class="act-cuerpo${falta ? '' : ' solo'}">${falta}
+        <div class="caja act-graf">
+          <div class="graf-cab"><p>Nivel de actividad, sin estacionalidad · ${largo(A.base)} = 100</p>
+            <div class="seg zoom" role="group" aria-label="Período del gráfico" id="sel-act">${zooms.map(([v, t], i) =>
+              `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
+          <div class="chart act" id="ch-act" role="img"></div>
+          <p class="ayuda">Para acercarte a otros meses, mové los extremos de la barra de abajo del gráfico.</p>
+          <div class="leyenda" aria-hidden="true"><span><i class="lin"></i>Actividad mes a mes (INDEC)</span><span><i class="prom"></i>Promedio de cada trimestre</span>${N ? `<span><i class="falta-l"></i>Lo que haría falta en ${mesesN}</span>` : ''}${racha.length ? '<span><i class="zona"></i>Trimestres en baja</span>' : ''}</div>
+        </div>
+      </div>
+      <div class="act-cols">
+        <div class="caja"><h4>¿Qué es una recesión?</h4>
+          <p>La regla más usada dice que una economía entra en <b>recesión técnica</b> cuando su producción cae <b>dos trimestres seguidos</b>. Cada trimestre se compara con el anterior, sin el efecto de la estacionalidad.</p>
+          <p>Por eso el gráfico marca el promedio de cada trimestre: un mes bueno no alcanza si el trimestre entero quedó más abajo.</p></div>
+        <div class="caja"><h4>Dónde estamos</h4><p>${p1}</p>${p2 ? `<p>${p2}</p>` : ''}${pib}</div>
+        ${agendaHtml}
+      </div>`);
+  }
+
+  function graficoActividad(A) {
+    const el = document.getElementById('ch-act');
+    const { L, racha, ref } = rachaActividad(A);
+    const N = A.necesario && A.necesario.variacion > 0 ? A.necesario : null;
+    const meses = A.serie.map(x => x.fecha).concat(N ? N.meses : []);
+    const cats = meses.map(etq), ultI = A.serie.length - 1;
+    const prev = L.length > 1 ? L[L.length - 2] : null;
+    // en pantallas angostas las etiquetas se acortan y el gráfico arranca en el último año
+    const angosto = el.clientWidth < 560;
+
+    // escalones: la referencia y los trimestres en baja; si no hay racha, los últimos tres
+    const marcados = racha.length ? [ref, ...racha].filter(Boolean) : L.slice(-3);
+    const escalones = marcados.map(t => {
+      const esRef = t === ref, cae = !esRef && t.variacion != null && t.variacion < 0;
+      const txt = esRef ? `${cortoT(t)}${angosto ? '' : ': el punto alto'}` : t.variacion == null ? cortoT(t) :
+        `${cortoT(t)}: ${pct(t.variacion, 1, true)}${t.meses < 3 && !angosto ? ` (${etq(t.desde).slice(0, 3)}-${etq(A.ultimo).slice(0, 3)})` : ''}`;
+      return [{ coord: [etq(t.desde), t.promedio], lineStyle: { color: esRef ? css('--txt-2') : NEGRO },
+        label: { formatter: txt, color: cae ? BORDO : css('--txt-2'), fontWeight: cae ? 700 : 400, backgroundColor: CREMA, padding: [1, 4] } },
+        { coord: [etq(t.hasta), t.promedio] }];
+    });
+    const zona = racha.length ? [[{ xAxis: etq(racha[0].desde), name: angosto ? `Desde\n${etq(racha[0].desde)}` : `Desde ${etq(racha[0].desde)}: la caída\nque define la recesión` }, { xAxis: cats[cats.length - 1] }]] : [];
+
+    const linea = A.serie.map((x, i) => ({ value: x.nivel, symbol: i === ultI ? 'rect' : 'none', symbolSize: 9, itemStyle: { color: BORDO } }));
+    const salto = meses.map((f, i) => i === ultI ? A.serie[ultI].nivel : i > ultI ? N.nivel[i - ultI - 1] : null);
+    const ZOOM = { todo: [0, meses.length - 1], anio: [Math.max(0, ultI - 11), meses.length - 1],
+      caida: ref ? [meses.indexOf(ref.desde), meses.length - 1] : [0, meses.length - 1] };
+    const inicial = angosto ? 'anio' : 'todo';
+
+    el.setAttribute('aria-label', `Nivel de actividad sin estacionalidad desde ${largo(A.base)} (= 100) hasta ${largo(A.ultimo)}, cuando quedó en ${nf(A.serie[ultI].nivel, 1)}.` +
+      (ref ? ` El punto alto fue el ${nomT(ref)}; desde ${largo(racha[0].desde)} la actividad cae.` : '') +
+      (prev ? ` El ${nomT(L[L.length - 1])} viene ${abajo(L[L.length - 1].variacion)} del anterior.` : '') +
+      (N ? ` Para emparejarlo, ${lista(N.meses.map(f => MESL[+f.slice(5) - 1]))} tendría que crecer ${pct(N.variacion, 1)}.` : ''));
+
+    const ch = nuevo(el, {
+      grid: { left: 4, right: N ? 84 : 24, top: 22, bottom: 58, containLabel: true },
+      tooltip: Object.assign(tip(), { formatter: p => { const x = p.find(s => s.value != null); if (!x) return '';
+        const i = x.dataIndex, f = meses[i];
+        if (i > ultI) return `${largo(f)}<br>Haría falta: <b>${nf(x.value, 1)}</b> (${pct(N.variacion, 1, true)})`;
+        const m = A.serie[i].mensual;
+        return `${largo(f)}<br>Nivel: <b>${nf(x.value, 1)}</b>${m == null ? '' : ` · ${pct(m, 1, true)} en el mes`}`; } }),
+      xAxis: ejeX(PAPEL, { type: 'category', data: cats, boundaryGap: false }),
+      yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) } }),
+      dataZoom: [{
+        type: 'slider', xAxisIndex: 0, filterMode: 'weakFilter', bottom: 8, height: 30, minValueSpan: 3, brushSelect: false,
+        startValue: ZOOM[inicial][0], endValue: ZOOM[inicial][1],
+        showDetail: true, labelFormatter: (v, s) => s, textStyle: { color: NEGRO, fontFamily: FONT, fontSize: 12 },
+        borderColor: NEGRO, backgroundColor: 'transparent', fillerColor: 'rgba(149,11,50,.14)',
+        dataBackground: { lineStyle: { color: HIST, width: 1 }, areaStyle: { color: 'transparent' } },
+        selectedDataBackground: { lineStyle: { color: BORDO, width: 1.5 }, areaStyle: { color: 'transparent' } },
+        handleIcon: 'path://M0,0H6V30H0Z', handleSize: '100%', handleStyle: { color: BORDO, borderColor: BORDO },
+        moveHandleSize: 8, moveHandleStyle: { color: BORDO, opacity: .5 },
+        emphasis: { handleStyle: { color: css('--bordo-osc'), borderColor: css('--bordo-osc') }, moveHandleStyle: { color: css('--bordo-osc'), opacity: 1 } },
+      }],
+      series: [
+        { type: 'line', data: linea, lineStyle: { color: BORDO, width: 3 }, z: 3,
+          markLine: { silent: true, symbol: 'none', animation: false, lineStyle: { color: NEGRO, width: 2, type: 'solid' },
+            label: { position: 'insideStartTop', fontFamily: FONT, fontSize: 12, distance: [0, 6] }, data: escalones },
+          markArea: { silent: true, itemStyle: { color: 'rgba(149,11,50,.08)' },
+            label: { position: 'insideTopLeft', color: BORDO, fontFamily: FONT, fontWeight: 700, fontSize: 13, distance: 8 }, data: zona } },
+      ].concat(N ? [{ type: 'line', data: salto, connectNulls: false, lineStyle: { color: NEGRO, width: 2, type: 'dashed' }, z: 4,
+          symbol: (v, p) => p.dataIndex === meses.length - 1 ? 'rect' : 'none', symbolSize: 11,
+          itemStyle: { color: ROSA, borderColor: NEGRO, borderWidth: 2 },
+          label: { show: true, formatter: p => p.dataIndex === meses.length - 1 ? `${pct(N.variacion, 1, true)}\nharía falta` : '',
+            position: 'right', distance: 8, color: NEGRO, fontFamily: FONT, fontWeight: 700, fontSize: 12, lineHeight: 15 } }] : []),
+    });
+
+    // los atajos mueven el zoom; si se arrastra la barra a mano, ningún atajo queda marcado
+    const sel = document.getElementById('sel-act');
+    const marcar = v => sel.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v));
+    sel.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      const [a, z] = ZOOM[b.dataset.v];
+      ch.dispatchAction({ type: 'dataZoom', startValue: a, endValue: z });
+      marcar(b.dataset.v);
+    });
+    ch.on('dataZoom', () => {
+      const dz = ch.getOption().dataZoom[0];
+      const hit = Object.entries(ZOOM).find(([, [a, z]]) => a === dz.startValue && z === dz.endValue);
+      marcar(hit ? hit[0] : null);
+    });
+    marcar(inicial);
   }
 
   function shift(ym, n) { const [a, m] = ym.split('-').map(Number); const t = a * 12 + (m - 1) + n; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; }

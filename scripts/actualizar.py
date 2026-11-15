@@ -617,6 +617,139 @@ def poder_de_compra(mes):
 
 
 # ------------------------------------------------------------------
+# Qué mirar este mes: actividad económica (EMAE) y el tema que elige el equipo
+# ------------------------------------------------------------------
+EMAE_TABLA = "estimador-mensual-de-actividad-economica-nivel-general"   # API del INDEC
+EMAE_SA = "143.3_NO_PR_2004_A_31"   # EMAE desestacionalizado en datos.gob.ar (respaldo)
+DATO_DEL_MES = RAIZ / "fuentes" / "dato_del_mes.json"
+
+
+def _sin_acentos(t):
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", str(t)) if unicodedata.category(c) != "Mn").lower()
+
+
+def emae_desestacionalizado(desde):
+    """EMAE sin estacionalidad (2004 = 100), mensual. API del INDEC primero; datos.gob.ar de respaldo.
+
+    La tabla del INDEC trae la serie original, la desestacionalizada y la tendencia-ciclo, como
+    índices y como variaciones. Se queda con la desestacionalizada en índice: el grupo de filas
+    cuyos valores andan por el nivel del índice (no por un porcentaje)."""
+    respaldo = None
+    try:
+        respaldo = traer([EMAE_SA], desde, pd.Timestamp.today().strftime("%Y-%m-%d"))[EMAE_SA].dropna()
+    except Exception as e:
+        print(f"   ⚠️ EMAE en datos.gob.ar: {e}")
+    try:
+        df = indec_tabla(EMAE_TABLA, {"periodo": f"gte.{desde[:4]}{desde[5:7]}", "order": "periodo.asc"})
+        df = df[df["tipo_de_indicador_descripcion"].map(_sin_acentos).str.contains("desestacionaliz")]
+        grupos = {t: serie_mensual(g) for t, g in df.groupby("tipo_de_indicador")}
+        indices = {t: s for t, s in grupos.items() if len(s) and 50 < s.median() < 1000}
+        if len(indices) != 1:
+            raise RuntimeError(f"no se distingue el índice desestacionalizado (tipos: {list(grupos)})")
+        s = next(iter(indices.values()))
+        if respaldo is not None and len(respaldo):
+            comun = s.index.intersection(respaldo.index)
+            dif = (s[comun] / respaldo[comun] - 1).abs().max() if len(comun) else 0
+            if dif > 0.02:   # el INDEC revisa la serie cada mes; una diferencia grande es otra serie
+                raise RuntimeError(f"no coincide con datos.gob.ar (diferencia máxima {dif:.1%})")
+        print(f"   EMAE desestacionalizado: API del INDEC, hasta {ym(s.index.max())}")
+        return s, "INDEC (api.indec.gob.ar)"
+    except Exception as e:
+        print(f"   ⚠️ EMAE en la API del INDEC: {e}")
+    if respaldo is None or not len(respaldo):
+        raise RuntimeError("el EMAE no está en ninguna de las dos APIs")
+    print(f"   EMAE desestacionalizado: datos.gob.ar, hasta {ym(respaldo.index.max())}")
+    return respaldo, "datos.gob.ar"
+
+
+def actividad():
+    """Nivel de actividad desde el inicio del gobierno, promedios trimestrales y la cuenta de la
+    recesión técnica: dos trimestres seguidos en baja, cada uno contra el anterior.
+
+    Si el trimestre en curso está incompleto, calcula cuánto tendrían que crecer los meses que
+    faltan (todos lo mismo) para que su promedio iguale al del trimestre anterior."""
+    inicio = pd.Timestamp(CONFIG["inicio_gobierno"])
+    s, fuente = emae_desestacionalizado(ym(inicio) + "-01")
+    s = s.loc[inicio:]
+    if s.index[0] != inicio or len(s) < 12:
+        raise RuntimeError(f"el EMAE no arranca en {ym(inicio)} o es muy corto")
+    base = s.iloc[0]
+    nivel = s / base * 100
+    mensual = s.pct_change() * 100
+
+    # trimestres: se descarta el primero si el gobierno arrancó a mitad de trimestre
+    q = s.groupby(s.index.to_period("Q"))
+    trims = [(p, g) for p, g in q if len(g) == 3 or p == s.index[-1].to_period("Q")]
+    lista = []
+    for i, (p, g) in enumerate(trims):
+        prom = g.mean()
+        previo = trims[i - 1][1].mean() if i else None
+        lista.append({"trimestre": f"{p.year}T{p.quarter}", "desde": ym(g.index[0]), "hasta": ym(p.end_time.normalize().replace(day=1)),
+                      "meses": len(g), "promedio": r(prom / base * 100, 3),
+                      "variacion": r((prom / previo - 1) * 100, 2) if previo else None})
+
+    # racha de trimestres en baja que llega hasta el último (el incompleto cuenta si viene abajo)
+    racha = 0
+    for t in reversed(lista):
+        if t["variacion"] is None or t["variacion"] >= 0:
+            break
+        racha += 1
+    completos = [t for t in lista if t["meses"] == 3]
+    racha_completa = 0
+    for t in reversed(completos):
+        if t["variacion"] is None or t["variacion"] >= 0:
+            break
+        racha_completa += 1
+    estado = "recesion" if racha_completa >= 2 else "riesgo" if racha_completa == 1 or racha >= 1 else "crece"
+
+    necesario = None
+    ult = lista[-1]
+    if ult["meses"] < 3 and len(lista) > 1:
+        g = trims[-1][1]
+        objetivo = 3 * trims[-2][1].mean() - g.sum()      # lo que tienen que sumar los meses que faltan
+        x = s.iloc[-1]
+        if ult["meses"] == 2:
+            y = objetivo / x
+        else:                                            # dos meses iguales: x·y + x·y² = objetivo
+            y = (-1 + (1 + 4 * objetivo / x) ** 0.5) / 2
+        faltan = pd.date_range(s.index[-1] + pd.DateOffset(months=1), periods=3 - ult["meses"], freq="MS")
+        necesario = {"meses": [ym(f) for f in faltan], "variacion": r((y - 1) * 100, 2),
+                     "nivel": [r(x * y ** (k + 1) / base * 100, 3) for k in range(len(faltan))]}
+
+    gob = mensual.loc[inicio + pd.DateOffset(months=1):]
+    mayor = gob.idxmax()
+    out = {
+        "fuente": fuente, "serie_id": EMAE_SA, "base": ym(inicio), "ultimo": ym(s.index[-1]),
+        "serie": [{"fecha": ym(f), "nivel": r(nivel[f], 3), "mensual": None if pd.isna(mensual[f]) else r(mensual[f], 2)} for f in s.index],
+        "trimestres": lista, "racha": racha, "racha_completa": racha_completa, "estado": estado,
+        "necesario": necesario, "mayor_subida": {"fecha": ym(mayor), "variacion": r(gob[mayor], 2)},
+    }
+    print(f"   actividad: {estado}, {racha_completa} trimestres completos en baja"
+          + (f", haría falta {necesario['variacion']}% en {', '.join(necesario['meses'])}" if necesario else ""))
+    return out
+
+
+def sumar_dato_del_mes(datos):
+    """Agrega el recuadro «Qué mirar este mes»: el tema que carga el equipo en
+    fuentes/dato_del_mes.json y, si el tema es la recesión, los datos de actividad."""
+    previo = json.loads(SALIDA.read_text(encoding="utf-8")) if SALIDA.exists() else {}
+    try:
+        tema = json.loads(DATO_DEL_MES.read_text(encoding="utf-8"))
+        datos["dato_del_mes"] = {k: v for k, v in tema.items() if not k.startswith("_")}
+    except Exception as e:   # un error de tipeo en el archivo no frena el tablero
+        print(f"   ⚠️ {DATO_DEL_MES.name}: {e}")
+        datos["dato_del_mes"] = previo.get("dato_del_mes")
+    print("📥 Actividad económica (EMAE)")
+    try:
+        datos["actividad"] = actividad()
+    except Exception as e:
+        print(f"   ⚠️ actividad: {e}")
+        datos["actividad"] = previo.get("actividad")
+    return datos
+
+
+# ------------------------------------------------------------------
 # Cálculo
 # ------------------------------------------------------------------
 def calcular():
@@ -934,6 +1067,7 @@ def main():
             print("   (se conserva el tablero tal como estaba)")
     datos = completar_con_publicado(datos)
     datos = completar_divisiones(datos)
+    datos = sumar_dato_del_mes(datos)
 
     # Si los números no cambiaron, no se reescribe el archivo: así la Action
     # no genera un commit por día y la fecha muestra el último cambio real.

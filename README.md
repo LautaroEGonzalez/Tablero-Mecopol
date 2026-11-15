@@ -9,6 +9,7 @@ Versión enfocada en el gobierno de Milei:
 - Inflación por región, con mapa y la variación de cada rubro en cada región
 - Poder de compra desde enero de 2019: salarios reales y cuántas canastas básicas alcanzan a comprar el salario mínimo y la jubilación mínima
 - IPC recalculado con la canasta de la ENGHo 2017/18 (estimación propia)
+- **Qué mirar este mes**: un recuadro que se renueva cada mes con el tema que elige el equipo. En noviembre de 2026, la recesión: actividad económica (EMAE) desde el inicio del gobierno, trimestres en baja y cuánto tendría que crecer el mes que falta
 
 Las páginas **Mirada larga** (inflación por gobierno desde 2003) y **Universidades y Ley 27.795** se mudaron al repositorio [Análisis Económicos](https://github.com/LautaroEGonzalez/Analisis-Economicos).
 
@@ -53,6 +54,8 @@ Hasta que corra la primera actualización, el tablero muestra datos de prueba co
 | Cuándo | Qué hacer |
 |---|---|
 | Si la Action falla con "Faltan rubros" | Buscar el id de la serie en datos.gob.ar y cargarlo en `ids_divisiones` |
+| Una vez por mes | Editar `fuentes/dato_del_mes.json`: mes de la edición, título, bajada y agenda de fechas del recuadro «Qué mirar este mes». Los números de la actividad se calculan solos |
+| Cuando el INDEC publica el PIB del trimestre | Cargar el campo `pib` de `fuentes/dato_del_mes.json` (trimestre, variación sin estacionalidad contra el anterior y link al informe) |
 
 Todo se puede editar desde la web de GitHub, con el lápiz de cada archivo. Al guardar, la Action corre sola.
 
