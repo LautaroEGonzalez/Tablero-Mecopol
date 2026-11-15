@@ -315,6 +315,15 @@ def reponderar(ids_div, nac_corta, inicio, mes):
     precios_encuesta = div.loc[ENCUESTA[0]:ENCUESTA[1]].mean()
     rep = (div.div(precios_encuesta) * w_new).sum(axis=1)
     rep = rep / rep.iloc[0] * 100
+    # Peso efectivo de cada rubro en el gasto en un mes dado: la canasta 2017/18 valuada
+    # a los precios de ese mes. Muestra cómo cambió el peso de las tarifas, la ropa, etc.
+    # entre la encuesta y el inicio del gobierno por los cambios de precios relativos.
+    def peso_efectivo(f):
+        g = w_new * div.loc[f] / precios_encuesta
+        return g / g.sum()
+    pe_ini, pe_mes = peso_efectivo(inicio), peso_efectivo(mes)
+    # Precio relativo de cada rubro contra el nivel general, del promedio de la encuesta a inicio.
+    rel_enc = (div.loc[inicio] / precios_encuesta) / (nac.loc[inicio] / nac.loc[ENCUESTA[0]:ENCUESTA[1]].mean()) * 100 - 100
     # Agregar por divisiones nacionales no reproduce exacto el nivel general (el INDEC
     # agrega por regiones). Para no arrastrar ese desvío, se aplica al índice oficial
     # solo el efecto del cambio de ponderaciones: oficial × (reponderado / control).
@@ -356,7 +365,9 @@ def reponderar(ids_div, nac_corta, inicio, mes):
         "anios": anios,
         "otras": otras,
         "serie": serie,
-        "ponderaciones": [{"rubro": n, "vigente": r(w_vig[n] * 100, 1), "engho_2017_18": r(w_new[n] * 100, 1)}
+        "ponderaciones": [{"rubro": n, "vigente": r(w_vig[n] * 100, 1), "engho_2017_18": r(w_new[n] * 100, 1),
+                           "efectivo_inicio": r(pe_ini[n] * 100, 1), "efectivo_mes": r(pe_mes[n] * 100, 1),
+                           "relativo_encuesta_a_inicio": r(rel_enc[n], 1)}
                           for n in div.columns],
         "control_error_pct": r(err * 100, 2),
         "periodo_encuesta": [ym(pd.Timestamp(ENCUESTA[0])), ym(pd.Timestamp(ENCUESTA[1]))],
