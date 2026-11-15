@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-15T16:35+00:00",
+ "actualizado": "2026-11-15T17:15+00:00",
  "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -3990,6 +3990,67 @@
   "mayor_subida": {
    "fecha": "2024-07",
    "variacion": 2.73
+  },
+  "proyeccion": {
+   "tendencia_mensual": -0.146,
+   "base": "variación promedio de los últimos 12 meses",
+   "serie": [
+    {
+     "fecha": "2026-09",
+     "nivel": 102.255
+    },
+    {
+     "fecha": "2026-10",
+     "nivel": 102.106
+    },
+    {
+     "fecha": "2026-11",
+     "nivel": 101.957
+    },
+    {
+     "fecha": "2026-12",
+     "nivel": 101.809
+    },
+    {
+     "fecha": "2027-01",
+     "nivel": 101.661
+    },
+    {
+     "fecha": "2027-02",
+     "nivel": 101.513
+    },
+    {
+     "fecha": "2027-03",
+     "nivel": 101.365
+    },
+    {
+     "fecha": "2027-04",
+     "nivel": 101.217
+    }
+   ],
+   "trimestres": [
+    {
+     "trimestre": "2026T3",
+     "desde": "2026-07",
+     "hasta": "2026-09",
+     "promedio": 102.332,
+     "variacion": -2.83
+    },
+    {
+     "trimestre": "2026T4",
+     "desde": "2026-10",
+     "hasta": "2026-12",
+     "promedio": 101.957,
+     "variacion": -0.37
+    },
+    {
+     "trimestre": "2027T1",
+     "desde": "2027-01",
+     "hasta": "2027-03",
+     "promedio": 101.513,
+     "variacion": -0.44
+    }
+   ]
   }
  }
 }
