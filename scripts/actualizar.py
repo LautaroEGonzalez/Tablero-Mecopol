@@ -717,6 +717,25 @@ def actividad():
         necesario = {"meses": [ym(f) for f in faltan], "variacion": r((y - 1) * 100, 2),
                      "nivel": [r(x * y ** (k + 1) / base * 100, 3) for k in range(len(faltan))]}
 
+    # proyección (estimación de MECOPOL): sigue la variación mensual promedio de los últimos 12 meses
+    # durante 8 meses, lo que completa el trimestre en curso y los dos siguientes
+    proyeccion = None
+    if len(s) >= 13:
+        g = (s.iloc[-1] / s.iloc[-13]) ** (1 / 12) - 1
+        fechas = pd.date_range(s.index[-1] + pd.DateOffset(months=1), periods=8, freq="MS")
+        p = pd.Series([s.iloc[-1] * (1 + g) ** (k + 1) for k in range(len(fechas))], index=fechas)
+        junto = pd.concat([s, p])
+        qj = [(per, gr) for per, gr in junto.groupby(junto.index.to_period("Q")) if len(gr) == 3]
+        tp = []
+        for i, (per, gr) in enumerate(qj):
+            if gr.index[-1] <= s.index[-1] or i == 0:   # solo los trimestres que tocan la proyección
+                continue
+            prev = qj[i - 1][1].mean()
+            tp.append({"trimestre": f"{per.year}T{per.quarter}", "desde": ym(gr.index[0]), "hasta": ym(gr.index[-1]),
+                       "promedio": r(gr.mean() / base * 100, 3), "variacion": r((gr.mean() / prev - 1) * 100, 2)})
+        proyeccion = {"tendencia_mensual": r(g * 100, 3), "base": "variación promedio de los últimos 12 meses",
+                      "serie": [{"fecha": ym(f), "nivel": r(v / base * 100, 3)} for f, v in p.items()], "trimestres": tp}
+
     gob = mensual.loc[inicio + pd.DateOffset(months=1):]
     mayor = gob.idxmax()
     out = {
@@ -724,6 +743,7 @@ def actividad():
         "serie": [{"fecha": ym(f), "nivel": r(nivel[f], 3), "mensual": None if pd.isna(mensual[f]) else r(mensual[f], 2)} for f in s.index],
         "trimestres": lista, "racha": racha, "racha_completa": racha_completa, "estado": estado,
         "necesario": necesario, "mayor_subida": {"fecha": ym(mayor), "variacion": r(gob[mayor], 2)},
+        "proyeccion": proyeccion,
     }
     print(f"   actividad: {estado}, {racha_completa} trimestres completos en baja"
           + (f", haría falta {necesario['variacion']}% en {', '.join(necesario['meses'])}" if necesario else ""))
