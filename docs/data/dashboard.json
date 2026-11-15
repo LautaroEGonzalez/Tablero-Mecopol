@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-14T01:32+00:00",
+ "actualizado": "2026-11-15T12:44+00:00",
  "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -1032,62 +1032,98 @@
    {
     "rubro": "Alimentos y bebidas no alcohólicas",
     "vigente": 26.9,
-    "engho_2017_18": 22.7
+    "engho_2017_18": 22.7,
+    "efectivo_inicio": 27.8,
+    "efectivo_mes": 25.0,
+    "relativo_encuesta_a_inicio": 17.0
    },
    {
     "rubro": "Bebidas alcohólicas y tabaco",
     "vigente": 3.5,
-    "engho_2017_18": 1.9
+    "engho_2017_18": 1.9,
+    "efectivo_inicio": 1.7,
+    "efectivo_mes": 1.4,
+    "relativo_encuesta_a_inicio": -16.2
    },
    {
     "rubro": "Prendas de vestir y calzado",
     "vigente": 9.9,
-    "engho_2017_18": 6.8
+    "engho_2017_18": 6.8,
+    "efectivo_inicio": 9.0,
+    "efectivo_mes": 5.1,
+    "relativo_encuesta_a_inicio": 25.9
    },
    {
     "rubro": "Vivienda, agua, electricidad, gas y otros combustibles",
     "vigente": 9.4,
-    "engho_2017_18": 14.5
+    "engho_2017_18": 14.5,
+    "efectivo_inicio": 8.2,
+    "efectivo_mes": 13.9,
+    "relativo_encuesta_a_inicio": -45.7
    },
    {
     "rubro": "Equipamiento y mantenimiento del hogar",
     "vigente": 6.4,
-    "engho_2017_18": 5.4
+    "engho_2017_18": 5.4,
+    "efectivo_inicio": 6.2,
+    "efectivo_mes": 4.5,
+    "relativo_encuesta_a_inicio": 9.4
    },
    {
     "rubro": "Salud",
     "vigente": 8.0,
-    "engho_2017_18": 6.4
+    "engho_2017_18": 6.4,
+    "efectivo_inicio": 7.2,
+    "efectivo_mes": 7.2,
+    "relativo_encuesta_a_inicio": 7.0
    },
    {
     "rubro": "Transporte",
     "vigente": 11.0,
-    "engho_2017_18": 14.3
+    "engho_2017_18": 14.3,
+    "efectivo_inicio": 13.4,
+    "efectivo_mes": 14.8,
+    "relativo_encuesta_a_inicio": -10.0
    },
    {
     "rubro": "Comunicación",
     "vigente": 2.8,
-    "engho_2017_18": 5.2
+    "engho_2017_18": 5.2,
+    "efectivo_inicio": 3.6,
+    "efectivo_mes": 4.4,
+    "relativo_encuesta_a_inicio": -33.9
    },
    {
     "rubro": "Recreación y cultura",
     "vigente": 7.3,
-    "engho_2017_18": 8.6
+    "engho_2017_18": 8.6,
+    "efectivo_inicio": 9.0,
+    "efectivo_mes": 8.1,
+    "relativo_encuesta_a_inicio": 0.3
    },
    {
     "rubro": "Educación",
     "vigente": 2.3,
-    "engho_2017_18": 3.1
+    "engho_2017_18": 3.1,
+    "efectivo_inicio": 2.2,
+    "efectivo_mes": 2.8,
+    "relativo_encuesta_a_inicio": -31.7
    },
    {
     "rubro": "Restaurantes y hoteles",
     "vigente": 9.0,
-    "engho_2017_18": 6.6
+    "engho_2017_18": 6.6,
+    "efectivo_inicio": 8.0,
+    "efectivo_mes": 8.4,
+    "relativo_encuesta_a_inicio": 16.1
    },
    {
     "rubro": "Bienes y servicios varios",
     "vigente": 3.5,
-    "engho_2017_18": 4.3
+    "engho_2017_18": 4.3,
+    "efectivo_inicio": 3.8,
+    "efectivo_mes": 4.4,
+    "relativo_encuesta_a_inicio": -15.7
    }
   ],
   "control_error_pct": 0.07,
