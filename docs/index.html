@@ -353,7 +353,6 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .leyenda i.prom { height: 0; border-top: 2px solid var(--negro); width: 22px; vertical-align: middle; }
 .leyenda i.lin { height: 0; border-top: 3px solid var(--bordo); width: 22px; vertical-align: middle; }
 .leyenda i.falta-l { height: 0; border-top: 2px dotted var(--negro); width: 22px; vertical-align: middle; }
-.leyenda i.proy { height: 0; border-top: 2px dashed var(--negro); width: 22px; vertical-align: middle; }
 .leyenda i.zona { background: rgba(149,11,50,.14); }
 .act-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 8px; }
 .act-cols h4 { margin: 0 0 8px; font: 400 26px/1.15 var(--display); }
@@ -1146,21 +1145,6 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       p2 = `Con ${parcial.meses === 1 ? 'ese mes' : 'esos dos meses'}, el ${ORD[+parcial.trimestre.slice(5) - 1]} trimestre viene <b>${abajo(parcial.variacion)}</b> del ${ORD[+prev.trimestre.slice(5) - 1]}.`;
       if (N && A.mayor_subida && N.variacion > A.mayor_subida.variacion) p2 += ' Para emparejarlo haría falta un salto que no se vio en todo el gobierno.';
     }
-    // la proyección: cuántos trimestres seguidos en baja serían si sigue la tendencia
-    const PR = A.proyeccion && A.proyeccion.trimestres && A.proyeccion.trimestres.length ? A.proyeccion : null;
-    let p3 = '';
-    if (PR) {
-      const nuevos = PR.trimestres.filter(t => !L.some(x => x.trimestre === t.trimestre && x.meses === 3));
-      let total = A.racha_completa;
-      for (const t of nuevos) { if (t.variacion < 0) total++; else break; }
-      const futuros = nuevos.filter(t => !L.some(x => x.trimestre === t.trimestre));
-      const fin = PR.serie[PR.serie.length - 1], refP = ref || L[L.length - 2];
-      const ritmo = PR.desde ? `el ritmo de caída desde el ${nomT({ trimestre: PR.desde })}` : 'la tendencia de los últimos 12 meses';
-      p3 = `<b>Si sigue ${ritmo}</b> (${pct(PR.tendencia_mensual, 2, true)} por mes), ` +
-        lista(futuros.map(t => `el ${nomT(t)} ${t.variacion < 0 ? 'caería' : 'subiría'} ${nf(Math.abs(t.variacion), 1)}%`)) +
-        (total >= 2 ? `: serían <b>${total} trimestres seguidos en baja</b>` : '') +
-        `. En ${largo(fin.fecha)} la actividad quedaría <b>${abajo((fin.nivel / refP.promedio - 1) * 100)}</b> del ${nomT(refP)}. Es una proyección de MECOPOL, no un dato.`;
-    }
     const pib = D.pib && D.pib.trimestre ? `<p><b>Dato oficial:</b> el INDEC publicó el PIB del ${nomT({ trimestre: D.pib.trimestre })}, que ${verbo(D.pib.variacion)} contra el trimestre anterior${D.pib.link ? ` (<a href="${D.pib.link}" target="_blank" rel="noopener">informe</a>)` : ''}.</p>` : '';
 
     const mesesN = N ? lista(N.meses.map(f => MESL[+f.slice(5) - 1])) : '';
@@ -1172,8 +1156,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <p class="est"><b>Estimación de MECOPOL</b> con datos del INDEC.</p>
       </div>` : '';
     INFO['ch-act'] = () => ({ titulo,
-      bajada: `Nivel de actividad sin estacionalidad (EMAE), ${largo(A.base)} = 100, hasta ${largo(A.ultimo)}. Promedio de cada trimestre${PR ? ' y proyección de MECOPOL' : ''}.`,
-      fuente: `INDEC (EMAE).${PR ? ' Proyección: MECOPOL.' : ''}`, leyenda: '#sec-mirar .act-graf .leyenda' });
+      bajada: `Nivel de actividad sin estacionalidad (EMAE), ${largo(A.base)} = 100, hasta ${largo(A.ultimo)}. Promedio de cada trimestre.`,
+      fuente: 'INDEC (EMAE).', leyenda: '#sec-mirar .act-graf .leyenda' });
     const zooms = [['todo', 'Todo el gobierno'], ['anio', 'Último año']].concat(racha.length && ref ? [['caida', A.estado === 'crece' ? 'La caída' : 'La recesión']] : []);
 
     return enMarco(`
@@ -1186,7 +1170,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
               `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
           <div class="chart act" id="ch-act" role="img"></div>
           <p class="ayuda">Para acercarte a otros meses, mové los extremos de la barra de abajo del gráfico.</p>
-          <div class="leyenda" aria-hidden="true"><span><i class="lin"></i>Actividad mes a mes (INDEC)</span><span><i class="prom"></i>Promedio de cada trimestre</span>${N ? `<span><i class="falta-l"></i>Lo que haría falta en ${mesesN}</span>` : ''}${PR ? `<span><i class="proy"></i>Proyección si sigue ${PR.desde ? 'el ritmo de caída' : 'la tendencia'} (estimación de MECOPOL)</span>` : ''}${racha.length ? '<span><i class="zona"></i>Trimestres en baja</span>' : ''}</div>
+          <div class="leyenda" aria-hidden="true"><span><i class="lin"></i>Actividad mes a mes (INDEC)</span><span><i class="prom"></i>Promedio de cada trimestre</span>${N ? `<span><i class="falta-l"></i>Lo que haría falta en ${mesesN}</span>` : ''}${racha.length ? '<span><i class="zona"></i>Trimestres en baja</span>' : ''}</div>
           ${botonesComp('ch-act')}
         </div>
       </div>
@@ -1194,7 +1178,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <div class="caja"><h4>¿Qué es una recesión?</h4>
           <p>La regla más usada dice que una economía entra en <b>recesión técnica</b> cuando su producción cae <b>dos trimestres seguidos</b>. Cada trimestre se compara con el anterior, sin el efecto de la estacionalidad.</p>
           <p>Por eso el gráfico marca el promedio de cada trimestre: un mes bueno no alcanza si el trimestre entero quedó más abajo.</p></div>
-        <div class="caja"><h4>Dónde estamos</h4><p>${p1}</p>${p2 ? `<p>${p2}</p>` : ''}${p3 ? `<p>${p3}</p>` : ''}${pib}</div>
+        <div class="caja"><h4>Dónde estamos</h4><p>${p1}</p>${p2 ? `<p>${p2}</p>` : ''}${pib}</div>
         ${agendaHtml}
       </div>`);
   }
@@ -1203,8 +1187,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     const el = document.getElementById('ch-act');
     const { L, racha, ref } = rachaActividad(A);
     const N = A.necesario && A.necesario.variacion > 0 ? A.necesario : null;
-    const PR = A.proyeccion && A.proyeccion.serie && A.proyeccion.serie.length ? A.proyeccion : null;
-    const extra = [...new Set([...(PR ? PR.serie.map(x => x.fecha) : []), ...(N ? N.meses : [])])].sort();
+    const extra = N ? [...N.meses] : [];
     const meses = A.serie.map(x => x.fecha).concat(extra);
     const cats = meses.map(etq), ultI = A.serie.length - 1;
     const prev = L.length > 1 ? L[L.length - 2] : null;
@@ -1221,28 +1204,16 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         label: { formatter: txt, color: cae ? BORDO : css('--txt-2'), fontWeight: cae ? 700 : 400, backgroundColor: CREMA, padding: [1, 4] } },
         { coord: [etq(t.hasta), t.promedio] }];
     });
-    // trimestres proyectados que todavía no tienen ningún dato real (escalón punteado)
-    const enL = new Set(L.map(t => t.trimestre));
-    const tProy = PR ? PR.trimestres.filter(t => !enL.has(t.trimestre)) : [];
-    // los escalones proyectados van sin etiqueta propia (según la pendiente se pisan entre sí);
-    // sus cifras van en el rótulo de la zona de proyección
-    tProy.forEach(t => escalones.push([{ coord: [etq(t.desde), t.promedio], lineStyle: { color: NEGRO, type: 'dotted' }, label: { show: false } },
-      { coord: [etq(t.hasta), t.promedio] }]));
-    const rotuloProy = PR ? `Proyección (${pct(PR.tendencia_mensual, 2, true)} por mes)` + (tProy.length ? ` · ${tProy.map(t => `${cortoT(t)}: ${pct(t.variacion, 1, true)}`).join(' · ')}` : '') : '';
 
-    // zonas: los trimestres en baja (hasta el trimestre en curso) y, después, la proyección
+    // zona: los trimestres en baja, hasta el trimestre en curso
     const finReal = L[L.length - 1].hasta, iFin = meses.indexOf(finReal);
     const zona = [];
     if (racha.length) zona.push([{ xAxis: etq(racha[0].desde), name: angosto ? `Desde\n${etq(racha[0].desde)}` : `Desde ${etq(racha[0].desde)}: la caída\nque define la recesión` },
       { xAxis: cats[iFin >= 0 ? iFin : cats.length - 1] }]);
-    if (PR && iFin >= 0 && iFin < meses.length - 1) zona.push([{ xAxis: cats[iFin + 1], name: angosto ? '' : rotuloProy, itemStyle: { color: 'rgba(26,10,16,.05)' },
-      label: { position: 'insideTopRight', align: 'right', color: NEGRO, fontWeight: 600, lineHeight: 17 } }, { xAxis: cats[cats.length - 1] }]);
 
     const linea = A.serie.map((x, i) => ({ value: x.nivel, symbol: i === ultI ? 'rect' : 'none', symbolSize: 9, itemStyle: { color: BORDO } }));
     const nivelN = f => N && N.meses.includes(f) ? N.nivel[N.meses.indexOf(f)] : null;
     const salto = meses.map((f, i) => i === ultI ? A.serie[ultI].nivel : i > ultI ? nivelN(f) : null);
-    const nivelP = f => { const x = PR && PR.serie.find(y => y.fecha === f); return x ? x.nivel : null; };
-    const proy = meses.map((f, i) => i === ultI ? A.serie[ultI].nivel : i > ultI ? nivelP(f) : null);
     const iN = N ? meses.indexOf(N.meses[N.meses.length - 1]) : -1;
     const ZOOM = { todo: [0, meses.length - 1], anio: [Math.max(0, ultI - 11), meses.length - 1],
       caida: ref ? [meses.indexOf(ref.desde), meses.length - 1] : [0, meses.length - 1] };
@@ -1251,17 +1222,16 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     el.setAttribute('aria-label', `Nivel de actividad sin estacionalidad desde ${largo(A.base)} (= 100) hasta ${largo(A.ultimo)}, cuando quedó en ${nf(A.serie[ultI].nivel, 1)}.` +
       (ref ? ` El punto alto fue el ${nomT(ref)}; desde ${largo(racha[0].desde)} la actividad cae.` : '') +
       (prev ? ` El ${nomT(L[L.length - 1])} viene ${abajo(L[L.length - 1].variacion)} del anterior.` : '') +
-      (N ? ` Para emparejarlo, ${lista(N.meses.map(f => MESL[+f.slice(5) - 1]))} tendría que crecer ${pct(N.variacion, 1)}.` : '') +
-      (PR ? ` Proyección de MECOPOL si sigue ${PR.desde ? `el ritmo de caída desde el ${nomT({ trimestre: PR.desde })}` : 'la tendencia de los últimos 12 meses'}: en ${largo(PR.serie[PR.serie.length - 1].fecha)} el nivel sería ${nf(PR.serie[PR.serie.length - 1].nivel, 1)}.` : ''));
+      (N ? ` Para emparejarlo, ${lista(N.meses.map(f => MESL[+f.slice(5) - 1]))} tendría que crecer ${pct(N.variacion, 1)}.` : ''));
 
     const ch = nuevo(el, {
-      grid: { left: 4, right: 48, top: 22, bottom: 58, containLabel: true },
+      grid: { left: 4, right: N ? 92 : 48, top: 22, bottom: 58, containLabel: true },
       tooltip: Object.assign(tip(), { formatter: p => {
         const i = p[0].dataIndex, f = meses[i];
         if (i <= ultI) { const m = A.serie[i].mensual;
           return `${largo(f)}<br>Nivel: <b>${nf(A.serie[i].nivel, 1)}</b>${m == null ? '' : ` · ${pct(m, 1, true)} en el mes`}`; }
-        const a = nivelP(f), b = nivelN(f);
-        return `${largo(f)}` + (a != null ? `<br>Proyección: <b>${nf(a, 1)}</b>` : '') + (b != null ? `<br>Haría falta: <b>${nf(b, 1)}</b> (${pct(N.variacion, 1, true)})` : ''); } }),
+        const b = nivelN(f);
+        return `${largo(f)}` + (b != null ? `<br>Haría falta: <b>${nf(b, 1)}</b> (${pct(N.variacion, 1, true)})` : ''); } }),
       xAxis: ejeX(PAPEL, { type: 'category', data: cats, boundaryGap: false }),
       yAxis: ejeY(PAPEL, { scale: true, axisLabel: { color: PAPEL.fg3, fontFamily: FONT, fontSize: 12, formatter: v => nf(v, 0) } }),
       dataZoom: [{
@@ -1281,10 +1251,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
             label: { position: 'insideStartTop', fontFamily: FONT, fontSize: 12, distance: [0, 6] }, data: escalones },
           markArea: { silent: true, itemStyle: { color: 'rgba(149,11,50,.08)' },
             label: { position: 'insideBottomLeft', color: BORDO, fontFamily: FONT, fontWeight: 700, fontSize: 13, distance: 8 }, data: zona } },
-      ].concat(PR ? [{ type: 'line', data: proy, connectNulls: false, lineStyle: { color: NEGRO, width: 2, type: [7, 5] }, z: 4,
-          symbol: (v, p) => p.dataIndex === meses.length - 1 ? 'rect' : 'none', symbolSize: 7, itemStyle: { color: NEGRO },
-          label: { show: true, formatter: p => p.dataIndex === meses.length - 1 ? nf(p.value, 1) : '',
-            position: 'right', distance: 6, color: NEGRO, fontFamily: FONT, fontWeight: 700, fontSize: 12 } }] : [])
+      ]
       .concat(N ? [{ type: 'line', data: salto, connectNulls: false, lineStyle: { color: NEGRO, width: 2, type: 'dotted' }, z: 5,
           symbol: (v, p) => p.dataIndex === iN ? 'rect' : 'none', symbolSize: 11,
           itemStyle: { color: ROSA, borderColor: NEGRO, borderWidth: 2 },

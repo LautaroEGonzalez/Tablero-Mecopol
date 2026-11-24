@@ -717,35 +717,6 @@ def actividad():
         necesario = {"meses": [ym(f) for f in faltan], "variacion": r((y - 1) * 100, 2),
                      "nivel": [r(x * y ** (k + 1) / base * 100, 3) for k in range(len(faltan))]}
 
-    # proyección (estimación de MECOPOL): sigue el ritmo de caída desde el trimestre alto (el último
-    # antes de la racha en baja) durante 8 meses, lo que completa el trimestre en curso y los dos
-    # siguientes. Si no hay racha, sigue la variación promedio de los últimos 12 meses.
-    proyeccion = None
-    if len(s) >= 13:
-        i_ref = len(lista) - 1 - racha
-        if racha and i_ref >= 0:
-            ref = trims[i_ref][1]
-            centro = ref.index[1]                        # el promedio del trimestre se ubica en su mes del medio
-            n = meses_entre(centro, s.index[-1])
-            g = (s.iloc[-1] / ref.mean()) ** (1 / n) - 1
-            base_txt, desde_txt = "ritmo desde el trimestre alto", lista[i_ref]["trimestre"]
-        else:
-            g = (s.iloc[-1] / s.iloc[-13]) ** (1 / 12) - 1
-            base_txt, desde_txt = "variación promedio de los últimos 12 meses", None
-        fechas = pd.date_range(s.index[-1] + pd.DateOffset(months=1), periods=8, freq="MS")
-        p = pd.Series([s.iloc[-1] * (1 + g) ** (k + 1) for k in range(len(fechas))], index=fechas)
-        junto = pd.concat([s, p])
-        qj = [(per, gr) for per, gr in junto.groupby(junto.index.to_period("Q")) if len(gr) == 3]
-        tp = []
-        for i, (per, gr) in enumerate(qj):
-            if gr.index[-1] <= s.index[-1] or i == 0:   # solo los trimestres que tocan la proyección
-                continue
-            prev = qj[i - 1][1].mean()
-            tp.append({"trimestre": f"{per.year}T{per.quarter}", "desde": ym(gr.index[0]), "hasta": ym(gr.index[-1]),
-                       "promedio": r(gr.mean() / base * 100, 3), "variacion": r((gr.mean() / prev - 1) * 100, 2)})
-        proyeccion = {"tendencia_mensual": r(g * 100, 3), "base": base_txt, "desde": desde_txt,
-                      "serie": [{"fecha": ym(f), "nivel": r(v / base * 100, 3)} for f, v in p.items()], "trimestres": tp}
-
     gob = mensual.loc[inicio + pd.DateOffset(months=1):]
     mayor = gob.idxmax()
     out = {
@@ -753,7 +724,6 @@ def actividad():
         "serie": [{"fecha": ym(f), "nivel": r(nivel[f], 3), "mensual": None if pd.isna(mensual[f]) else r(mensual[f], 2)} for f in s.index],
         "trimestres": lista, "racha": racha, "racha_completa": racha_completa, "estado": estado,
         "necesario": necesario, "mayor_subida": {"fecha": ym(mayor), "variacion": r(gob[mayor], 2)},
-        "proyeccion": proyeccion,
     }
     print(f"   actividad: {estado}, {racha_completa} trimestres completos en baja"
           + (f", haría falta {necesario['variacion']}% en {', '.join(necesario['meses'])}" if necesario else ""))
