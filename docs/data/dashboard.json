@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-15T17:54+00:00",
+ "actualizado": "2026-11-24T15:13+00:00",
  "ultimo_mes": "2026-10",
  "inicio": "2023-11",
  "fin_mandato": "2027-11",
@@ -3692,8 +3692,14 @@
  "dato_del_mes": {
   "edicion": "2026-11",
   "tema": "recesion",
-  "titulo": "La recesión que se viene",
-  "bajada": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
+  "titulo": {
+   "riesgo": "La recesión que se viene",
+   "recesion": "La recesión llegó hace rato"
+  },
+  "bajada": {
+   "riesgo": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
+   "recesion": "Con el EMAE de septiembre, la actividad cayó dos trimestres seguidos: es lo que define una recesión técnica. El dato oficial que la confirma es el PIB del tercer trimestre, que el INDEC publica el 16 de diciembre."
+  },
   "agenda": [
    {
     "fecha": "2026-11-24",
@@ -3990,68 +3996,6 @@
   "mayor_subida": {
    "fecha": "2024-07",
    "variacion": 2.73
-  },
-  "proyeccion": {
-   "tendencia_mensual": -0.568,
-   "base": "ritmo desde el trimestre alto",
-   "desde": "2026T1",
-   "serie": [
-    {
-     "fecha": "2026-09",
-     "nivel": 101.822
-    },
-    {
-     "fecha": "2026-10",
-     "nivel": 101.244
-    },
-    {
-     "fecha": "2026-11",
-     "nivel": 100.669
-    },
-    {
-     "fecha": "2026-12",
-     "nivel": 100.097
-    },
-    {
-     "fecha": "2027-01",
-     "nivel": 99.529
-    },
-    {
-     "fecha": "2027-02",
-     "nivel": 98.963
-    },
-    {
-     "fecha": "2027-03",
-     "nivel": 98.401
-    },
-    {
-     "fecha": "2027-04",
-     "nivel": 97.842
-    }
-   ],
-   "trimestres": [
-    {
-     "trimestre": "2026T3",
-     "desde": "2026-07",
-     "hasta": "2026-09",
-     "promedio": 102.188,
-     "variacion": -2.96
-    },
-    {
-     "trimestre": "2026T4",
-     "desde": "2026-10",
-     "hasta": "2026-12",
-     "promedio": 100.67,
-     "variacion": -1.49
-    },
-    {
-     "trimestre": "2027T1",
-     "desde": "2027-01",
-     "hasta": "2027-03",
-     "promedio": 98.964,
-     "variacion": -1.69
-    }
-   ]
   }
  }
 }
