@@ -1117,7 +1117,8 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       <section class="sec mirar" id="sec-mirar" aria-labelledby="mirar-t"><article class="marco">${cab}<div class="marco-in">${cuerpo}</div></article></section>`;
 
     if (D.tema !== 'recesion' || !A) {
-      return enMarco(`<div class="tema"><h3>${D.titulo || ''}</h3>${D.bajada ? `<p>${D.bajada}</p>` : ''}</div>
+      const fijo = v => v && typeof v === 'object' ? (v.riesgo || Object.values(v)[0]) : v;
+      return enMarco(`<div class="tema"><h3>${fijo(D.titulo) || ''}</h3>${fijo(D.bajada) ? `<p>${fijo(D.bajada)}</p>` : ''}</div>
         ${D.tema === 'recesion' ? '<div class="espera">Los datos de actividad del INDEC no se pudieron cargar. Se muestran en la próxima actualización.</div>' : ''}
         ${agendaHtml ? `<div class="act-cols">${agendaHtml}</div>` : ''}`);
     }
@@ -1125,7 +1126,11 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     const { L, racha, ref } = rachaActividad(A);
     const ult = L[L.length - 1], completos = L.filter(t => t.meses === 3), uc = completos[completos.length - 1];
     const N = A.necesario && A.necesario.variacion > 0 ? A.necesario : null;
-    const titulo = D.titulo || { riesgo: 'La recesión que se viene', recesion: 'La economía en recesión', crece: 'La actividad económica' }[A.estado];
+    // título y bajada pueden venir fijos o uno por estado ({riesgo, recesion, crece}), así el recuadro
+    // cambia solo el día que entra el dato que completa el segundo trimestre en baja
+    const segun = v => v && typeof v === 'object' ? v[A.estado] : v;
+    const titulo = segun(D.titulo) || { riesgo: 'La recesión que se viene', recesion: 'La economía en recesión', crece: 'La actividad económica' }[A.estado];
+    const bajada = segun(D.bajada);
     const fuente = A.fuente.startsWith('INDEC') ? 'API del INDEC' : 'INDEC, vía datos.gob.ar';
 
     // dónde estamos: todo sale de los datos, así que se actualiza solo
@@ -1133,6 +1138,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     const mesesQ = parcial ? A.serie.filter(x => x.fecha >= parcial.desde) : [];
     let p1 = `El ${nomT(uc)} quedó <b>${abajo(uc.variacion)}</b> del anterior`;
     p1 += uc.variacion < 0 ? (A.racha_completa === 1 ? ': es el primer trimestre en baja.' : `: van <b>${A.racha_completa} trimestres seguidos</b> en baja.`) : '.';
+    if (A.racha_completa >= 2 && !(D.pib && D.pib.trimestre)) p1 += ' Con eso, el EMAE ya marca <b>recesión técnica</b>. Falta el dato oficial: el PIB del trimestre que publica el INDEC.';
     if (mesesQ.length) p1 += ` ${Mayus1(mesesQ.map((x, i) => `${i ? 'en' : 'En'} ${MESL[+x.fecha.slice(5) - 1]} la actividad ${verbo(x.mensual)}`).join(' y '))}.`;
     let p2 = '';
     if (parcial) {
@@ -1172,7 +1178,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
 
     return enMarco(`
       <div class="tema"><h3>${titulo}</h3>
-        <p>${D.bajada ? `<b>${D.bajada}</b> ` : ''}Actividad económica sin estacionalidad (EMAE), ${fuente}, hasta ${largo(A.ultimo)}.</p></div>
+        <p>${bajada ? `<b>${bajada}</b> ` : ''}Actividad económica sin estacionalidad (EMAE), ${fuente}, hasta ${largo(A.ultimo)}.</p></div>
       <div class="act-cuerpo${falta ? '' : ' solo'}">${falta}
         <div class="caja act-graf">
           <div class="graf-cab"><p>Nivel de actividad, sin estacionalidad · ${largo(A.base)} = 100</p>

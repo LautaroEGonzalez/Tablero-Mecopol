@@ -6,7 +6,7 @@
 | `ponderaciones_regionales.csv` | Peso de cada rubro en la canasta de cada región del IPC y peso de cada región en el total nacional (fila `_peso_region`) | [IPC dic-2025, cuadros 17 y 18](https://www.indec.gob.ar/uploads/informesdeprensa/ipc_01_266741F036E8.pdf) |
 | `estimaciones_reponderadas.csv` | Lo que publicaron otros (Di Tella, CEPA, consultoras, el Gobierno) con las ponderaciones 2017/18, para comparar con la estimación propia | Link en la columna `link` |
 | `ipc_publicado.csv` | IPC nacional (mensual, interanual y acumulado del año) tal como lo publica el INDEC en su informe. Se carga a mano el día de la publicación: si la API de datos.gob.ar todavía no tiene ese mes, la portada lo muestra igual y marca rubros, regiones y canasta "a la espera de la carga del dato en la API del INDEC". Cuando la API lo carga, el cálculo completo lo reemplaza solo | Informe del INDEC, link en la columna `link` |
-| `dato_del_mes.json` | El recuadro «Qué mirar este mes» de la portada: mes de la edición, tema, título, bajada, agenda de fechas y, cuando sale, el PIB del trimestre. Lo escribe el equipo una vez por mes | Elección del equipo; fechas del [calendario de difusión del INDEC](https://www.indec.gob.ar/ftp/cuadros/publicaciones/calendario_2sem2026.pdf) |
+| `dato_del_mes.json` | El recuadro «Qué mirar este mes» de la portada: mes de la edición, tema, título y bajada (pueden cambiar solos cuando el EMAE confirma la recesión), agenda de fechas y, cuando sale, el PIB del trimestre. Lo escribe el equipo una vez por mes | Elección del equipo; fechas del [calendario de difusión del INDEC](https://www.indec.gob.ar/ftp/cuadros/publicaciones/calendario_2sem2026.pdf) |
 
 ## Actividad económica (tema «recesion»)
 
