@@ -245,6 +245,25 @@ th.rel, td.rel { width: 38%; text-align: center; }
 .leyenda { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 14px; color: var(--txt-2); }
 .leyenda i { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -1px; }
 
+/* ---- compartir cada gráfico como imagen ---- */
+.compartir { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px 16px; margin-top: 12px; }
+.compartir button {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; cursor: pointer;
+  font: 600 14px var(--ui); color: var(--acento); background: transparent; border: 2px solid var(--acento);
+  transition: background-color .15s, color .15s;
+}
+.compartir button:hover { background: var(--resalta); }
+.compartir button.ig { border-color: transparent; padding: 0 6px; text-decoration: underline; text-underline-offset: 3px; }
+.compartir button:focus-visible { outline: 3px solid var(--txt); outline-offset: -5px; }
+.compartir button[aria-busy="true"] { cursor: progress; opacity: .7; }
+.compartir svg { width: 18px; height: 18px; flex: none; }
+/* cuando no hay aviso queda presente pero invisible, así el lector de pantalla lo anuncia al cambiar */
+.aviso-comp:not(.ver) { width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); }
+.aviso-comp {
+  position: fixed; border: 1px solid var(--crema); left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  background: var(--negro); color: var(--crema); padding: 10px 16px; font: 600 14px var(--ui); max-width: calc(100% - 32px);
+}
+
 /* ---- la estimación de MECOPOL: siempre en tinta negra con rosa ---- */
 .tinta-negra {
   --fondo: var(--negro); --txt: var(--crema); --txt-2: #c9b7bc;
@@ -435,6 +454,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
     c.setOption(Object.assign({ backgroundColor: 'transparent', textStyle: { fontFamily: FONT, color: NEGRO },
       animation: !quieto, animationDuration: 400 }, opt));
     new ResizeObserver(() => c.resize()).observe(el);
+    if (el.id) GRAF[el.id] = c;
     return c;
   };
   const FLECHA = { baja: '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 1h10L5 9z"/></svg>',
@@ -463,6 +483,165 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
   };
   ajustarCab();
   new ResizeObserver(ajustarCab).observe(cab);
+
+  // ------------------------------------------------------------------
+  // Compartir: cada gráfico se puede mandar como imagen con titular, leyenda, fuente y el logo de
+  // MECOPOL (en el pie y, muy suave, detrás del gráfico). Sin link al sitio. En el celular abre el
+  // menú de compartir del teléfono (WhatsApp, Instagram…); en la computadora descarga el PNG.
+  // ------------------------------------------------------------------
+  const GRAF = {}, INFO = {};
+  const ICONO_COMP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+  const NOMBRE_COMP = { 'ch-act': 'la actividad económica', 'ch-serie': 'la inflación mes a mes', 'ch-mapa': 'la inflación por región',
+    'ch-sal': 'el salario real', 'ch-can': 'las canastas básicas', 'ch-rep': 'la canasta 2017/18' };
+  const botonesComp = id => `<div class="compartir" data-g="${id}">
+      <button type="button" class="ig" data-f="v"><span class="txt">Formato Instagram</span><span class="oculto"> del gráfico de ${NOMBRE_COMP[id]}</span></button>
+      <button type="button" data-f="h">${ICONO_COMP}<span class="txt">Compartir</span><span class="oculto"> el gráfico de ${NOMBRE_COMP[id]}</span></button></div>`;
+  // el logo con el blanco vuelto transparente, para apoyarlo sobre el papel crema
+  const logoComp = (async () => {
+    const im = new Image(); im.src = 'img/logo-mecopol.png'; await im.decode();
+    const cv = document.createElement('canvas'); cv.width = im.naturalWidth; cv.height = im.naturalHeight;
+    const x = cv.getContext('2d'); x.drawImage(im, 0, 0);
+    const px = x.getImageData(0, 0, cv.width, cv.height), d = px.data;
+    for (let i = 0; i < d.length; i += 4) { const m = Math.min(d[i], d[i + 1], d[i + 2]); if (m > 225) d[i + 3] = Math.round(255 * (255 - m) / 30); }
+    x.putImageData(px, 0, 0); return { placa: im, suave: cv };
+  })().catch(() => null);
+
+  function partirTexto(x, texto, ancho) {
+    const lineas = []; let l = '';
+    for (const p of texto.split(' ')) { const t = l ? `${l} ${p}` : p; if (x.measureText(t).width > ancho && l) { lineas.push(l); l = p; } else l = t; }
+    if (l) lineas.push(l); return lineas;
+  }
+  // la leyenda de HTML que acompaña al gráfico, para dibujarla en la imagen
+  function leyendaComp(sel) {
+    const ley = sel && document.querySelector(sel); if (!ley) return [];
+    return [...ley.querySelectorAll('span')].filter(s => s.querySelector('i')).map(s => {
+      const cs = getComputedStyle(s.querySelector('i'));
+      const sinFondo = cs.backgroundColor === 'transparent' || /,\s*0\)$/.test(cs.backgroundColor);
+      const linea = sinFondo && parseFloat(cs.borderTopWidth) > 0;
+      return { texto: s.textContent.trim(), linea, color: linea ? cs.borderTopColor : cs.backgroundColor,
+        trazo: cs.borderTopStyle, ancho: parseFloat(cs.borderTopWidth) || 2 };
+    });
+  }
+
+  async function imagenComp(id, fmt) {
+    const info = INFO[id](), c = GRAF[id], el = document.getElementById(id);
+    const osc = !!el.closest('.tinta-negra');
+    const T = osc ? { fondo: NEGRO, txt: CREMA, txt2: '#c9b7bc', ac: ROSA } : { fondo: CREMA, txt: NEGRO, txt2: '#5e4a50', ac: BORDO };
+    const V = fmt === 'v', W = V ? 1080 : 1200, H = V ? 1350 : 675, P = V ? 64 : 52;
+    // escala de la letra del gráfico en la imagen (el mapa va más chico para que entren las etiquetas)
+    const ES = id === 'ch-mapa' ? (V ? 1.2 : 1) : V ? 1.45 : 1.25;
+    const fT = V ? 74 : 54, fB = V ? 26 : 19, fL = V ? 21 : 15, pie = V ? 150 : 96;
+    await Promise.all([document.fonts.load(`${fT}px Anton`), document.fonts.load(`700 ${fB}px "Public Sans"`), document.fonts.load(`400 ${fB}px "Public Sans"`)]);
+    const logo = await logoComp;
+    const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
+    const x = cv.getContext('2d'); x.scale(2, 2); x.textBaseline = 'alphabetic';
+    x.fillStyle = T.fondo; x.fillRect(0, 0, W, H);
+    x.fillStyle = T.ac; x.fillRect(0, 0, W, 10);
+
+    // cabeza: titular (bordó sobre papel, rosa sobre negro) y bajada
+    let y = P - 8;
+    x.fillStyle = T.ac; x.font = `400 ${fT}px Anton`;
+    partirTexto(x, info.titulo, W - 2 * P).slice(0, 2).forEach(l => { y += fT * 1.1; x.fillText(l, P, y); });
+    x.fillStyle = T.txt2; x.font = `400 ${fB}px "Public Sans"`; y += V ? 10 : 6;
+    partirTexto(x, info.bajada, W - 2 * P).slice(0, 3).forEach(l => { y += fB * 1.4; x.fillText(l, P, y); });
+
+    // leyenda (abajo del gráfico): se calcula antes para saber cuánto alto le queda al gráfico
+    const items = leyendaComp(info.leyenda);
+    x.font = `400 ${fL}px "Public Sans"`;
+    const filas = [[]]; let ancho = 0;
+    items.forEach(it => { const w = 30 + x.measureText(it.texto).width + 26;
+      if (ancho + w > W - 2 * P && filas[filas.length - 1].length) { filas.push([]); ancho = 0; }
+      filas[filas.length - 1].push(it); ancho += w; });
+    const altoLey = items.length ? filas.length * fL * 1.7 + 8 : 0;
+    const gy = y + (V ? 28 : 18), gw = W - 2 * P, gh = H - pie - 16 - altoLey - gy;
+    // con tabla (el mapa en horizontal), el gráfico va a la derecha y la lista a la izquierda
+    const tabla = info.tabla && !V ? info.tabla : null;
+    const cw = tabla ? Math.round(gw * 0.5) : gw, cx = P + gw - cw;
+
+    // el gráfico: el mismo que está en pantalla, dibujado aparte a tamaño fijo y sin la barra de zoom
+    const opt = c.getOption();
+    opt.animation = false;
+    (opt.series || []).forEach(s => { if (s.type === 'line') s.showAllSymbol = true; });   // que no esconda el último punto
+    if (opt.dataZoom && opt.dataZoom.length) {
+      opt.dataZoom.forEach(z => { if (z.type === 'slider') z.show = false; });
+      (opt.grid || []).forEach(g => { g.bottom = 6; });
+    }
+    const div = document.createElement('div');
+    div.style.cssText = `position:fixed;left:-10000px;top:0;width:${Math.round(cw / ES)}px;height:${Math.round(gh / ES)}px`;
+    document.body.appendChild(div);
+    const e = echarts.init(div, null, { devicePixelRatio: ES * 2 });
+    e.setOption(opt);
+    const gimg = new Image(); gimg.src = e.getDataURL({ pixelRatio: ES * 2, backgroundColor: 'transparent' });
+    await gimg.decode(); e.dispose(); div.remove();
+    if (logo && !osc) { const m = Math.min(cw, gh) * 0.7; x.globalAlpha = 0.05; x.drawImage(logo.suave, cx + (cw - m) / 2, gy + (gh - m) / 2, m, m); x.globalAlpha = 1; }
+    x.drawImage(gimg, cx, gy, cw, gh);
+    if (tabla) {
+      const tw = gw - cw - 40, fila = Math.min(50, gh / tabla.length);
+      tabla.forEach(([nom, val, destacar], i) => {
+        const yy = gy + fila * i;
+        x.fillStyle = destacar ? T.ac : T.txt; x.font = `${destacar ? 700 : 500} 21px "Public Sans"`; x.textAlign = 'left';
+        x.fillText(nom, P, yy + fila * 0.66);
+        x.font = '400 32px Anton'; x.textAlign = 'right'; x.fillText(val, P + tw, yy + fila * 0.7); x.textAlign = 'left';
+        x.fillStyle = T.txt; x.globalAlpha = i === tabla.length - 1 ? 0 : 0.18; x.fillRect(P, yy + fila - 1, tw, 1); x.globalAlpha = 1;
+      });
+    }
+
+    // la leyenda
+    let ly = gy + gh + 8 + fL;
+    filas.forEach(f => { let lx = P;
+      f.forEach(it => {
+        if (it.linea) { x.strokeStyle = it.color; x.lineWidth = Math.max(2, it.ancho) * (V ? 1.4 : 1.1);
+          x.setLineDash(it.trazo === 'dashed' ? [7, 5] : it.trazo === 'dotted' ? [2, 4] : []);
+          x.beginPath(); x.moveTo(lx, ly - fL * 0.35); x.lineTo(lx + 24, ly - fL * 0.35); x.stroke(); x.setLineDash([]); }
+        else { x.fillStyle = it.color; x.fillRect(lx + 4, ly - fL * 0.8, 16, fL * 0.8); }
+        x.fillStyle = T.txt2; x.font = `400 ${fL}px "Public Sans"`; x.fillText(it.texto, lx + 30, ly);
+        lx += 30 + x.measureText(it.texto).width + 26; });
+      ly += fL * 1.7; });
+
+    // pie en papel crema: logo, fuente y firma
+    const py = H - pie;
+    x.fillStyle = CREMA; x.fillRect(0, py, W, pie);
+    if (!osc) { x.fillStyle = NEGRO; x.fillRect(P, py, W - 2 * P, 2); }
+    // el logo va sobre su placa blanca, con 3px de aire, como en la banda del tablero
+    const lg = pie - (V ? 36 : 28), ly0 = py + (pie - lg) / 2 + 1;
+    if (logo) { x.fillStyle = '#ffffff'; x.fillRect(P, ly0 - 3, lg + 6, lg + 6); x.drawImage(logo.placa, P + 3, ly0, lg, lg); }
+    const tx = P + lg + 6 + (V ? 20 : 16);
+    x.fillStyle = NEGRO; x.font = `700 ${V ? 23 : 17}px "Public Sans"`;
+    x.fillText(`Fuente: ${info.fuente}`, tx, py + pie / 2 - (V ? 4 : 2));
+    x.fillStyle = '#5e4a50'; x.font = `400 ${V ? 20 : 15}px "Public Sans"`;
+    x.fillText('MECOPOL · Mesa de Economía Política · Universidad Nacional de Lanús', tx, py + pie / 2 + (V ? 28 : 21));
+    return new Promise(ok => cv.toBlob(ok, 'image/png'));
+  }
+
+  const avisoEl = document.createElement('div');
+  avisoEl.className = 'aviso-comp'; avisoEl.setAttribute('role', 'status'); avisoEl.setAttribute('aria-atomic', 'true');
+  document.body.appendChild(avisoEl);
+  const avisoComp = texto => {
+    avisoEl.textContent = texto; avisoEl.classList.add('ver');
+    clearTimeout(avisoComp.t); avisoComp.t = setTimeout(() => { avisoEl.classList.remove('ver'); avisoEl.textContent = ''; }, 4000);
+  };
+  document.addEventListener('click', async ev => {
+    const b = ev.target.closest('.compartir button'); if (!b || b.getAttribute('aria-busy') === 'true') return;
+    const id = b.parentElement.dataset.g, fmt = b.dataset.f;
+    if (!GRAF[id] || !INFO[id]) return;
+    const txt = b.querySelector('.txt'), antes = txt.textContent;
+    b.setAttribute('aria-busy', 'true'); txt.textContent = 'Armando la imagen…';
+    try {
+      const info = INFO[id](), blob = await imagenComp(id, fmt);
+      const slug = info.titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const archivo = new File([blob], `mecopol-${slug}${fmt === 'v' ? '-instagram' : ''}.png`, { type: 'image/png' });
+      const texto = `*${info.titulo}*\n${info.bajada}\nMECOPOL · Mesa de Economía Política (UNLa)`;
+      if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [archivo] })) {
+        try { await navigator.share({ files: [archivo], text: texto }); } catch (err) { if (err.name !== 'AbortError') throw err; }
+      } else {
+        const url = URL.createObjectURL(archivo), a = document.createElement('a');
+        a.href = url; a.download = archivo.name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        avisoComp('Imagen descargada');
+      }
+    } catch (err) { console.error(err); avisoComp('No se pudo armar la imagen. Probá de nuevo.'); }
+    finally { b.removeAttribute('aria-busy'); txt.textContent = antes; }
+  });
 
   function render(d) {
     const k = d.kpis, M = d.ultimo_mes, K = d.mes_gobierno, total = K + d.meses_restantes;
@@ -537,7 +716,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
           <div class="seg" role="group" aria-label="Medida de la serie" id="sel">${[['mensual', 'Mensual'], ['interanual', 'Interanual'], ['acumulada', 'Acumulada']]
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
         </div>
-        <div class="caja"><div class="chart" id="ch-serie" role="img"></div></div>
+        <div class="caja"><div class="chart" id="ch-serie" role="img"></div>${botonesComp('ch-serie')}</div>
         <p class="lectura">El pico fue <b>${largo(d.hitos.pico.fecha)}</b>, con <b>${pct(d.hitos.pico.mensual, 1)}</b> mensual. En los primeros 5 meses los precios subieron <b>${pct(d.hitos.primeros_5, 0)}</b>; en los ${d.hitos.meses_resto} meses siguientes, <b>${pct(d.hitos.resto, 0)}</b>.</p>
       </section>
 
@@ -549,7 +728,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
             .map(([v, t], i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>
         ${esperaR}
         <div class="reg-grid">
-          <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div></div>
+          <div class="caja"><div class="mapa" id="ch-mapa" role="img" aria-label="Mapa de la Argentina con la inflación de cada región del IPC"></div>${botonesComp('ch-mapa')}</div>
           <div class="caja reg reg-der">
             <div class="tabla-wrap"><table>
               <caption class="oculto">Inflación por región</caption>
@@ -588,9 +767,9 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
           <p class="sub">Qué se puede comprar con un sueldo, con el salario mínimo o con la jubilación mínima, una vez descontada la inflación. Desde enero de 2019.</p></div></div>
         <div class="dos-igual">
           <div class="caja"><h3 class="sub-t">Salario real</h3><p class="cap-graf">Cuánto compra un sueldo registrado. Enero de 2019&nbsp;=&nbsp;100.</p><div class="chart" id="ch-sal" role="img"></div>
-            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div></div>
+            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Privado registrado</span><span><i style="background:var(--negro)"></i>Público</span><span><i style="background:var(--hist)"></i>Total registrado</span></div>${botonesComp('ch-sal')}</div>
           <div class="caja"><h3 class="sub-t">Canastas básicas</h3><p class="cap-graf">Canastas básicas de un adulto que compra cada ingreso mínimo.</p><div class="chart" id="ch-can" role="img"></div>
-            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Salario mínimo</span><span><i style="background:var(--negro)"></i>Jubilación mínima</span></div></div>
+            <div class="leyenda"><span><i style="background:var(--bordo)"></i>Salario mínimo</span><span><i style="background:var(--negro)"></i>Jubilación mínima</span></div>${botonesComp('ch-can')}</div>
         </div>
         <p class="lectura" id="lec-sal"></p>
         <p class="lectura" id="lec-can"></p>
@@ -613,7 +792,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         ${d.reponderado.variantes ? (() => { const V = d.reponderado.variantes;
           return `<p class="rango">Según cómo se suponga que cambió el consumo desde 2018, la inflación desde nov-23 con la canasta 2017/18 va de <b>${pct(V.cantidades_fijas.acum_gobierno, 1)}</b> (mismas cantidades en todos los rubros) a <b>${pct(V.participaciones_fijas.acum_gobierno, 1)}</b> (misma proporción del gasto en todos los rubros, el supuesto de CEPA). La estimación de MECOPOL combina los dos: <b>${pct(V.mixta.acum_gobierno, 1)}</b>. Oficial: ${pct(d.reponderado.resumen.acum_gobierno.oficial, 1)}.</p>`; })() : ''}
         <div class="dos-col">
-          <div class="caja"><div class="chart" id="ch-rep" role="img"></div></div>
+          <div class="caja"><div class="chart" id="ch-rep" role="img"></div>${botonesComp('ch-rep')}</div>
           <div class="caja pond"><div class="tabla-wrap"><table>
             <caption class="oculto">Peso de cada rubro en las dos canastas</caption>
             <thead><tr><th scope="col">Rubro</th><th scope="col">Peso 2004/05</th><th scope="col">Peso 2017/18</th><th scope="col">Cambio</th><th scope="col" title="Peso en el gasto en noviembre de 2023 con la canasta mixta de MECOPOL">Nov-23</th></tr></thead>
@@ -866,6 +1045,30 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
       }).catch(err => { document.getElementById('ch-mapa').textContent = 'No se pudo cargar el mapa.'; console.error(err); });
     }
 
+    // ---- qué dice cada imagen para compartir (lee la opción elegida en cada selector) ----
+    const elegido = (id, def) => { const b = document.querySelector(`#${id} [aria-pressed="true"]`); return b ? b.dataset.v : def; };
+    INFO['ch-serie'] = () => { const m = elegido('sel', 'mensual');
+      return { titulo: { mensual: 'Inflación mes a mes', interanual: 'Inflación interanual', acumulada: 'Inflación acumulada desde noviembre de 2023' }[m],
+        bajada: `IPC nacional, de ${largo(d.serie[0].fecha)} a ${largo(M)}. ${m === 'mensual' ? `En ${mesL(M)}: ${pct(k.mensual, 1)}.` : m === 'interanual' ? `En ${mesL(M)}: ${pct(k.interanual, 1)}.` : `Hasta ${mesL(M)}: ${pct(k.acum_gobierno, 1)}.`}`,
+        fuente: 'INDEC (IPC Nacional).' }; };
+    if (d.regiones) INFO['ch-mapa'] = () => { const m = elegido('sel-reg', 'mensual');
+      return { titulo: { mensual: `Inflación de ${mesL(MR)} en cada región`, interanual: 'Inflación interanual en cada región', acum_gobierno: 'Inflación en cada región desde noviembre de 2023' }[m],
+        bajada: `El INDEC mide el IPC en seis regiones, cada una con su canasta. ${m === 'mensual' ? `Nacional: ${pct(KR.mensual, 1)}.` : m === 'interanual' ? `Nacional: ${pct(KR.interanual, 1)}.` : `Nacional: ${pct(KR.acum_gobierno, 1)}.`}`,
+        fuente: 'INDEC (IPC por región).',
+        tabla: [...[...d.regiones.regiones].sort((a, b) => b[m] - a[m]).map(r => [r.region, pct(r[m], m === 'acum_gobierno' ? 0 : 1)]),
+          ['Nacional', pct(KR[m], m === 'acum_gobierno' ? 0 : 1), true]] }; };
+    if (d.poder_compra) {
+      const SR = d.poder_compra.salarios.resumen, CR = d.poder_compra.canastas.resumen;
+      INFO['ch-sal'] = () => ({ titulo: 'Salario real', bajada: `Cuánto compra un sueldo registrado, descontada la inflación. Enero de 2019 = 100, hasta ${largo(SR.sal_privado.ultimo)}.`,
+        fuente: 'INDEC (índice de salarios e IPC).', leyenda: '#ch-sal ~ .leyenda' });
+      INFO['ch-can'] = () => ({ titulo: 'Cuántas canastas básicas compra cada ingreso mínimo', bajada: `Canasta básica total de un adulto (GBA), la que marca la línea de pobreza. Hasta ${largo(CR.ultimo)}.`,
+        fuente: 'INDEC (canasta básica); salario mínimo y haber mínimo: datos.gob.ar.', leyenda: '#ch-can ~ .leyenda' });
+    }
+    if (d.reponderado) INFO['ch-rep'] = () => { const m = elegido('sel-rep', 'acumulada');
+      return { titulo: { acumulada: 'Inflación desde noviembre de 2023 con la canasta de hoy', interanual: 'Inflación interanual con la canasta de hoy', mensual: 'Inflación mensual con la canasta de hoy' }[m],
+        bajada: 'IPC recalculado con los pesos de la encuesta de gastos 2017/18, contra el IPC oficial (encuesta 2004/05).',
+        fuente: 'INDEC. Estimación: MECOPOL.', leyenda: '#sec-canasta > .leyenda' }; };
+
     // ---- rubros ----
     const rs = [...d.rubros].sort((a, b) => b.relativo - a.relativo);
     const maxRel = Math.max(...rs.map(r => Math.abs(r.relativo)));
@@ -962,6 +1165,9 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
         <p>${N.meses.length === 1 ? 'en un solo mes' : 'en cada uno de esos meses'}.${A.mayor_subida ? ` Desde que asumió el gobierno, el mes que más creció fue ${largo(A.mayor_subida.fecha)}, con ${pct(A.mayor_subida.variacion, 1)}.` : ''}</p>
         <p class="est"><b>Estimación de MECOPOL</b> con datos del INDEC.</p>
       </div>` : '';
+    INFO['ch-act'] = () => ({ titulo,
+      bajada: `Nivel de actividad sin estacionalidad (EMAE), ${largo(A.base)} = 100, hasta ${largo(A.ultimo)}. Promedio de cada trimestre${PR ? ' y proyección de MECOPOL' : ''}.`,
+      fuente: `INDEC (EMAE).${PR ? ' Proyección: MECOPOL.' : ''}`, leyenda: '#sec-mirar .act-graf .leyenda' });
     const zooms = [['todo', 'Todo el gobierno'], ['anio', 'Último año']].concat(racha.length && ref ? [['caida', A.estado === 'crece' ? 'La caída' : 'La recesión']] : []);
 
     return enMarco(`
@@ -975,6 +1181,7 @@ code { font-size: 13px; background: var(--bordo-osc); padding: 1px 5px; overflow
           <div class="chart act" id="ch-act" role="img"></div>
           <p class="ayuda">Para acercarte a otros meses, mové los extremos de la barra de abajo del gráfico.</p>
           <div class="leyenda" aria-hidden="true"><span><i class="lin"></i>Actividad mes a mes (INDEC)</span><span><i class="prom"></i>Promedio de cada trimestre</span>${N ? `<span><i class="falta-l"></i>Lo que haría falta en ${mesesN}</span>` : ''}${PR ? `<span><i class="proy"></i>Proyección si sigue ${PR.desde ? 'el ritmo de caída' : 'la tendencia'} (estimación de MECOPOL)</span>` : ''}${racha.length ? '<span><i class="zona"></i>Trimestres en baja</span>' : ''}</div>
+          ${botonesComp('ch-act')}
         </div>
       </div>
       <div class="act-cols">

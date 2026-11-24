@@ -262,11 +262,16 @@ Esquinas rectas en todo (0), incluidos tooltips, barras, marcadores cuadrados de
 ## Components
 
 ### Buttons
-Selector segmentado de tinta entera: se usa para cambiar la medida de un gráfico; no hay otros botones.
+Selector segmentado de tinta entera: se usa para cambiar la medida de un gráfico. El único otro botón es «Compartir» (ver abajo).
 - **Shape:** rectos (0), con contorno de 2px en la tinta de acento y 44px de alto mínimo.
 - **Default:** fondo transparente y texto en la tinta de acento (bordó sobre papel, rosa sobre negro).
 - **Elegido:** tinta llena con el texto invertido (crema sobre bordó, negro sobre rosa).
 - **Hover / Focus:** resalte del 5 o 7 % en .15s; contorno de foco de 3px en el color del texto, hacia adentro.
+
+### Compartir
+Debajo de cada gráfico, alineados a la derecha: «Compartir», con el mismo contorno de 2px y el ícono de tres nodos, y «Formato Instagram» como texto subrayado en la tinta de acento. El hover es el resalte del 5 o 7 % y el foco, el contorno de 3px hacia adentro, como el selector. Mientras se arma la imagen el botón dice «Armando la imagen…». En el teléfono abre el menú de compartir del sistema con la imagen y el titular; en la computadora descarga el PNG y avisa con una ficha negra abajo al centro, que se anuncia como estado.
+
+La imagen es horizontal (1200 × 675) o vertical para Instagram (1080 × 1350). Lleva una banda de 10px en la tinta de acento, el titular en Anton (bordó sobre papel; rosa sobre negro si es una estimación, que se arma en el contexto de tinta negra), la bajada en tinta lavada, el gráfico tal como está en pantalla pero sin la barra de zoom, su leyenda y un pie de papel crema con el logo sobre su placa blanca, la fuente y la firma de MECOPOL. Detrás del gráfico va el logo al 5 % como marca contra el recorte; en las piezas de tinta negra no va. Sin antetítulo y sin link al sitio. El mapa, en horizontal, suma a la izquierda la lista de regiones de mayor a menor con el nacional en bordó.
 
 ### Cards / Containers
 No hay tarjetas. La caja de contenido es un filete superior de 3px en la tinta del texto y 16px de aire, sin fondo propio. Las cifras se separan con filetes verticales de 3px en bordó.
