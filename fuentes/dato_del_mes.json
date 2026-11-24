@@ -1,6 +1,6 @@
 {
   "_comentario": "Recuadro «Qué mirar este mes» de la portada. Se edita una vez por mes (también desde la web de GitHub); al guardar, la Action regenera el tablero. Los números del tema «recesion» se calculan solos todos los días con el EMAE: acá va solo lo que escribe el equipo.",
-  "_campos": "edicion: mes de la edición (AAAA-MM). tema: por ahora «recesion». titulo y bajada: texto libre; pueden ir fijos o uno por estado de la actividad ({riesgo, recesion}) y la página elige solo según el último EMAE. agenda: fechas a mirar (AAAA-MM-DD); cuando pasan, la página las marca como publicadas. pib: cuando el INDEC publique el PIB del trimestre, cargar {trimestre: AAAATn, variacion: % contra el trimestre anterior sin estacionalidad, link}; mientras tanto, null.",
+  "_campos": "edicion: mes de la edición (AAAA-MM). tema: por ahora «recesion». titulo y bajada: texto libre; pueden ir fijos o uno por estado de la actividad ({riesgo, recesion}) y la página elige solo según el último EMAE. editorial: texto del equipo, una lista de párrafos (fija o una por estado, como el título); va debajo del título, firmado por MECOPOL. agenda: fechas a mirar (AAAA-MM-DD); cuando pasan, la página las marca como publicadas. pib: cuando el INDEC publique el PIB del trimestre, cargar {trimestre: AAAATn, variacion: % contra el trimestre anterior sin estacionalidad, link}; mientras tanto, null.",
   "edicion": "2026-11",
   "tema": "recesion",
   "titulo": {
@@ -10,6 +10,15 @@
   "bajada": {
     "riesgo": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
     "recesion": "Con el EMAE de septiembre, la actividad cayó dos trimestres seguidos: es lo que define una recesión técnica. El dato oficial que la confirma es el PIB del tercer trimestre, que el INDEC publica el 16 de diciembre."
+  },
+  "editorial": {
+    "recesion": [
+      "El número que el INDEC acaba de publicar del Estimador Mensual de Actividad Económica (EMAE) para el mes de septiembre confirma en datos lo que ya venimos viendo en la calle: la Argentina, oficialmente, está atravesando una recesión económica.",
+      "Más allá del intento del equipo económico del gobierno de poner en duda esta afirmación, el criterio técnico más difundido respecto a un proceso recesivo se define por la sucesión de 2 trimestres consecutivos con caída del PBI desestacionalizado. El EMAE nos adelanta con precisión cuál será el desempeño final del PBI, que se publica de forma trimestral y recién estará disponible en diciembre.",
+      "De todas formas, el dato no cambia el panorama ni el diagnóstico previo sobre la economía argentina, sino que funciona como una confirmación: el modelo económico propuesto por Javier Milei no cierra con todos adentro.",
+      "La explicación del fenómeno la hallamos en los indicadores de la economía real. La destrucción de puestos de trabajo, el derrumbe del consumo, la reducción de los ingresos familiares, la apertura irrestricta de importaciones, y los consecuentes estragos en el sector industrial manufacturero son los protagonistas.",
+      "Parece que, al final, la lluvia de divisas provenientes del campo y Vaca Muerta, al igual que las inversiones amparadas bajo el RIGI, no alcanzan para tapar el sol con la mano. Todo un palo, ya lo ves..."
+    ]
   },
   "agenda": [
     {
