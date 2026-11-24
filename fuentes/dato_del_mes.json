@@ -5,11 +5,11 @@
   "tema": "recesion",
   "titulo": {
     "riesgo": "La recesión que se viene",
-    "recesion": "La economía entró en recesión"
+    "recesion": "La economía entró en recesión técnica"
   },
   "bajada": {
     "riesgo": "Este mes, lo que más pesa no sale del IPC: la actividad económica cae y la economía está a punto de entrar en recesión técnica.",
-    "recesion": "Este mes, lo que más pesa no sale del IPC: con el EMAE de septiembre, la actividad económica completó dos trimestres seguidos en baja. El PIB del 16 de diciembre lo tiene que confirmar."
+    "recesion": "Con el EMAE de septiembre, la actividad cayó dos trimestres seguidos: es lo que define una recesión técnica. El dato oficial que la confirma es el PIB del tercer trimestre, que el INDEC publica el 16 de diciembre."
   },
   "agenda": [
     {
